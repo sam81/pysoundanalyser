@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>translations/pysoundanalyser_it.qm</file>
+<file>translations/pysoundanalyser_fr.qm</file>
+<file>translations/pysoundanalyser_en_GB.qm</file>
+<file>translations/pysoundanalyser_el.qm</file>
+<file>translations/pysoundanalyser_es.qm</file>
+<file>translations/pysoundanalyser_de.qm</file>
+<file>translations/pysoundanalyser_ru.qm</file>
+<file alias="johnny_automatic_crashing_wave.svg">icons/johnny_automatic_crashing_wave.svg</file>
+<file alias="exit.svg">icons/exit.svg</file>
+</qresource>
+</RCC>

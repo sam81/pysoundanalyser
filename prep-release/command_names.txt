@@ -1,0 +1,3 @@
+bzr push lp:~samuele-carcagno/pysoundanalyser/trunk
+bzr launchpad-login samuele-carcagno
+LANG=it_IT.UTF-8

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version = 0.1.16
+Name=pysoundanalyser
+Name[en_GB]=pysoundanalyser 
+GenericName=pysoundanalyser
+GenericName[en_GB]=pysoundanalyser
+Comment=Sound processing software
+Comment[en_GB]=Sound processing software
+Terminal=false
+Type=Application
+Exec=/usr/bin/pysoundanalyser
+Icon=/usr/share/icons/johnny_automatic_crashing_wave.svg
+Categories=Education;Science;
