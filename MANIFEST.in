@@ -1,9 +1,7 @@
 
-include pysoundanalyser_pack/*.py
-include doc/*
+include pysoundanalyser/*.py
+include pysoundanalyser/doc/*
 include icons/*
-include pysndlib.py
-include postinstall.py
 include pysoundanalyser.desktop
 include INSTALL.txt
 include README.txt

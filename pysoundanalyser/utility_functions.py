@@ -20,7 +20,7 @@ from numpy import sin, cos, pi, sqrt, abs, arange, floor, zeros, mean, concatena
 from numpy.fft import rfft, irfft, fft, ifft
 from scipy.signal import firwin2
 import copy
-import pysndlib as sndlib
+import pysoundanalyser.pysndlib as sndlib
 def pltColorFromQColor(qcolor):
     col = (qcolor.red()/255., qcolor.green()/255., qcolor.blue()/255.)
     return col

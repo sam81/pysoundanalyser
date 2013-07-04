@@ -19,7 +19,7 @@ from PyQt4 import QtGui, QtCore
 import os
 
 def onShowManualPdf():
-    fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/pysoundanalyser_manual.pdf'
+    fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/manual/pysoundanalyser_manual.pdf'
     QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
 
 

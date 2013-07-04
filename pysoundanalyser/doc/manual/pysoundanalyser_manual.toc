@@ -1,0 +1,5 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}User Interface}{2}{chapter.2}
+\contentsline {subsubsection}{Load Sound}{2}{section*.2}
+\contentsline {subsubsection}{Save As}{2}{section*.3}
+\contentsline {subsubsection}{Cut}{2}{section*.4}

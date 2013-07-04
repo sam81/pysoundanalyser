@@ -23,16 +23,16 @@ import sys, platform, os, copy, pickle, traceback
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QApplication
 import logging, signal
-from pysoundanalyser_pack import qrc_resources
+from pysoundanalyser import qrc_resources
 
 from numpy import sin, cos, pi, sqrt, abs, arange, zeros, mean, concatenate, convolve, angle, real, log2, log10, int_, linspace, repeat, ceil, unique, hamming, hanning, blackman, bartlett, round, transpose
 from numpy.fft import rfft, irfft, fft, ifft
 import scipy
 from tempfile import mkstemp
-from pysoundanalyser_pack.global_parameters import*
-from pysoundanalyser_pack._version_info import*
-from pysoundanalyser_pack.utilities_open_manual import*
-__version__ = pysnd_version
+from pysoundanalyser.global_parameters import*
+from pysoundanalyser._version_info import*
+from pysoundanalyser.utilities_open_manual import*
+__version__ = pysoundanalyser_version
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
@@ -64,31 +64,31 @@ def excepthook(except_type, except_val, tbck):
 if platform.system() == 'Windows':
     import winsound
 
-import pysndlib as sndlib
-from pysoundanalyser_pack.utility_functions import*
-#from pysoundanalyser_pack.utility_generate_stimuli import*
-import pysoundanalyser_pack.random_id as random_id
-from pysoundanalyser_pack.win_waveform_plot import*
-from pysoundanalyser_pack.win_spectrum_plot import*
-from pysoundanalyser_pack.win_spectrogram_plot import*
-from pysoundanalyser_pack.win_acf_plot import*
-from pysoundanalyser_pack.win_autocorrelogram_plot import*
-from pysoundanalyser_pack.dialog_edit_preferences import*
-from pysoundanalyser_pack.dialog_resample import*
-from pysoundanalyser_pack.dialog_save_sound import*
-from pysoundanalyser_pack.dialog_change_channel import*
-from pysoundanalyser_pack.dialog_concatenate import*
-from pysoundanalyser_pack.dialog_cut import*
-from pysoundanalyser_pack.dialog_apply_filter import*
-from pysoundanalyser_pack.dialog_generate_sound import*
-from pysoundanalyser_pack.dialog_generate_noise import*
-from pysoundanalyser_pack.dialog_generate_sinusoid import*
-#from pysoundanalyser_pack.dialog_get_font import*
+import pysoundanalyser.pysndlib as sndlib
+from pysoundanalyser.utility_functions import*
+#from pysoundanalyser.utility_generate_stimuli import*
+import pysoundanalyser.random_id as random_id
+from pysoundanalyser.win_waveform_plot import*
+from pysoundanalyser.win_spectrum_plot import*
+from pysoundanalyser.win_spectrogram_plot import*
+from pysoundanalyser.win_acf_plot import*
+from pysoundanalyser.win_autocorrelogram_plot import*
+from pysoundanalyser.dialog_edit_preferences import*
+from pysoundanalyser.dialog_resample import*
+from pysoundanalyser.dialog_save_sound import*
+from pysoundanalyser.dialog_change_channel import*
+from pysoundanalyser.dialog_concatenate import*
+from pysoundanalyser.dialog_cut import*
+from pysoundanalyser.dialog_apply_filter import*
+from pysoundanalyser.dialog_generate_sound import*
+from pysoundanalyser.dialog_generate_noise import*
+from pysoundanalyser.dialog_generate_sinusoid import*
+#from pysoundanalyser.dialog_get_font import*
 tmpprm = {}; tmpprm['data'] = {}
 tmpprm = global_parameters(tmpprm)
 tmpprm = get_prefs(tmpprm)
 if tmpprm['pref']['wavmanager'] == 'scipy':
-    from pysoundanalyser_pack.scipy_wav import scipy_wavwrite, scipy_wavread
+    from pysoundanalyser.scipy_wav import scipy_wavwrite, scipy_wavread
 elif tmpprm['pref']['wavmanager'] == 'audiolab':
     import scikits.audiolab as audiolab
     from scikits.audiolab import Sndfile
@@ -99,8 +99,7 @@ class applicationWindow(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
         self.prm = prm
         self.prm['version'] = __version__
-        self.prm['revno'] = pysnd_revno
-        self.prm['builddate'] = pysnd_builddate
+        self.prm['builddate'] = pysoundanalyser_builddate
         self.currLocale = prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.setWindowTitle(self.tr("Python Sound Analyser"))
@@ -1288,8 +1287,7 @@ class applicationWindow(QtGui.QMainWindow):
         QtGui.QMessageBox.about(self, self.tr("About pysoundanalyser"),
                                 self.tr("""<b>Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
-                                - revno: {1}; <br>
-                                - build date: {2} <br>
+                                - build date: {1} <br>
                                 <p> Copyright &copy; 2010-2012 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
                                 All rights reserved. <p>
                 This program is free software: you can redistribute it and/or modify
@@ -1304,7 +1302,7 @@ class applicationWindow(QtGui.QMainWindow):
                 <p>
                 You should have received a copy of the GNU General Public License
                 along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
-                <p>Python {3} - Qt {4} - PyQt {5} on {6}""").format(__version__, self.prm['revno'], self.prm['builddate'], platform.python_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR, platform.system()))
+                <p>Python {2} - Qt {3} - PyQt {4} on {5}""").format(__version__, self.prm['builddate'], platform.python_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR, platform.system()))
     
 
 

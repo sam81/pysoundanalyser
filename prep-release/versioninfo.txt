@@ -1,5 +1,0 @@
-revision-id: sam.carcagno@gmail.com-20130220120630-9vmjfzj9osen335h
-date: 2013-02-20 13:06:30 +0100
-build-date: 2013-02-21 14:42:50 +0100
-revno: 39
-branch-nick: dev

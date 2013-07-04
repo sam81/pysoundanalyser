@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 from distutils.core import setup
 setup(
-    version="0.1.16",
+    version="0.2.17",
       author="Samuele Carcagno",
       author_email="sam.carcagno@google.com;",
       description="Alpha Version of pysoundanalyser, a program for visualizing sounds ",
@@ -24,13 +24,13 @@ Alpha Version of pysoundanalyser, a program for visualizing sounds
         ],
     license="GPL v3",
     name="pysoundanalyser",
-    url="none",
+    url="https://bitbucket.org/samuele_c/pysoundanalyser",
     requires=['PyQt (>=4.8.4)', 'matplotlib (>=1.0.1)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
-    packages=["pysoundanalyser_pack"],
+    packages=["pysoundanalyser"],
     py_modules = ['pysndlib'],
-    scripts = ["pysoundanalyser.pyw", "postinstall.py"],
-    package_dir={'pysoundanalyser_pack': 'pysoundanalyser_pack'},
-    package_data={'pysoundanalyser_pack': ['doc/*.pdf']},
+    scripts = ["pysoundanalyser.pyw"],
+    package_dir={'pysoundanalyser': 'pysoundanalyser'},
+    package_data={'pysoundanalyser': ['doc/manual/*.pdf']},
     data_files = [('share/applications', ['pysoundanalyser.desktop']),
                   ('share/icons', ['icons/johnny_automatic_crashing_wave.svg'])]
     )
