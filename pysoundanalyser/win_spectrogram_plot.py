@@ -17,6 +17,8 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QAction, QCheckBox, QComboBox, QDoubleValidator, QLabel, QInputDialog
+
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 # import the Qt4Agg FigureCanvas object, that binds Figure to
@@ -106,46 +108,46 @@ class spectrogramPlot(genericPlot):
             self.firstRun = False
       
     def createAdditionalControlWidgets(self):
-        self.windowChooser = QtGui.QComboBox()
+        self.windowChooser = QComboBox()
         self.windowChooser.addItems(self.prm['data']['available_windows'])
         self.windowChooser.setCurrentIndex(self.windowChooser.findText(self.prm['pref']['smoothingWindow']))
-        self.windowChooserLabel = QtGui.QLabel(self.tr('Window:'))
+        self.windowChooserLabel = QLabel(self.tr('Window:'))
         self.gridBox.addWidget(self.windowChooserLabel, 0, 4)
         self.gridBox.addWidget(self.windowChooser, 0, 5)
-        self.connect(self.windowChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onChangeWindowFunction)
+        self.windowChooser.currentIndexChanged[int].connect(self.onChangeWindowFunction)
 
-        self.poweroftwoOn = QtGui.QCheckBox(self.tr('Power of 2'))
+        self.poweroftwoOn = QCheckBox(self.tr('Power of 2'))
         self.poweroftwoOn.setChecked(self.prm['pref']['poweroftwo'])
-        self.connect(self.poweroftwoOn, QtCore.SIGNAL('stateChanged(int)'), self.togglePoweroftwo)
+        self.poweroftwoOn.stateChanged[int].connect(self.togglePoweroftwo)
         self.gridBox.addWidget(self.poweroftwoOn, 0, 6)
 
-        self.winLengthLabel= QtGui.QLabel(self.tr('Window Length (s)'))
-        self.winLengthWidget = QtGui.QLineEdit(self.currLocale.toString(0)) 
-        self.winLengthWidget.setValidator(QtGui.QDoubleValidator(self))
+        self.winLengthLabel= QLabel(self.tr('Window Length (s)'))
+        self.winLengthWidget = QLineEdit(self.currLocale.toString(0)) 
+        self.winLengthWidget.setValidator(QDoubleValidator(self))
         self.gridBox.addWidget(self.winLengthLabel, 2, 0)
         self.gridBox.addWidget(self.winLengthWidget, 2, 1)
 
-        self.winOverlapLabel= QtGui.QLabel(self.tr('Overlap (%)'))
-        self.winOverlapWidget = QtGui.QLineEdit(self.currLocale.toString(0)) 
-        self.winOverlapWidget.setValidator(QtGui.QDoubleValidator(self))
+        self.winOverlapLabel= QLabel(self.tr('Overlap (%)'))
+        self.winOverlapWidget = QLineEdit(self.currLocale.toString(0)) 
+        self.winOverlapWidget.setValidator(QDoubleValidator(self))
         self.gridBox.addWidget(self.winOverlapLabel, 2, 2)
         self.gridBox.addWidget(self.winOverlapWidget, 2, 3)
 
-        self.cmapChooserLabel = QtGui.QLabel(self.tr('Color Map:'))
+        self.cmapChooserLabel = QLabel(self.tr('Color Map:'))
         self.gridBox.addWidget(self.cmapChooserLabel, 1, 4)
-        self.cmapChooser = QtGui.QComboBox()
+        self.cmapChooser = QComboBox()
         self.cmapChooser.addItems(self.prm['data']['available_colormaps'])
         self.cmapChooser.setCurrentIndex(self.cmapChooser.findText(self.prm['pref']['colormap']))
         self.gridBox.addWidget(self.cmapChooser, 1, 5)
 
-        self.logXAxisWidget = QtGui.QCheckBox(self.tr('Log axis'))
-        self.connect(self.logXAxisWidget, QtCore.SIGNAL('stateChanged(int)'), self.toggleLogXAxis)
+        self.logXAxisWidget = QCheckBox(self.tr('Log axis'))
+        self.logXAxisWidget.stateChanged[int].connect(self.toggleLogXAxis)
         self.gridBox.addWidget(self.logXAxisWidget, 1, 6)
 
-        self.connect(self.windowChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onChangeWindowFunction)
-        self.connect(self.cmapChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onChangeWindowFunction)
-        self.connect(self.winLengthWidget, QtCore.SIGNAL('editingFinished()'), self.onChangeWindowFunction)
-        self.connect(self.winOverlapWidget, QtCore.SIGNAL('editingFinished()'), self.onChangeWindowFunction)
+        self.windowChooser.currentIndexChanged[int].connect(self.onChangeWindowFunction)
+        self.cmapChooser.currentIndexChanged[int].connect(self.onChangeWindowFunction)
+        self.winLengthWidget.editingFinished.connect(self.onChangeWindowFunction)
+        self.winOverlapWidget.editingFinished.connect(self.onChangeWindowFunction)
         
     def onChangeWindowFunction(self):
         self.win = self.windowChooser.currentText()

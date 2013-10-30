@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
@@ -16,10 +17,11 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QDesktopServices
 import os
 
 def onShowManualPdf():
     fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/manual/pysoundanalyser_manual.pdf'
-    QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
+    QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
 
 

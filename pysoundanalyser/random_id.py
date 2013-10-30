@@ -1,4 +1,5 @@
-#   Copyright (C) 2010-2010 Samuele Carcagno <sam.carcagno@gmail.com>
+# -*- coding: utf-8 -*-
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify

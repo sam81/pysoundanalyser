@@ -21,7 +21,7 @@ import sip
 sip.setapi("QString", 2)
 import sys, platform, os, copy, pickle, traceback
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QAbstractItemView, QAction, QApplication, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import logging, signal
 from pysoundanalyser import qrc_resources
 
@@ -50,14 +50,12 @@ def excepthook(except_type, except_val, tbck):
     """ Show errors in message box"""
     # recover traceback
     tb = traceback.format_exception(except_type, except_val, tbck)
-    ret = QtGui.QMessageBox.critical(None, "Critical Error! Something went wrong, the following info may help you troubleshooting",
+    ret = QMessageBox.critical(None, "Critical Error! Something went wrong, the following info may help you troubleshooting",
                                     ''.join(tb),
-                                    QtGui.QMessageBox.Ok)
+                                    QMessageBox.Ok)
     timeStamp = ''+ time.strftime("%d/%m/%y %H:%M:%S", time.localtime()) + ' ' + '\n'
     logMsg = timeStamp + ''.join(tb)
     logging.debug(logMsg)
-
-
 
 #__version__ = "2012.10.02"
 
@@ -93,10 +91,10 @@ elif tmpprm['pref']['wavmanager'] == 'audiolab':
     import scikits.audiolab as audiolab
     from scikits.audiolab import Sndfile
 
-class applicationWindow(QtGui.QMainWindow):
+class applicationWindow(QMainWindow):
     """main window"""
     def __init__(self, prm):
-        QtGui.QMainWindow.__init__(self)
+        QMainWindow.__init__(self)
         self.prm = prm
         self.prm['version'] = __version__
         self.prm['builddate'] = pysoundanalyser_builddate
@@ -104,191 +102,174 @@ class applicationWindow(QtGui.QMainWindow):
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.setWindowTitle(self.tr("Python Sound Analyser"))
         # main widget
-        self.main_widget = QtGui.QWidget(self)
+        self.main_widget = QWidget(self)
         #MENU-----------------------------------
 
         self.menubar = self.menuBar()
         #FILE MENU
         self.fileMenu = self.menubar.addMenu(self.tr('&File'))
 
-        exitButton = QtGui.QAction(QtGui.QIcon(':/exit.svg'), self.tr('Exit'), self)
+        exitButton = QAction(QIcon(':/exit.svg'), self.tr('Exit'), self)
         exitButton.setShortcut('Ctrl+Q')
         exitButton.setStatusTip(self.tr('Exit application'))
-        self.connect(exitButton, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        exitButton.triggered.connect(self.close)
         self.statusBar()
         self.fileMenu.addAction(exitButton)
 
 
         #EDIT MENU
         self.editMenu = self.menubar.addMenu(self.tr('&Edit'))
-        self.editPrefAction = QtGui.QAction(self.tr('Preferences'), self)
+        self.editPrefAction = QAction(self.tr('Preferences'), self)
         self.editMenu.addAction(self.editPrefAction)
-        self.connect(self.editPrefAction, QtCore.SIGNAL('triggered()'), self.onEditPref)
+        self.editPrefAction.triggered.connect(self.onEditPref)
 
-        self.selectAllAction = QtGui.QAction(self.tr('Select All'), self)
+        self.selectAllAction = QAction(self.tr('Select All'), self)
         self.editMenu.addAction(self.selectAllAction)
-        self.connect(self.selectAllAction, QtCore.SIGNAL('triggered()'), self.onSelectAll)
+        self.selectAllAction.triggered.connect(self.onSelectAll)
 
         #GET MENU
         self.getMenu = self.menubar.addMenu(self.tr('&Get'))
-        self.getRMSAction = QtGui.QAction(self.tr('Root Mean Square'), self)
+        self.getRMSAction = QAction(self.tr('Root Mean Square'), self)
         self.getMenu.addAction(self.getRMSAction)
-        self.connect(self.getRMSAction, QtCore.SIGNAL('triggered()'), self.onClickGetRMSButton)
+        self.getRMSAction.triggered.connect(self.onClickGetRMSButton)
 
         #GET MENU
         self.processMenu = self.menubar.addMenu(self.tr('&Process'))
         self.applyFilterMenu = self.processMenu.addMenu(self.tr('&Apply Filter'))
-        self.fir2PresetsAction = QtGui.QAction(self.tr('FIR2 Presets'), self)
+        self.fir2PresetsAction = QAction(self.tr('FIR2 Presets'), self)
         self.applyFilterMenu.addAction(self.fir2PresetsAction)
-        self.connect(self.fir2PresetsAction, QtCore.SIGNAL('triggered()'), self.onClickApplyFIR2PresetsButton)
+        self.fir2PresetsAction.triggered.connect(self.onClickApplyFIR2PresetsButton)
         
 
         #GENERATE MENU
         self.generateMenu = self.menubar.addMenu(self.tr('&Generate'))
-        self.generateNoiseAction = QtGui.QAction(self.tr('Noise'), self)
+        self.generateNoiseAction = QAction(self.tr('Noise'), self)
         self.generateMenu.addAction(self.generateNoiseAction)
-        self.connect(self.generateNoiseAction, QtCore.SIGNAL('triggered()'), self.onClickGenerateNoise)
-        self.generateSinusoidAction = QtGui.QAction(self.tr('Sinusoid'), self)
+        self.generateNoiseAction.triggered.connect(self.onClickGenerateNoise)
+        self.generateSinusoidAction = QAction(self.tr('Sinusoid'), self)
         self.generateMenu.addAction(self.generateSinusoidAction)
-        self.connect(self.generateSinusoidAction, QtCore.SIGNAL('triggered()'), self.onClickGenerateSinusoid)
-        self.generateHarmComplAction = QtGui.QAction(self.tr('Harmonic Complex'), self)
+        self.generateSinusoidAction.triggered.connect(self.onClickGenerateSinusoid)
+        self.generateHarmComplAction = QAction(self.tr('Harmonic Complex'), self)
         self.generateMenu.addAction(self.generateHarmComplAction)
-        self.connect(self.generateHarmComplAction, QtCore.SIGNAL('triggered()'), self.onClickGenerateHarmCompl)
+        self.generateHarmComplAction.triggered.connect(self.onClickGenerateHarmCompl)
         #PLOT MENU
         self.plotMenu = self.menubar.addMenu(self.tr('&Plot'))
-        self.plotWaveformAction = QtGui.QAction(self.tr('Waveform'), self)
+        self.plotWaveformAction = QAction(self.tr('Waveform'), self)
         self.plotMenu.addAction(self.plotWaveformAction)
-        self.connect(self.plotWaveformAction, QtCore.SIGNAL('triggered()'), self.onClickPlotButton)
+        self.plotWaveformAction.triggered.connect(self.onClickPlotButton)
         #
-        self.plotSpectrumAction = QtGui.QAction(self.tr('Spectrum'), self)
+        self.plotSpectrumAction = QAction(self.tr('Spectrum'), self)
         self.plotMenu.addAction(self.plotSpectrumAction)
-        self.connect(self.plotSpectrumAction, QtCore.SIGNAL('triggered()'), self.onClickSpectrumButton)
+        self.plotSpectrumAction.triggered.connect(self.onClickSpectrumButton)
         #
-        self.plotSpectrogramAction = QtGui.QAction(self.tr('Spectrogram'), self)
+        self.plotSpectrogramAction = QAction(self.tr('Spectrogram'), self)
         self.plotMenu.addAction(self.plotSpectrogramAction)
-        self.connect(self.plotSpectrogramAction, QtCore.SIGNAL('triggered()'), self.onClickSpectrogramButton)
+        self.plotSpectrogramAction.triggered.connect(self.onClickSpectrogramButton)
         #
-        self.plotAutocorrelationAction = QtGui.QAction(self.tr('Autocorrelation'), self)
+        self.plotAutocorrelationAction = QAction(self.tr('Autocorrelation'), self)
         self.plotMenu.addAction(self.plotAutocorrelationAction)
-        self.connect(self.plotAutocorrelationAction, QtCore.SIGNAL('triggered()'), self.onClickAutocorrelationButton)
+        self.plotAutocorrelationAction.triggered.connect(self.onClickAutocorrelationButton)
         #
-        self.plotAutocorrelogramAction = QtGui.QAction(self.tr('Autocorrelogram'), self)
+        self.plotAutocorrelogramAction = QAction(self.tr('Autocorrelogram'), self)
         self.plotMenu.addAction(self.plotAutocorrelogramAction)
-        self.connect(self.plotAutocorrelogramAction, QtCore.SIGNAL('triggered()'), self.onClickAutocorrelogramButton)
+        self.plotAutocorrelogramAction.triggered.connect(self.onClickAutocorrelogramButton)
 
         #HELP MENU
         self.helpMenu = self.menubar.addMenu(self.tr('&Help'))
 
-        self.onShowManualPdfAction = QtGui.QAction(self.tr('Manual'), self)
+        self.onShowManualPdfAction = QAction(self.tr('Manual'), self)
         self.helpMenu.addAction(self.onShowManualPdfAction)
-        self.connect(self.onShowManualPdfAction, QtCore.SIGNAL('triggered()'), onShowManualPdf)
+        self.onShowManualPdfAction.triggered.connect(onShowManualPdf)
 
         
-        self.onAboutAction = QtGui.QAction(self.tr('About pysoundanalyser'), self)
+        self.onAboutAction = QAction(self.tr('About pysoundanalyser'), self)
         self.helpMenu.addAction(self.onAboutAction)
-        self.connect(self.onAboutAction, QtCore.SIGNAL('triggered()'), self.onAbout)
+        self.onAboutAction.triggered.connect(self.onAbout)
 
         # create a vertical box layout widget
-        vbl = QtGui.QVBoxLayout()
+        vbl = QVBoxLayout()
         self.sndList = {}
      
         #LOAD BUTTON
-        loadButton = QtGui.QPushButton(self.tr("Load Sound"), self)
-        QtCore.QObject.connect(loadButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickLoadButton)
+        loadButton = QPushButton(self.tr("Load Sound"), self)
+        loadButton.clicked.connect(self.onClickLoadButton)
         #SAVE BUTTON
-        saveButton = QtGui.QPushButton(self.tr("Save As"), self)
-        QtCore.QObject.connect(saveButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickSaveButton)
+        saveButton = QPushButton(self.tr("Save As"), self)
+        saveButton.clicked.connect(self.onClickSaveButton)
 
         #CLONE BUTTON
-        cloneButton = QtGui.QPushButton(self.tr("Clone Sound"), self)
-        QtCore.QObject.connect(cloneButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickCloneButton)
+        cloneButton = QPushButton(self.tr("Clone Sound"), self)
+        cloneButton.clicked.connect(self.onClickCloneButton)
         
         #RENAME BUTTON
-        renameButton = QtGui.QPushButton(self.tr("Rename"), self)
-        QtCore.QObject.connect(renameButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickRenameButton)
+        renameButton = QPushButton(self.tr("Rename"), self)
+        renameButton.clicked.connect(self.onClickRenameButton)
         #REMOVE BUTTON
-        removeButton = QtGui.QPushButton(self.tr("Remove"), self)
-        QtCore.QObject.connect(removeButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickRemoveButton)
+        removeButton = QPushButton(self.tr("Remove"), self)
+        removeButton.clicked.connect(self.onClickRemoveButton)
         #REMOVE ALL
-        removeAllButton = QtGui.QPushButton(self.tr("Remove All"), self)
-        QtCore.QObject.connect(removeAllButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickRemoveAllButton)
+        removeAllButton = QPushButton(self.tr("Remove All"), self)
+        removeAllButton.clicked.connect(self.onClickRemoveAllButton)
         #PLAY BUTTON
-        playButton = QtGui.QPushButton(self.tr("Play"), self)
-        QtCore.QObject.connect(playButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickPlayButton)
+        playButton = QPushButton(self.tr("Play"), self)
+        playButton.clicked.connect(self.onClickPlayButton)
         #SPECTRUM BUTTON
-        spectrumButton = QtGui.QPushButton(self.tr("Spectrum"), self)
-        QtCore.QObject.connect(spectrumButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickSpectrumButton)
+        spectrumButton = QPushButton(self.tr("Spectrum"), self)
+        spectrumButton.clicked.connect(self.onClickSpectrumButton)
         #SPECTROGRAM BUTTON
-        spectrogramButton = QtGui.QPushButton(self.tr("Spectrogram"), self)
-        QtCore.QObject.connect(spectrogramButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickSpectrogramButton)
+        spectrogramButton = QPushButton(self.tr("Spectrogram"), self)
+        spectrogramButton.clicked.connect(self.onClickSpectrogramButton)
 
         #AUTOCORRELATION BUTTON
-        autocorrelationButton = QtGui.QPushButton(self.tr("Autocorrelation"), self)
-        QtCore.QObject.connect(autocorrelationButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickAutocorrelationButton)
+        autocorrelationButton = QPushButton(self.tr("Autocorrelation"), self)
+        autocorrelationButton.clicked.connect(self.onClickAutocorrelationButton)
         #AUTOCORRELOGRAM BUTTON
-        autocorrelogramButton = QtGui.QPushButton(self.tr("Autocorrelogram"), self)
-        QtCore.QObject.connect(autocorrelogramButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickAutocorrelogramButton)
+        autocorrelogramButton = QPushButton(self.tr("Autocorrelogram"), self)
+        autocorrelogramButton.clicked.connect(self.onClickAutocorrelogramButton)
         
         #PLOT BUTTON
-        plotButton = QtGui.QPushButton(self.tr("Plot Waveform"), self)
-        QtCore.QObject.connect(plotButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickPlotButton)
+        plotButton = QPushButton(self.tr("Plot Waveform"), self)
+        plotButton.clicked.connect( self.onClickPlotButton)
         #RESAMPLE BUTTON
-        resampleButton = QtGui.QPushButton(self.tr("Resample"), self)
-        QtCore.QObject.connect(resampleButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickResampleButton)
+        resampleButton = QPushButton(self.tr("Resample"), self)
+        resampleButton.clicked.connect(self.onClickResampleButton)
 
         #SCALE BUTTON
-        scaleButton = QtGui.QPushButton(self.tr("Scale"), self)
-        QtCore.QObject.connect(scaleButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickScaleButton)
+        scaleButton = QPushButton(self.tr("Scale"), self)
+        scaleButton.clicked.connect(self.onClickScaleButton)
 
         #LEVEL DIFF BUTTON
-        levelDiffButton = QtGui.QPushButton(self.tr("Level Difference"), self)
-        QtCore.QObject.connect(levelDiffButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickLevelDiffButton)
+        levelDiffButton = QPushButton(self.tr("Level Difference"), self)
+        levelDiffButton.clicked.connect(self.onClickLevelDiffButton)
 
         #CONCATENATE BUTTON
-        concatenateButton = QtGui.QPushButton(self.tr("Concatenate"), self)
-        QtCore.QObject.connect(concatenateButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickConcatenateButton)
+        concatenateButton = QPushButton(self.tr("Concatenate"), self)
+        concatenateButton.clicked.connect(self.onClickConcatenateButton)
         #CUT BUTTON
-        cutButton = QtGui.QPushButton(self.tr("Cut"), self)
-        QtCore.QObject.connect(cutButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickCutButton)
+        cutButton = QPushButton(self.tr("Cut"), self)
+        cutButton.clicked.connect(self.onClickCutButton)
         
         #MOVE DOWN BUTTON
-        moveDownButton = QtGui.QPushButton(self.tr("Move Down"), self)
-        QtCore.QObject.connect(moveDownButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickMoveDownButton)
+        moveDownButton = QPushButton(self.tr("Move Down"), self)
+        moveDownButton.clicked.connect(self.onClickMoveDownButton)
         #MOVE UP BUTTON
-        moveUpButton = QtGui.QPushButton(self.tr("Move Up"), self)
-        QtCore.QObject.connect(moveUpButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickMoveUpButton)
+        moveUpButton = QPushButton(self.tr("Move Up"), self)
+        moveUpButton.clicked.connect(self.onClickMoveUpButton)
 
 
 
-        self.sndTableWidget = QtGui.QTableWidget()
+        self.sndTableWidget = QTableWidget()
         #self.sndTableWidget.setSortingEnabled(True)
         self.sndTableWidget.setColumnCount(3)
-        self.sndTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.sndTableWidget.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.sndTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.sndTableWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         
         self.sndTableWidget.setHorizontalHeaderLabels([self.tr('Label'), self.tr('Channel'), 'id'])
         self.sndTableWidget.hideColumn(2)
-        self.connect(self.sndTableWidget, QtCore.SIGNAL("itemChanged(QTableWidgetItem*)"), self.tableItemChanged)
-        self.connect(self.sndTableWidget, QtCore.SIGNAL("cellDoubleClicked(int,int)"), self.onCellDoubleClicked)
+        #self.connect(self.sndTableWidget, QtCore.SIGNAL("itemChanged(QTableWidgetItem*)"), self.tableItemChanged)
+        #self.connect(self.sndTableWidget, QtCore.SIGNAL("cellDoubleClicked(int,int)"), self.onCellDoubleClicked)
+        self.sndTableWidget.itemChanged.connect(self.tableItemChanged)
+        self.sndTableWidget.cellDoubleClicked[int,int].connect(self.onCellDoubleClicked)
         vbl.addWidget(loadButton)
         vbl.addWidget(saveButton)
         vbl.addWidget(cloneButton)
@@ -310,18 +291,18 @@ class applicationWindow(QtGui.QMainWindow):
         
         vbl.addStretch(1)
 
-        vbl3 = QtGui.QVBoxLayout()
+        vbl3 = QVBoxLayout()
         vbl3.addWidget(moveUpButton)
         vbl3.addWidget(moveDownButton)
-        self.infoPane = QtGui.QLabel(self.tr('No Selection                                           '))
+        self.infoPane = QLabel(self.tr('No Selection                                           '))
         vbl3.addWidget(self.infoPane)
         vbl3.addStretch(1)
-        grid = QtGui.QGridLayout(self.main_widget)
+        grid = QGridLayout(self.main_widget)
         #grid.addLayout(vbl1, 1, 1)
         grid.addLayout(vbl, 1, 1)
         grid.addWidget(self.sndTableWidget,1,2)
         grid.addLayout(vbl3,1,3)
-        QtCore.QObject.connect(self.sndTableWidget, QtCore.SIGNAL('itemSelectionChanged()'), self.onSelectionChanged)
+        self.sndTableWidget.itemSelectionChanged.connect(self.onSelectionChanged)
         # set the focus on the main widget
         self.main_widget.setFocus()
         # set the central widget of MainWindow to main_widget
@@ -361,7 +342,7 @@ class applicationWindow(QtGui.QMainWindow):
         lastRow = self.sndTableWidget.rowCount() - 1
         rows = self.findSelectedItemRows()
         if len(rows) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one sound can be moved at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one sound can be moved at a time'))
         elif len(rows) < 1:
             pass
         else:
@@ -373,7 +354,7 @@ class applicationWindow(QtGui.QMainWindow):
     def onClickMoveUpButton(self):
         rows = self.findSelectedItemRows()
         if len(rows) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one sound can be moved at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one sound can be moved at a time'))
         elif len(rows) < 1:
             pass
         else:
@@ -386,7 +367,7 @@ class applicationWindow(QtGui.QMainWindow):
         
     def onClickLoadButton(self):
         #self.sndTableWidget.setSortingEnabled(False)
-        files = QtGui.QFileDialog.getOpenFileNames(self, self.tr("pysoundanalyser - Choose file to load"), '',self.tr("Supported Sound Files (*.wav);;All Files (*)"))
+        files = QFileDialog.getOpenFileNames(self, self.tr("pysoundanalyser - Choose file to load"), '',self.tr("Supported Sound Files (*.wav);;All Files (*)"))
         
         for f in range(len(files)):
             sndFile = files[f]
@@ -423,13 +404,13 @@ class applicationWindow(QtGui.QMainWindow):
                 self.sndList[tmp_id] = copy.copy(thisSnd)
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
-                newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                newItem = QTableWidgetItem(thisSnd['label'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                newItem = QTableWidgetItem(thisSnd['chan'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
                 
         
@@ -452,13 +433,13 @@ class applicationWindow(QtGui.QMainWindow):
                     self.sndList[tmp_id] = copy.copy(thisSnd)
                     currCount = len(self.sndList)
                     self.sndTableWidget.setRowCount(currCount)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                    newItem = QTableWidgetItem(thisSnd['label'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                    newItem = QTableWidgetItem(thisSnd['chan'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                    self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                    self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                     self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
        
@@ -485,7 +466,7 @@ class applicationWindow(QtGui.QMainWindow):
         #    fileValid = False
         #    msg = 'cannot open' + sndFile + ' only wav supported at the moment'
         if fileValid == False and msg != None:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), msg)
+            QMessageBox.warning(self, self.tr('Warning'), msg)
 
         return fileValid
     def loadWav(self,fName):
@@ -555,7 +536,7 @@ class applicationWindow(QtGui.QMainWindow):
         for i in range(len(ids)):
             selectedSound = ids[i]
             if self.sndList[selectedSound]['fs'] != sampRate:
-                QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Cannot write sounds with different sample rates'))
+                QMessageBox.warning(self, self.tr('Warning'), self.tr('Cannot write sounds with different sample rates'))
                 condition = False
                 break
          
@@ -585,7 +566,7 @@ class applicationWindow(QtGui.QMainWindow):
             else:
                 wave = snd
                 nChannels = 2
-            ftow = QtGui.QFileDialog.getSaveFileName(self, self.tr('Choose file to write'), self.tr('.{0}').format(dialog.suggestedExtension), self.tr('All Files (*)'))
+            ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write'), self.tr('.{0}').format(dialog.suggestedExtension), self.tr('All Files (*)'))
             if len(ftow) > 0:
                 if self.prm['pref']['wavmanager'] == 'scipy':
                     scipy_wavwrite(ftow, fs, int(dialog.encodingChooser.currentText()), wave)
@@ -615,13 +596,13 @@ class applicationWindow(QtGui.QMainWindow):
             self.sndList[tmp_id] = thisSnd
             currCount = len(self.sndList)
             self.sndTableWidget.setRowCount(currCount)
-            newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+            newItem = QTableWidgetItem(thisSnd['label'])
             #newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.sndTableWidget.setItem(currCount-1, 0, newItem)
-            newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+            newItem = QTableWidgetItem(thisSnd['chan'])
             #newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.sndTableWidget.setItem(currCount-1, 1, newItem)
-            self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+            self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
             self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
             #self.sndTableWidget.setSortingEnabled(True)
     def onClickPlotButton(self):
@@ -652,13 +633,13 @@ class applicationWindow(QtGui.QMainWindow):
     def onClickRenameButton(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one sound can be renamed at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one sound can be renamed at a time'))
         elif len(ids) < 1:
             pass
         else:
             selectedSound = ids[0]
             msg = self.tr('New name:')
-            text, ok = QtGui.QInputDialog.getText(self, self.tr('Input Dialog'), msg)
+            text, ok = QInputDialog.getText(self, self.tr('Input Dialog'), msg)
             if ok:
                     self.sndTableWidget.item(self.sndList[selectedSound]['qid'].row(), 0).setText(text)
                     self.sndList[selectedSound]['label'] = text
@@ -666,7 +647,7 @@ class applicationWindow(QtGui.QMainWindow):
     def onDoubleClickChannelCell(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only sound can be changed at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only sound can be changed at a time'))
         else:
             selectedSound = ids[0]
             multipleSelection = False
@@ -683,7 +664,7 @@ class applicationWindow(QtGui.QMainWindow):
         if len(ids) == 1:
             pass
         elif len(ids) > 2:
-            QtGui.QMessageBox.warning(self, self.tr('Level Difference'), self.tr('Only two sounds can be compared at a time'))
+            QMessageBox.warning(self, self.tr('Level Difference'), self.tr('Only two sounds can be compared at a time'))
         else:
             snd1 = self.sndList[ids[0]]
             snd2 = self.sndList[ids[1]]
@@ -695,12 +676,12 @@ class applicationWindow(QtGui.QMainWindow):
             elif dbDiff < 0:
                 w = ''
 
-            QtGui.QMessageBox.information(self, self.tr('Level Difference'), self.tr('{0} is {1} {2} dB than {3}').format(snd1['label'], w, self.currLocale.toString(dbDiff), snd2['label']))
+            QMessageBox.information(self, self.tr('Level Difference'), self.tr('{0} is {1} {2} dB than {3}').format(snd1['label'], w, self.currLocale.toString(dbDiff), snd2['label']))
 
 
     def onClickScaleButton(self):
         ids = self.findSelectedItemIds()
-        val, ok = QtGui.QInputDialog.getDouble(self, self.tr('Scale Level'), self.tr('Add or subtract decibels'))
+        val, ok = QInputDialog.getDouble(self, self.tr('Scale Level'), self.tr('Add or subtract decibels'))
         if ok:
             for i in range(len(ids)):
                 selectedSound = ids[i]
@@ -730,7 +711,7 @@ class applicationWindow(QtGui.QMainWindow):
             selectedSound = ids[i]
             rmsVals.append(sndlib.getRms(self.sndList[selectedSound]['wave']))
             msg = self.tr('{0} {1} : {2} \n').format(msg, self.sndList[selectedSound]['label'], self.currLocale.toString(rmsVals[i])) 
-        QtGui.QMessageBox.information(self, self.tr('Root Mean Square'), msg)
+        QMessageBox.information(self, self.tr('Root Mean Square'), msg)
       
         
        
@@ -742,7 +723,7 @@ class applicationWindow(QtGui.QMainWindow):
         for i in range(len(ids)):
             selectedSound = ids[i]
             if self.sndList[selectedSound]['fs'] != sampRate:
-                QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Cannot play sounds with different sample rates'))
+                QMessageBox.warning(self, self.tr('Warning'), self.tr('Cannot play sounds with different sample rates'))
                 condition = False
                 break
             nSampList.append(self.sndList[selectedSound]['nSamples'])
@@ -828,13 +809,13 @@ class applicationWindow(QtGui.QMainWindow):
         if len(ids) == 1:
             pass
         elif len(ids) > 2:
-            QtGui.QMessageBox.warning(self, self.tr('Concatenate Sounds'), self.tr('Only two sounds can be concatenated at a time'))
+            QMessageBox.warning(self, self.tr('Concatenate Sounds'), self.tr('Only two sounds can be concatenated at a time'))
         else:
             snd1 = self.sndList[ids[0]]
             snd2 = self.sndList[ids[1]]
 
             if snd1['fs'] != snd2['fs']:
-                QtGui.QMessageBox.warning(self, self.tr('Concatenate Sounds'), self.tr('Cannot concatenate sounds with different sampling rates'))
+                QMessageBox.warning(self, self.tr('Concatenate Sounds'), self.tr('Cannot concatenate sounds with different sampling rates'))
             else:
                 sampRate = snd1['fs']
                 dialog = concatenateDialog(self, snd1, snd2)
@@ -864,13 +845,13 @@ class applicationWindow(QtGui.QMainWindow):
                      self.sndList[tmp_id] = thisSnd
                      currCount = len(self.sndList)
                      self.sndTableWidget.setRowCount(currCount)
-                     newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                     newItem = QTableWidgetItem(thisSnd['label'])
                      
                      self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                     newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                     newItem = QTableWidgetItem(thisSnd['chan'])
                      
                      self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                     self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                     self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                      self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
                      
 
@@ -894,9 +875,9 @@ class applicationWindow(QtGui.QMainWindow):
                     endCut = int(round(endCut/1000*fs))
 
                 if startCut < 0 or endCut > nSamples:
-                    QtGui.QMessageBox.warning(self, self.tr('Cut Sound'), self.tr('Values out of range'))
+                    QMessageBox.warning(self, self.tr('Cut Sound'), self.tr('Values out of range'))
                 elif startCut == 0 and endCut == nSamples:
-                    QtGui.QMessageBox.warning(self, self.tr('Cut Sound'), self.tr('Cannot cut entire sound, please use remove button'))
+                    QMessageBox.warning(self, self.tr('Cut Sound'), self.tr('Cannot cut entire sound, please use remove button'))
                 else:
                     snd["wave"] = cutSampleRegion(snd["wave"], startCut, endCut)
                     snd['nSamples'] = len(snd['wave'])
@@ -987,13 +968,13 @@ class applicationWindow(QtGui.QMainWindow):
                 self.sndList[tmp_id] = copy.copy(thisSnd)
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
-                newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                newItem = QTableWidgetItem(thisSnd['label'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                newItem = QTableWidgetItem(thisSnd['chan'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
             if ear == 'Both':
@@ -1020,13 +1001,13 @@ class applicationWindow(QtGui.QMainWindow):
                     self.sndList[tmp_id] = copy.copy(thisSnd)
                     currCount = len(self.sndList)
                     self.sndTableWidget.setRowCount(currCount)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                    newItem = QTableWidgetItem(thisSnd['label'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                    newItem = QTableWidgetItem(thisSnd['chan'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                    self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                    self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                     self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
            
     def onClickGenerateSinusoid(self):
@@ -1083,13 +1064,13 @@ class applicationWindow(QtGui.QMainWindow):
                 self.sndList[tmp_id] = copy.copy(thisSnd)
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
-                newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                newItem = QTableWidgetItem(thisSnd['label'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                newItem = QTableWidgetItem(thisSnd['chan'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
             if ear == 'Both':
@@ -1115,13 +1096,13 @@ class applicationWindow(QtGui.QMainWindow):
                     self.sndList[tmp_id] = copy.copy(thisSnd)
                     currCount = len(self.sndList)
                     self.sndTableWidget.setRowCount(currCount)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                    newItem = QTableWidgetItem(thisSnd['label'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                    newItem = QTableWidgetItem(thisSnd['chan'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                    self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                    self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                     self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
     def onClickGenerateHarmCompl(self):
@@ -1241,13 +1222,13 @@ class applicationWindow(QtGui.QMainWindow):
                 self.sndList[tmp_id] = copy.copy(thisSnd)
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
-                newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                newItem = QTableWidgetItem(thisSnd['label'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                newItem = QTableWidgetItem(thisSnd['chan'])
                 newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
             if channel in ['Both', 'Odd Right', 'Odd Left']:
@@ -1273,18 +1254,18 @@ class applicationWindow(QtGui.QMainWindow):
                     self.sndList[tmp_id] = copy.copy(thisSnd)
                     currCount = len(self.sndList)
                     self.sndTableWidget.setRowCount(currCount)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['label'])
+                    newItem = QTableWidgetItem(thisSnd['label'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                    newItem = QtGui.QTableWidgetItem(thisSnd['chan'])
+                    newItem = QTableWidgetItem(thisSnd['chan'])
                     newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                    self.sndList[tmp_id]['qid'] = QtGui.QTableWidgetItem(tmp_id)
+                    self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                     self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
            
  
     def onAbout(self):
-        QtGui.QMessageBox.about(self, self.tr("About pysoundanalyser"),
+        QMessageBox.about(self, self.tr("About pysoundanalyser"),
                                 self.tr("""<b>Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
                                 - build date: {1} <br>
@@ -1312,7 +1293,7 @@ def main(argv):
     prm['data'] = {}
     #prm['data'] = {}; prm['prefs'] = {}
     # create the GUI application
-    qApp = QtGui.QApplication(sys.argv)
+    qApp = QApplication(sys.argv)
     sys.excepthook = excepthook
     #first read the locale settings
     locale = QtCore.QLocale().system().name() #returns a string such as en_US
@@ -1345,10 +1326,10 @@ def main(argv):
             prm['data']['currentLocale'].setNumberOptions(prm['data']['currentLocale'].OmitGroupSeparator | prm['data']['currentLocale'].RejectGroupSeparator)
 
     
-    qApp.setWindowIcon(QtGui.QIcon(":/johnny_automatic_crashing_wave.svg"))
+    qApp.setWindowIcon(QIcon(":/johnny_automatic_crashing_wave.svg"))
     ## Look and feel changed to CleanLooks
-    #QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("QtCurve"))
-    QtGui.QApplication.setPalette(QtGui.QApplication.style().standardPalette())
+    #QApplication.setStyle(QStyleFactory.create("QtCurve"))
+    QApplication.setPalette(QApplication.style().standardPalette())
     #qApp.currentLocale = locale
     # instantiate the ApplicationWindow widget
     qApp.setApplicationName('pysoundanalyser')

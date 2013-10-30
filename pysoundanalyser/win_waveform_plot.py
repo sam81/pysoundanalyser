@@ -17,6 +17,7 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QAction, QInputDialog
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure
@@ -62,11 +63,11 @@ class waveformPlot(genericPlot):
         self.yminWidget.setText(self.currLocale.toString(self.axes.get_ylim()[0])) 
         self.ymaxWidget.setText(self.currLocale.toString(self.axes.get_ylim()[1])) 
     def createAdditionalMenus(self):
-        self.editLineWidthAction = QtGui.QAction(self.tr('Line Width'), self)
-        self.connect(self.editLineWidthAction, QtCore.SIGNAL('triggered()'), self.onChangeLineWidth)
+        self.editLineWidthAction = QAction(self.tr('Line Width'), self)
+        self.editLineWidthAction.triggered.connect(self.onChangeLineWidth)
 
-        self.editLineColorAction = QtGui.QAction(self.tr('Line Color'), self)
-        self.connect(self.editLineColorAction, QtCore.SIGNAL('triggered()'), self.onChangeLineColor)
+        self.editLineColorAction = QAction(self.tr('Line Color'), self)
+        self.editLineColorAction.triggered.connect(self.onChangeLineColor)
         
     def defineMenusLayout(self):
         self.linePropertiesMenu.addAction(self.editLineWidthAction)
@@ -88,14 +89,14 @@ class waveformPlot(genericPlot):
         self.labelPropertiesMenu.addAction(self.editLabelFontAction)
         self.labelPropertiesMenu.addAction(self.editTickLabelFontAction)
     def onChangeLineColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.lineCol = pltColorFromQColor(col)
             self.line.set_color(self.lineCol)
             self.canvas.draw()
     def onChangeLineWidth(self):
         msg = self.tr('Line Width:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.lineWidth, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.lineWidth, 0)
         if ok:
             self.lineWidth = value
             self.line.set_linewidth(self.lineWidth)

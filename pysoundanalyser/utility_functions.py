@@ -1,4 +1,5 @@
-#   Copyright (C) 2010-2012 Samuele Carcagno <sam.carcagno@gmail.com>
+# -*- coding: utf-8 -*-
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -21,6 +22,7 @@ from numpy.fft import rfft, irfft, fft, ifft
 from scipy.signal import firwin2
 import copy
 import pysoundanalyser.pysndlib as sndlib
+
 def pltColorFromQColor(qcolor):
     col = (qcolor.red()/255., qcolor.green()/255., qcolor.blue()/255.)
     return col

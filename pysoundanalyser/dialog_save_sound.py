@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2011 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -16,47 +16,45 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QMessageBox
 
-class saveSoundDialog(QtGui.QDialog):
+class saveSoundDialog(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
-        grid = QtGui.QGridLayout()
+        QDialog.__init__(self, parent)
+        grid = QGridLayout()
         n = 0
         
         #self.fileToWrite = None
         self.guessFileExtension = True
-        formatLabel = QtGui.QLabel(self.tr('File Format: '))
+        formatLabel = QLabel(self.tr('File Format: '))
         grid.addWidget(formatLabel, n, 0)
-        self.formatChooser = QtGui.QComboBox()
+        self.formatChooser = QComboBox()
         self.formatChooser.addItems(["wav"])#available_file_formats())
         self.formatChooser.setCurrentIndex(0)
         grid.addWidget(self.formatChooser, n, 1)
-        self.connect(self.formatChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onFileFormatChange)
+        self.formatChooser.currentIndexChanged[int].connect(self.onFileFormatChange)
         self.suggestedExtension = str(self.formatChooser.currentText())
 
-        encodingLabel = QtGui.QLabel(self.tr('Bits: '))
+        encodingLabel = QLabel(self.tr('Bits: '))
         grid.addWidget(encodingLabel, n, 2)
-        self.encodingChooser = QtGui.QComboBox()
+        self.encodingChooser = QComboBox()
         self.encodingChooser.addItems(["16", "24", "32"])#available_encodings(str(self.formatChooser.currentText())))
         self.encodingChooser.setCurrentIndex(0)
         grid.addWidget(self.encodingChooser, n, 3)
 
         n = n+1
-        channelLabel = QtGui.QLabel(self.tr('Channel: '))
+        channelLabel = QLabel(self.tr('Channel: '))
         grid.addWidget(channelLabel, n, 0)
-        self.channelChooser = QtGui.QComboBox()
+        self.channelChooser = QComboBox()
         self.channelChooser.addItems([self.tr('Stereo'), self.tr('Mono')])
         self.channelChooser.setCurrentIndex(0)
         grid.addWidget(self.channelChooser, n, 1)
         
         n = n+1
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                     QtGui.QDialogButtonBox.Cancel)
-        
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                     QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
         grid.addWidget(buttonBox, n, 2)
         self.setLayout(grid)
         self.setWindowTitle(self.tr("Save Sound Options"))

@@ -1,4 +1,5 @@
-#   Copyright (C) 2010-2011 Samuele Carcagno <sam.carcagno@gmail.com>
+# -*- coding: utf-8 -*- 
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -16,54 +17,50 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QMessageBox
 
-class resampleDialog(QtGui.QDialog):
+class resampleDialog(QDialog):
     def __init__(self, parent, multipleSelection, currSampRate):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
 
         self.currLocale = self.parent().prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
-        grid = QtGui.QGridLayout()
+        grid = QGridLayout()
         n = 0
         if multipleSelection == False:
-            currSampRateLabel = QtGui.QLabel(self.currLocale.toString(currSampRate)) 
+            currSampRateLabel = QLabel(self.currLocale.toString(currSampRate)) 
             grid.addWidget(currSampRateLabel, n, 0)
             n = n+1
-
-            
-        newSampRateLabel = QtGui.QLabel(self.tr('New Sampling Rate: '))
+        newSampRateLabel = QLabel(self.tr('New Sampling Rate: '))
         grid.addWidget(newSampRateLabel, n, 0)
-        self.newSampRateWidget = QtGui.QLineEdit('48000')
-        self.newSampRateWidget.setValidator(QtGui.QIntValidator(self))
+        self.newSampRateWidget = QLineEdit('48000')
+        self.newSampRateWidget.setValidator(QIntValidator(self))
         grid.addWidget(self.newSampRateWidget, n, 1)
-        self.connect(self.newSampRateWidget, QtCore.SIGNAL('editingFinished()'), self.onSampRateChanged)
+        self.newSampRateWidget.editingFinished.connect(self.onSampRateChanged)
         n = n+1
 
-        convertorLabel = QtGui.QLabel(self.tr('Resampling Algorithm: '))
+        convertorLabel = QLabel(self.tr('Resampling Algorithm: '))
         grid.addWidget(convertorLabel, n, 0)
-        self.convertorChooser = QtGui.QComboBox()
+        self.convertorChooser = QComboBox()
         self.convertorChooser.addItems(['fourier'])
         self.convertorChooser.setCurrentIndex(0)
         grid.addWidget(self.convertorChooser, n, 1)
 
         n = n+1
 
-        winLabel = QtGui.QLabel(self.tr('Window Type: '))
+        winLabel = QLabel(self.tr('Window Type: '))
         grid.addWidget(winLabel, n, 0)
-        self.winChooser = QtGui.QComboBox()
+        self.winChooser = QComboBox()
         self.winChooser.addItems(self.parent().prm['data']['available_windows'])
         self.winChooser.setCurrentIndex(self.winChooser.findText(self.parent().prm['pref']['smoothingWindow']))
         grid.addWidget(self.winChooser, n, 1)
 
         n = n+1
         
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                     QtGui.QDialogButtonBox.Cancel)
-        
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                     QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
         grid.addWidget(buttonBox, n, 1)
         self.setLayout(grid)
         self.setWindowTitle(self.tr("Resample"))
@@ -71,6 +68,6 @@ class resampleDialog(QtGui.QDialog):
     def onSampRateChanged(self):
         newSampRate = int(self.newSampRateWidget.text())
         if newSampRate < 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('New sampling rate too small'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('New sampling rate too small'))
         else:
             self.newSampRate = newSampRate

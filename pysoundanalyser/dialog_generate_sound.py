@@ -18,36 +18,35 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import SIGNAL, Qt, QEvent, QSize
-from PyQt4.QtGui import QApplication, QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QCheckBox, QFontMetrics
-class generateSoundDialog(QtGui.QDialog):
+from PyQt4.QtGui import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
+
+class generateSoundDialog(QDialog):
     def __init__(self, parent, sndType):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.prm = parent.prm
         self.currLocale = self.parent().prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
-        #screen = QtGui.QDesktopWidget().screenGeometry()
-        #self.setGeometry(150, 450, int((2./3)*screen.width()), int((7./10)*screen.height()))
-        self.vbl = QtGui.QVBoxLayout()
-        self.hbl = QtGui.QHBoxLayout()
+        self.vbl = QVBoxLayout()
+        self.hbl = QHBoxLayout()
         #we need two separate grids for the resize to work properly when hiding widgets
-        self.grid_0 = QtGui.QGridLayout()
-        self.grid_1 = QtGui.QGridLayout()
+        self.grid_0 = QGridLayout()
+        self.grid_1 = QGridLayout()
 
         if sndType == "Harmonic Complex":
             self.execString = "harm_compl"
 
         self.nrows = 0
         #SOUND LABEL
-        soundLabelLabel = QtGui.QLabel(self.tr('Sound Label: '))
-        self.soundLabelWidget = QtGui.QLineEdit(self.tr('Harmonic Complex'))
+        soundLabelLabel = QLabel(self.tr('Sound Label: '))
+        self.soundLabelWidget = QLineEdit(self.tr('Harmonic Complex'))
         self.grid_0.addWidget(soundLabelLabel, self.nrows, 0)
         self.grid_0.addWidget(self.soundLabelWidget, self.nrows, 1)
         self.nrows = self.nrows + 1
         #SAMPLING RATE
-        sampRateLabel = QtGui.QLabel(self.tr('Sampling Rate'))
+        sampRateLabel = QLabel(self.tr('Sampling Rate'))
         defaultSampRate = 48000
-        self.sampRateWidget = QtGui.QLineEdit(self.currLocale.toString(defaultSampRate)) 
-        self.sampRateWidget.setValidator(QtGui.QIntValidator(self))
+        self.sampRateWidget = QLineEdit(self.currLocale.toString(defaultSampRate)) 
+        self.sampRateWidget.setValidator(QIntValidator(self))
         self.grid_0.addWidget(sampRateLabel, self.nrows, 0)
         self.grid_0.addWidget(self.sampRateWidget, self.nrows, 1)
         self.nrows = self.nrows + 1
@@ -55,12 +54,10 @@ class generateSoundDialog(QtGui.QDialog):
         methodToCall = getattr(self, "select_default_parameters_" + self.execString)
         self.sndPrm = methodToCall()
         self.setDefaultParameters()
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                           QtGui.QDialogButtonBox.Cancel)
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                           QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
 
         self.grid_0.setAlignment(Qt.AlignTop)
         self.grid_1.setAlignment(Qt.AlignTop)
@@ -69,9 +66,9 @@ class generateSoundDialog(QtGui.QDialog):
         self.vbl.addLayout(self.hbl)
         self.vbl.addWidget(buttonBox)
         self.setLayout(self.vbl)
-        self.cw_scrollarea = QtGui.QScrollArea()
+        self.cw_scrollarea = QScrollArea()
         self.cw_scrollarea.setWidget(self)
-        self.layout().setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        self.layout().setSizeConstraint(QLayout.SetFixedSize)
         self.setNewSize()
         
         self.cw_scrollarea.show()
@@ -402,7 +399,7 @@ class generateSoundDialog(QtGui.QDialog):
             self.grid_0.addWidget(self.fieldLabel[f], f+fshift, fieldLabelColumn)
             self.field[f] = QLineEdit()
             self.field[f].setText(str(self.sndPrm['field'][f]))
-            self.field[f].setValidator(QtGui.QDoubleValidator(self))
+            self.field[f].setValidator(QDoubleValidator(self))
             self.grid_0.addWidget(self.field[f], f+fshift, fieldColumn)
          
         self.chooser = list(range(self.sndPrm['nChoosers']))
@@ -417,7 +414,7 @@ class generateSoundDialog(QtGui.QDialog):
             self.chooser[c].setCurrentIndex(self.chooserOptions[c].index(self.sndPrm['chooser'][c]))
             self.grid_1.addWidget(self.chooser[c], c, chooserColumn)
         for c in range(len(self.chooser)):
-            self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
+            self.chooser[c].activated[str].connect(self.onChooserChange)
             self.onChooserChange()
         self.sndPrm['nFields'] = len(self.field)
         self.sndPrm['nChoosers'] = len(self.chooser)

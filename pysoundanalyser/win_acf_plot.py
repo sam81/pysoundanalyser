@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2011 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -22,7 +22,9 @@ try:
     from PyQt4.QtCore import QString  
 except ImportError:  
     # we are using Python3 so QString is not defined  
-    QString = str  
+    QString = str
+from PyQt4.QtGui import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
+
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 from matplotlib.backend_bases import NavigationToolbar2
@@ -58,13 +60,13 @@ class acfPlot(genericPlot):
         self.canvas.draw()
         self.setWindowTitle(self.sound['label'] + ' [' + self.sound['chan'] +']')
     def createAdditionalControlWidgets(self):
-        self.windowChooser = QtGui.QComboBox()
+        self.windowChooser = QComboBox()
         self.windowChooser.addItems(self.prm['data']['available_windows'])
         self.windowChooser.setCurrentIndex(self.windowChooser.findText(self.prm['pref']['smoothingWindow']))
-        self.windowChooserLabel = QtGui.QLabel(self.tr('Window:'))
+        self.windowChooserLabel = QLabel(self.tr('Window:'))
         self.gridBox.addWidget(self.windowChooserLabel, 0, 4)
         self.gridBox.addWidget(self.windowChooser, 0, 5)
-        self.connect(self.windowChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onChangeWindowFunction) 
+        self.windowChooser.currentIndexChanged[int].connect(self.onChangeWindowFunction) 
     def getData(self):
         maxLag = self.sound['nSamples']/float(self.sound['fs'])
         (lags, acf) = getAcf(self.sound['wave'], self.sound['fs'], maxLag, True, self.win)
@@ -97,11 +99,11 @@ class acfPlot(genericPlot):
         self.canvas.draw()
         
     def createAdditionalMenus(self):
-        self.editLineWidthAction = QtGui.QAction(self.tr('Line Width'), self)
-        self.connect(self.editLineWidthAction, QtCore.SIGNAL('triggered()'), self.onChangeLineWidth)
+        self.editLineWidthAction = QAction(self.tr('Line Width'), self)
+        self.editLineWidthAction.triggered.connect(self.onChangeLineWidth)
 
-        self.editLineColorAction = QtGui.QAction(self.tr('Line Color'), self)
-        self.connect(self.editLineColorAction, QtCore.SIGNAL('triggered()'), self.onChangeLineColor)
+        self.editLineColorAction = QAction(self.tr('Line Color'), self)
+        self.editLineColorAction.triggered.connect(self.onChangeLineColor)
         
     def defineMenusLayout(self):
         self.linePropertiesMenu.addAction(self.editLineWidthAction)
@@ -123,14 +125,14 @@ class acfPlot(genericPlot):
         self.labelPropertiesMenu.addAction(self.editLabelFontAction)
         self.labelPropertiesMenu.addAction(self.editTickLabelFontAction)
     def onChangeLineColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.lineCol = pltColorFromQColor(col)
             self.line.set_color(self.lineCol)
             self.canvas.draw()
     def onChangeLineWidth(self):
         msg = self.tr('Line Width:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.lineWidth, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.lineWidth, 0)
         if ok:
             self.lineWidth = value
             self.line.set_linewidth(self.lineWidth)

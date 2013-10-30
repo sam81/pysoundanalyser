@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from scipy.io import wavfile
 from numpy import int16, int32

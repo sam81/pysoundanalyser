@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-#   Copyright (C) 2010-2011 Samuele Carcagno <sam.carcagno@gmail.com>
+# -*- coding: utf-8 -*-
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -14,42 +14,44 @@
 
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QLocale
+from PyQt4.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import copy, pickle
 
 
-class preferencesDialog(QtGui.QDialog):
+class preferencesDialog(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.tmpPref = {}
         self.tmpPref['pref'] = copy.deepcopy(self.parent().prm['pref'])
         self.currLocale = self.parent().prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         
-        self.tabWidget = QtGui.QTabWidget()
-        self.connect(self.tabWidget, QtCore.SIGNAL("currentChanged(QWidget*)"), self.tabChanged)
-        self.appPrefWidget = QtGui.QWidget()
-        self.plotPrefWidget = QtGui.QWidget()
-        self.signalPrefWidget = QtGui.QWidget()
-        self.soundPrefWidget = QtGui.QWidget()
+        self.tabWidget = QTabWidget()
+        self.tabWidget.currentChanged.connect(self.tabChanged)
+        self.appPrefWidget = QWidget()
+        self.plotPrefWidget = QWidget()
+        self.signalPrefWidget = QWidget()
+        self.soundPrefWidget = QWidget()
 
         
         #APP PREF
-        appPrefGrid = QtGui.QGridLayout()
+        appPrefGrid = QGridLayout()
         n = 0
-        self.languageChooserLabel = QtGui.QLabel(self.tr('Language (requires restart):'))
+        self.languageChooserLabel = QLabel(self.tr('Language (requires restart):'))
         appPrefGrid.addWidget(self.languageChooserLabel, n, 0)
-        self.languageChooser = QtGui.QComboBox()
+        self.languageChooser = QComboBox()
         self.languageChooser.addItems(self.parent().prm['data']['available_languages'])
         self.languageChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['language']))
-        self.connect(self.languageChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onLanguageChooserChange)
+        self.languageChooser.currentIndexChanged[int].connect(self.onLanguageChooserChange)
         appPrefGrid.addWidget(self.languageChooser, n, 1)
         n = n+1
-        self.countryChooserLabel = QtGui.QLabel(self.tr('Country (requires restart):'))
+        self.countryChooserLabel = QLabel(self.tr('Country (requires restart):'))
         appPrefGrid.addWidget(self.countryChooserLabel, n, 0)
-        self.countryChooser = QtGui.QComboBox()
+        self.countryChooser = QComboBox()
         self.countryChooser.addItems(self.parent().prm['data']['available_countries'][self.tmpPref['pref']['language']])
         self.countryChooser.setCurrentIndex(self.countryChooser.findText(self.tmpPref['pref']['country']))
         appPrefGrid.addWidget(self.countryChooser, n, 1)
@@ -57,74 +59,71 @@ class preferencesDialog(QtGui.QDialog):
         self.appPrefWidget.setLayout(appPrefGrid)
         
         #PLOT PREF
-        plotPrefGrid = QtGui.QGridLayout()
+        plotPrefGrid = QGridLayout()
         n = 0
 
 
         #LINE COLOUR
         self.lineColor1 = self.tmpPref['pref']['lineColor1']
-        self.lineColorButton = QtGui.QPushButton(self.tr("Line Color"), self)
-        QtCore.QObject.connect(self.lineColorButton,
-                               QtCore.SIGNAL('clicked()'), self.onChangeLineColor)
+        self.lineColorButton = QPushButton(self.tr("Line Color"), self)
+        self.lineColorButton.clicked.connect(self.onChangeLineColor)
         plotPrefGrid.addWidget(self.lineColorButton, n, 0)
 
-        self.lineColorSquare = QtGui.QWidget(self)
+        self.lineColorSquare = QWidget(self)
         self.lineColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.lineColor1.name())
         plotPrefGrid.addWidget(self.lineColorSquare, n, 1)
        
         n = n+1
         
         self.backgroundColor = self.tmpPref['pref']['backgroundColor']
-        self.backgroundColorButton = QtGui.QPushButton(self.tr("Background Color"), self)
-        QtCore.QObject.connect(self.backgroundColorButton,
-                               QtCore.SIGNAL('clicked()'), self.onChangeBackgroundColor)
+        self.backgroundColorButton = QPushButton(self.tr("Background Color"), self)
+        self.backgroundColorButton.clicked.connect(self.onChangeBackgroundColor)
         plotPrefGrid.addWidget(self.backgroundColorButton, n, 0)
 
-        self.backgroundColorSquare = QtGui.QWidget(self)
+        self.backgroundColorSquare = QWidget(self)
         self.backgroundColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.backgroundColor.name())
         plotPrefGrid.addWidget(self.backgroundColorSquare, n, 1)
 
         n = n+1
         self.canvasColor = self.tmpPref['pref']['canvasColor']
-        self.canvasColorButton = QtGui.QPushButton(self.tr("Canvas Color"), self)
-        QtCore.QObject.connect(self.canvasColorButton,
-                               QtCore.SIGNAL('clicked()'), self.onChangeCanvasColor)
+        self.canvasColorButton = QPushButton(self.tr("Canvas Color"), self)
+        self.canvasColorButton.clicked.connect(self.onChangeCanvasColor)
         plotPrefGrid.addWidget(self.canvasColorButton, n, 0)
 
-        self.canvasColorSquare = QtGui.QWidget(self)
+        self.canvasColorSquare = QWidget(self)
         self.canvasColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.canvasColor.name())
         plotPrefGrid.addWidget(self.canvasColorSquare, n, 1)
         
         n = n+1
-        self.dpiLabel = QtGui.QLabel(self.tr('DPI - Resolution:'))
+        self.dpiLabel = QLabel(self.tr('DPI - Resolution:'))
         plotPrefGrid.addWidget(self.dpiLabel, n, 0)
-        self.dpiWidget = QtGui.QLineEdit(str(self.tmpPref['pref']['dpi']))
+        self.dpiWidget = QLineEdit(str(self.tmpPref['pref']['dpi']))
         plotPrefGrid.addWidget(self.dpiWidget, n, 1)
-        self.dpiWidget.setValidator(QtGui.QIntValidator(self))
-        self.connect(self.dpiWidget, QtCore.SIGNAL('editingFinished()'), self.ondpiChange)
+        self.dpiWidget.setValidator(QIntValidator(self))
+        self.dpiWidget.editingFinished.connect(self.ondpiChange)
         
         n = n+1
-        self.cmapChooserLabel = QtGui.QLabel(self.tr('Color Map:'))
+        self.cmapChooserLabel = QLabel(self.tr('Color Map:'))
         plotPrefGrid.addWidget(self.cmapChooserLabel, n, 0)
-        self.cmapChooser = QtGui.QComboBox()
+        self.cmapChooser = QComboBox()
         self.cmapChooser.addItems(self.parent().prm['data']['available_colormaps'])
         self.cmapChooser.setCurrentIndex(self.cmapChooser.findText(self.tmpPref['pref']['colormap']))
         plotPrefGrid.addWidget(self.cmapChooser, n, 1)
         n = n+1
         
-        self.gridOn = QtGui.QCheckBox(self.tr('Grid'))
+        self.gridOn = QCheckBox(self.tr('Grid'))
         self.gridOn.setChecked(self.tmpPref['pref']['grid'])
         plotPrefGrid.addWidget(self.gridOn, n, 1)
 
         self.plotPrefWidget.setLayout(plotPrefGrid)
         
         #SIGNAL PREF
-        signalPrefGrid = QtGui.QGridLayout()
+        signalPrefGrid = QGridLayout()
         n = 0
-        self.windowChooser = QtGui.QComboBox()
+        self.windowChooser = QComboBox()
         self.windowChooser.addItems(self.parent().prm['data']['available_windows'])
         self.windowChooser.setCurrentIndex(self.windowChooser.findText(self.tmpPref['pref']['smoothingWindow']))
-        self.windowChooserLabel = QtGui.QLabel(self.tr('Window:'))
+        self.windowChooserLabel = QLabel(self.tr('Window:'))
         signalPrefGrid.addWidget(self.windowChooserLabel, 0, 0)
         signalPrefGrid.addWidget(self.windowChooser, 0, 1)
 
@@ -132,10 +131,10 @@ class preferencesDialog(QtGui.QDialog):
         self.signalPrefWidget.setLayout(signalPrefGrid)
         
         #SOUND PREF
-        soundPrefGrid = QtGui.QGridLayout()
+        soundPrefGrid = QGridLayout()
         n = 0
-        self.wavmanagerLabel = QtGui.QLabel(self.tr('Wav Manager (requires restart):'))
-        self.wavmanagerChooser = QtGui.QComboBox()
+        self.wavmanagerLabel = QLabel(self.tr('Wav Manager (requires restart):'))
+        self.wavmanagerChooser = QComboBox()
         self.wavmanagerChooser.addItems(["scipy"])
         self.wavmanagerChooser.setCurrentIndex(self.wavmanagerChooser.findText(self.tmpPref['pref']['wavmanager']))
         soundPrefGrid.addWidget(self.wavmanagerLabel, n, 0)
@@ -143,27 +142,26 @@ class preferencesDialog(QtGui.QDialog):
 
         n = n+1
         
-        self.playChooser = QtGui.QComboBox()
+        self.playChooser = QComboBox()
         self.playChooser.addItems(self.parent().prm['data']['available_play_commands'])
         self.playChooser.setCurrentIndex(self.playChooser.findText(self.tmpPref['pref']['playCommandType']))
-        self.connect(self.playChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onPlayChooserChange)
-        self.playChooserLabel = QtGui.QLabel(self.tr('Play Command:'))
+        self.playChooser.currentIndexChanged[int].connect(self.onPlayChooserChange)
+        self.playChooserLabel = QLabel(self.tr('Play Command:'))
         soundPrefGrid.addWidget(self.playChooserLabel, n, 0)
         soundPrefGrid.addWidget(self.playChooser, n, 1)
 
         n = n+1
-        self.playCommandLabel = QtGui.QLabel(self.tr('Command:'))
+        self.playCommandLabel = QLabel(self.tr('Command:'))
         soundPrefGrid.addWidget(self.playCommandLabel, n, 0)
-        self.playCommandWidget = QtGui.QLineEdit(str(self.tmpPref['pref']['playCommand']))
+        self.playCommandWidget = QLineEdit(str(self.tmpPref['pref']['playCommand']))
         self.playCommandWidget.setReadOnly(True)
         soundPrefGrid.addWidget(self.playCommandWidget, n, 1)
-        #self.connect(self.playCommandWidget, QtCore.SIGNAL('editingFinished()'), self.playCommandChange)
 
         n = n+1
-        self.maxLevelLabel = QtGui.QLabel(self.tr('Max Level:'))
+        self.maxLevelLabel = QLabel(self.tr('Max Level:'))
         soundPrefGrid.addWidget(self.maxLevelLabel, n, 0)
-        self.maxLevelWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref['pref']['maxLevel']))
-        self.maxLevelWidget.setValidator(QtGui.QDoubleValidator(self))
+        self.maxLevelWidget = QLineEdit(self.currLocale.toString(self.tmpPref['pref']['maxLevel']))
+        self.maxLevelWidget.setValidator(QDoubleValidator(self))
         soundPrefGrid.addWidget(self.maxLevelWidget, n, 1)
 
         
@@ -174,47 +172,42 @@ class preferencesDialog(QtGui.QDialog):
         self.tabWidget.addTab(self.signalPrefWidget, self.tr("Signa&l"))
         self.tabWidget.addTab(self.soundPrefWidget, self.tr("Soun&d"))
 
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
         
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
-        self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
-                     QtCore.SIGNAL("clicked()"), self.permanentApply)
-
-        
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
         layout.addWidget(self.tabWidget)
         layout.addWidget(buttonBox)
         self.setLayout(layout)
-        #grid = QtGui.QGridLayout()
+        #grid = QGridLayout()
         #n = 0
 
     def ondpiChange(self):
         try:
             val = int(self.dpiWidget.text())
         except ValueError:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('dpi value not valid'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('dpi value not valid'))
             self.dpiWidget.setText(str(self.tmpPref['pref']['dpi']))
 
         val = int(self.dpiWidget.text())
         if val < 10:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('dpi value too small'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('dpi value too small'))
             self.dpiWidget.setText(str(10))
 
     def onChangeLineColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.lineColor1 = col
         self.lineColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.lineColor1.name())
     def onChangeCanvasColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.canvasColor = col
         self.canvasColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.canvasColor.name())
     def onChangeBackgroundColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.backgroundColor = col
         self.backgroundColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.backgroundColor.name())
@@ -290,21 +283,18 @@ class preferencesDialog(QtGui.QDialog):
                 self.revertChanges()
                 
 
-class applyChanges(QtGui.QDialog):
+class applyChanges(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
-        grid = QtGui.QGridLayout()
+        QDialog.__init__(self, parent)
+        grid = QGridLayout()
         n = 0
-        label = QtGui.QLabel(self.tr('There are unsaved changes. Apply Changes?'))
+        label = QLabel(self.tr('There are unsaved changes. Apply Changes?'))
         grid.addWidget(label, n, 1)
         n = n+1
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                     QtGui.QDialogButtonBox.Cancel)
-        
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                     QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
         grid.addWidget(buttonBox, n, 1)
         self.setLayout(grid)
         self.setWindowTitle(self.tr("Apply Changes"))

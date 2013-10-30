@@ -1,4 +1,5 @@
-#   Copyright (C) 2010-2011 Samuele Carcagno <sam.carcagno@gmail.com>
+# -*- coding: utf-8 -*-
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -16,50 +17,48 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QVBoxLayout
 
-class applyFIR2PresetsDialog(QtGui.QDialog):
+class applyFIR2PresetsDialog(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.prm = parent.prm
         self.currLocale = self.parent().prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
-        vbl = QtGui.QVBoxLayout()
-        self.grid = QtGui.QGridLayout()
+        vbl = QVBoxLayout()
+        self.grid = QGridLayout()
 
         
-        filterTypeLabel = QtGui.QLabel(self.tr('Filter Type: '))
-        self.filterChooser = QtGui.QComboBox()
+        filterTypeLabel = QLabel(self.tr('Filter Type: '))
+        self.filterChooser = QComboBox()
         self.filterChooser.addItems([self.tr('lowpass'), self.tr('highpass'), self.tr('bandpass'), self.tr('bandstop')])
         self.filterChooser.setCurrentIndex(0)
         self.grid.addWidget(self.filterChooser, 0, 1)
-        self.connect(self.filterChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onChangeFilterType)
-        self.filterOrderLabel = QtGui.QLabel(self.tr('Filter Order: '))
-        self.filterOrderWidget = QtGui.QLineEdit('256')
-        self.filterOrderWidget.setValidator(QtGui.QIntValidator(self))
+        self.filterChooser.currentIndexChanged[int].connect(self.onChangeFilterType)
+        self.filterOrderLabel = QLabel(self.tr('Filter Order: '))
+        self.filterOrderWidget = QLineEdit('256')
+        self.filterOrderWidget.setValidator(QIntValidator(self))
         self.grid.addWidget(self.filterOrderLabel, 0, 2)
         self.grid.addWidget(self.filterOrderWidget, 0, 3)
 
         self.currFilterType = self.tr('lowpass')
-        self.cutoffLabel = QtGui.QLabel(self.tr('Cutoff: '))
-        self.endCutoffLabel = QtGui.QLabel(self.tr('End Transition Band = Cutoff *'))
-        self.cutoffWidget = QtGui.QLineEdit('')
-        self.cutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+        self.cutoffLabel = QLabel(self.tr('Cutoff: '))
+        self.endCutoffLabel = QLabel(self.tr('End Transition Band = Cutoff *'))
+        self.cutoffWidget = QLineEdit('')
+        self.cutoffWidget.setValidator(QDoubleValidator(self))
         endCutoff = 1.2
-        self.endCutoffWidget = QtGui.QLineEdit(self.currLocale.toString(endCutoff))
-        self.endCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+        self.endCutoffWidget = QLineEdit(self.currLocale.toString(endCutoff))
+        self.endCutoffWidget.setValidator(QDoubleValidator(self))
         self.grid.addWidget(self.cutoffLabel, 2, 1)
         self.grid.addWidget(self.cutoffWidget, 2, 2)
         self.grid.addWidget(self.endCutoffLabel, 2, 3)
         self.grid.addWidget(self.endCutoffWidget, 2, 4)
 
        
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                     QtGui.QDialogButtonBox.Cancel)
-        
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                     QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
 
         vbl.addLayout(self.grid)
         vbl.addWidget(buttonBox)
@@ -110,73 +109,73 @@ class applyFIR2PresetsDialog(QtGui.QDialog):
                 self.endCutoffWidget.setParent(None)
                 
             if self.currFilterType == self.tr('lowpass'):
-                self.cutoffLabel = QtGui.QLabel(self.tr('Cutoff: '))
-                self.endCutoffLabel = QtGui.QLabel(self.tr('End Transition Band = Cutoff *'))
-                self.cutoffWidget = QtGui.QLineEdit('')
-                self.cutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.cutoffLabel = QLabel(self.tr('Cutoff: '))
+                self.endCutoffLabel = QLabel(self.tr('End Transition Band = Cutoff *'))
+                self.cutoffWidget = QLineEdit('')
+                self.cutoffWidget.setValidator(QDoubleValidator(self))
                 endCutoff = 1.2
-                self.endCutoffWidget = QtGui.QLineEdit(self.currLocale.toString(endCutoff))
-                self.endCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.endCutoffWidget = QLineEdit(self.currLocale.toString(endCutoff))
+                self.endCutoffWidget.setValidator(QDoubleValidator(self))
                 self.grid.addWidget(self.cutoffLabel, 2, 1)
                 self.grid.addWidget(self.cutoffWidget, 2, 2)
                 self.grid.addWidget(self.endCutoffLabel, 2, 3)
                 self.grid.addWidget(self.endCutoffWidget, 2, 4)
             elif self.currFilterType == self.tr('highpass'):
-                self.cutoffLabel = QtGui.QLabel(self.tr('Cutoff: '))
-                self.startCutoffLabel = QtGui.QLabel(self.tr('Start Transition Band = Cutoff *'))
-                self.cutoffWidget = QtGui.QLineEdit('')
-                self.cutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.cutoffLabel = QLabel(self.tr('Cutoff: '))
+                self.startCutoffLabel = QLabel(self.tr('Start Transition Band = Cutoff *'))
+                self.cutoffWidget = QLineEdit('')
+                self.cutoffWidget.setValidator(QDoubleValidator(self))
                 startCutoff = 0.8
-                self.startCutoffWidget = QtGui.QLineEdit(self.currLocale.toString(startCutoff)) 
-                self.startCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.startCutoffWidget = QLineEdit(self.currLocale.toString(startCutoff)) 
+                self.startCutoffWidget.setValidator(QDoubleValidator(self))
                 self.grid.addWidget(self.cutoffLabel, 2, 1)
                 self.grid.addWidget(self.cutoffWidget, 2, 2)
                 self.grid.addWidget(self.startCutoffLabel, 2, 3)
                 self.grid.addWidget(self.startCutoffWidget, 2, 4)
             elif self.currFilterType == self.tr('bandpass'):
-                self.lowerCutoffLabel = QtGui.QLabel(self.tr('Lower Cutoff: '))
-                self.startCutoffLabel = QtGui.QLabel(self.tr('Start Transition Band = Cutoff *'))
-                self.lowerCutoffWidget = QtGui.QLineEdit('')
-                self.lowerCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.lowerCutoffLabel = QLabel(self.tr('Lower Cutoff: '))
+                self.startCutoffLabel = QLabel(self.tr('Start Transition Band = Cutoff *'))
+                self.lowerCutoffWidget = QLineEdit('')
+                self.lowerCutoffWidget.setValidator(QDoubleValidator(self))
                 startCutoff = 0.8
-                self.startCutoffWidget = QtGui.QLineEdit(self.currLocale.toString(startCutoff)) 
-                self.startCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.startCutoffWidget = QLineEdit(self.currLocale.toString(startCutoff)) 
+                self.startCutoffWidget.setValidator(QDoubleValidator(self))
                 self.grid.addWidget(self.lowerCutoffLabel, 2, 1)
                 self.grid.addWidget(self.lowerCutoffWidget, 2, 2)
                 self.grid.addWidget(self.startCutoffLabel, 2, 3)
                 self.grid.addWidget(self.startCutoffWidget, 2, 4)
                 
-                self.higherCutoffLabel = QtGui.QLabel(self.tr('Higher Cutoff: '))
-                self.endCutoffLabel = QtGui.QLabel(self.tr('End Transition Band = Cutoff *'))
-                self.higherCutoffWidget = QtGui.QLineEdit('')
-                self.higherCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.higherCutoffLabel = QLabel(self.tr('Higher Cutoff: '))
+                self.endCutoffLabel = QLabel(self.tr('End Transition Band = Cutoff *'))
+                self.higherCutoffWidget = QLineEdit('')
+                self.higherCutoffWidget.setValidator(QDoubleValidator(self))
                 endCutoff = 1.2
-                self.endCutoffWidget = QtGui.QLineEdit(self.currLocale.toString(endCutoff)) 
-                self.endCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.endCutoffWidget = QLineEdit(self.currLocale.toString(endCutoff)) 
+                self.endCutoffWidget.setValidator(QDoubleValidator(self))
                 self.grid.addWidget(self.higherCutoffLabel, 3, 1)
                 self.grid.addWidget(self.higherCutoffWidget, 3, 2)
                 self.grid.addWidget(self.endCutoffLabel, 3, 3)
                 self.grid.addWidget(self.endCutoffWidget, 3, 4)
             elif self.currFilterType == self.tr('bandstop'):
-                self.lowerCutoffLabel = QtGui.QLabel(self.tr('Lower Cutoff: '))
-                self.endCutoffLabel = QtGui.QLabel(self.tr('End Transition Band = Cutoff *'))
-                self.lowerCutoffWidget = QtGui.QLineEdit('')
-                self.lowerCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.lowerCutoffLabel = QLabel(self.tr('Lower Cutoff: '))
+                self.endCutoffLabel = QLabel(self.tr('End Transition Band = Cutoff *'))
+                self.lowerCutoffWidget = QLineEdit('')
+                self.lowerCutoffWidget.setValidator(QDoubleValidator(self))
                 endCutoff = 1.2
-                self.endCutoffWidget = QtGui.QLineEdit(self.currLocale.toString(endCutoff)) 
-                self.endCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.endCutoffWidget = QLineEdit(self.currLocale.toString(endCutoff)) 
+                self.endCutoffWidget.setValidator(QDoubleValidator(self))
                 self.grid.addWidget(self.lowerCutoffLabel, 2, 1)
                 self.grid.addWidget(self.lowerCutoffWidget, 2, 2)
                 self.grid.addWidget(self.endCutoffLabel, 2, 3)
                 self.grid.addWidget(self.endCutoffWidget, 2, 4)
                 
-                self.higherCutoffLabel = QtGui.QLabel(self.tr('Higher Cutoff: '))
-                self.startCutoffLabel = QtGui.QLabel(self.tr('Start Transition Band = Cutoff *'))
-                self.higherCutoffWidget = QtGui.QLineEdit('')
-                self.higherCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.higherCutoffLabel = QLabel(self.tr('Higher Cutoff: '))
+                self.startCutoffLabel = QLabel(self.tr('Start Transition Band = Cutoff *'))
+                self.higherCutoffWidget = QLineEdit('')
+                self.higherCutoffWidget.setValidator(QDoubleValidator(self))
                 startCutoff = 0.8
-                self.startCutoffWidget = QtGui.QLineEdit(self.currLocale.toString(startCutoff)) 
-                self.startCutoffWidget.setValidator(QtGui.QDoubleValidator(self))
+                self.startCutoffWidget = QLineEdit(self.currLocale.toString(startCutoff)) 
+                self.startCutoffWidget.setValidator(QDoubleValidator(self))
                 self.grid.addWidget(self.higherCutoffLabel, 3, 1)
                 self.grid.addWidget(self.higherCutoffWidget, 3, 2)
                 self.grid.addWidget(self.startCutoffLabel, 3, 3)

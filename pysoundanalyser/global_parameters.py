@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2011 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -14,9 +14,10 @@
 
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QApplication#.translate
+from PyQt4.QtGui import QApplication, QColor#.translate
 
 import platform, os, pickle
 from pylab import*
@@ -79,14 +80,14 @@ def def_prefs(prm):
     prm['pref']['grid'] = True
     prm['pref']['dpi'] = 80
     #range is 0--255
-    prm['pref']['lineColor1'] = QtGui.QColor(0,0,0)
+    prm['pref']['lineColor1'] = QColor(0,0,0)
     prm['pref']['line_width'] = 1
-    prm['pref']['backgroundColor'] = QtGui.QColor(250,250,250)
-    prm['pref']['canvasColor'] = QtGui.QColor(200, 200, 200)
-    prm['pref']['axes_color'] = QtGui.QColor(0,0,0)
-    prm['pref']['grid_color'] = QtGui.QColor(0,0,0)
-    prm['pref']['tick_label_color'] = QtGui.QColor(0,0,0)
-    prm['pref']['axes_label_color'] = QtGui.QColor(0,0,0)
+    prm['pref']['backgroundColor'] = QColor(250,250,250)
+    prm['pref']['canvasColor'] = QColor(200, 200, 200)
+    prm['pref']['axes_color'] = QColor(0,0,0)
+    prm['pref']['grid_color'] = QColor(0,0,0)
+    prm['pref']['tick_label_color'] = QColor(0,0,0)
+    prm['pref']['axes_label_color'] = QColor(0,0,0)
     prm['pref']['label_font_family'] = 'sans-serif'
     prm['pref']['label_font_weight'] = 'normal'
     prm['pref']['label_font_style'] = 'normal' #italics, oblique

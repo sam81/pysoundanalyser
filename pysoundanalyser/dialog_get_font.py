@@ -1,4 +1,4 @@
- 
+# -*- coding: utf-8 -*- 
 #   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
@@ -15,17 +15,17 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser. If not, see <http://www.gnu.org/licenses/>.
 
-
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QDialog, QDialogButtonBox, QGridLayout, QLabel, QListWidget
 import matplotlib.font_manager as fm
 from numpy import unique
 
 import os, pickle
  
-class getFontDialog(QtGui.QDialog):
+class getFontDialog(QDialog):
     def __init__(self, parent, currFont):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         #---------------------
         self.currFont = currFont
         if self.currFont.get_file() == None:
@@ -87,33 +87,33 @@ class getFontDialog(QtGui.QDialog):
         
         self.currLocale = self.parent().prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
-        grid = QtGui.QGridLayout()
+        grid = QGridLayout()
       
-        fontNameLabel = QtGui.QLabel(self.tr('Font Name'))
+        fontNameLabel = QLabel(self.tr('Font Name'))
         grid.addWidget(fontNameLabel, 0, 0)
 
         
-        fontStyleLabel = QtGui.QLabel(self.tr('Font Style'))
+        fontStyleLabel = QLabel(self.tr('Font Style'))
         grid.addWidget(fontStyleLabel, 0, 1)
 
         
-        fontSizeLabel = QtGui.QLabel(self.tr('Font Size'))
+        fontSizeLabel = QLabel(self.tr('Font Size'))
         grid.addWidget(fontSizeLabel, 0, 2)
         ind = sorted(self.fontsDic.keys()).index(self.currFontFamily)
-        self.fontListWidget = QtGui.QListWidget(self)
+        self.fontListWidget = QListWidget(self)
         self.fontListWidget.insertItems(0, sorted(self.fontsDic.keys()))
         self.fontListWidget.setCurrentRow(ind)
-        self.connect(self.fontListWidget, QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.onChangeFontName)
+        self.fontListWidget.itemClicked.connect(self.onChangeFontName)
         grid.addWidget(self.fontListWidget, 1, 0)
 
-        self.fontStylesWidget = QtGui.QListWidget(self)
+        self.fontStylesWidget = QListWidget(self)
         self.fontStylesWidget.insertItems(0, self.fontsDic[sorted(self.fontsDic.keys())[ind]]['styleAbb'])
       
         indStyle = self.fontsDic[sorted(self.fontsDic.keys())[ind]]['styleAbb'].index(self.currFontStyle + ' ' + self.currFontWeight)
         self.fontStylesWidget.setCurrentRow(indStyle)
         grid.addWidget(self.fontStylesWidget, 1, 1)
 
-        self.fontSizeWidget = QtGui.QListWidget(self)
+        self.fontSizeWidget = QListWidget(self)
         self.pointSizeList = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '22', '24', '26', '28', '32', '48', '64', '72', '80', '96', '128']
         self.fontSizeWidget.insertItems(0, self.pointSizeList)
         self.fontSizeWidget.setCurrentRow(self.pointSizeList.index(str(int(self.currFontSize))))
@@ -122,13 +122,11 @@ class getFontDialog(QtGui.QDialog):
 
             
         
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                     QtGui.QDialogButtonBox.Cancel)
-        
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                     QDialogButtonBox.Cancel)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+       
         grid.addWidget(buttonBox, 3, 2)
         self.setLayout(grid)
         self.setWindowTitle(self.tr("Choose Font"))

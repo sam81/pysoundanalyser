@@ -17,6 +17,7 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 # import the Qt4Agg FigureCanvas object, that binds Figure to
@@ -33,9 +34,9 @@ import numpy as np
 import matplotlib
 matplotlib.rcParams['path.simplify'] = False
 
-class genericPlot(QtGui.QMainWindow):
+class genericPlot(QMainWindow):
     def __init__(self, parent, prm):
-        QtGui.QMainWindow.__init__(self, parent)
+        QMainWindow.__init__(self, parent)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.prm = prm
         self.currLocale = self.parent().prm['data']['currentLocale']
@@ -69,8 +70,8 @@ class genericPlot(QtGui.QMainWindow):
         self.spinesLineWidth = self.prm['pref']['spines_line_width']
         self.gridLineWidth = self.prm['pref']['grid_line_width']
 
-        self.mw = QtGui.QWidget(self)
-        self.vbl = QtGui.QVBoxLayout(self.mw)
+        self.mw = QWidget(self)
+        self.vbl = QVBoxLayout(self.mw)
         self.fig = Figure(facecolor=self.canvasColor, dpi=self.dpi)
         self.axes = self.fig.add_subplot(111, axisbg=self.backgroundColor)
        
@@ -81,17 +82,17 @@ class genericPlot(QtGui.QMainWindow):
         self.canvas.setParent(self.mw)
        
         self.ntb = NavigationToolbar(self.canvas, self.mw)
-        self.gridOn = QtGui.QCheckBox(self.tr('Grid'))
+        self.gridOn = QCheckBox(self.tr('Grid'))
         self.gridOn.setChecked(self.prm['pref']['grid'])
-        self.connect(self.gridOn, QtCore.SIGNAL('stateChanged(int)'), self.toggleGrid)
+        self.gridOn.stateChanged[int].connect(self.toggleGrid)
         self.setBaseFigureProperties()
-        self.gridBox = QtGui.QGridLayout()
+        self.gridBox = QGridLayout()
         self.createBaseControlWidgets()
 
         self.createAdditionalControlWidgets()
         self.defineGridBoxLayout()
 
-        self.ntbBox = QtGui.QHBoxLayout()
+        self.ntbBox = QHBoxLayout()
         self.ntbBox.addWidget(self.ntb)
         self.ntbBox.addWidget(self.gridOn)
         
@@ -105,22 +106,22 @@ class genericPlot(QtGui.QMainWindow):
 
 
     def createBaseControlWidgets(self):
-        self.xminLabel = QtGui.QLabel(self.tr('xmin'))
-        self.xminWidget = QtGui.QLineEdit(self.currLocale.toString(self.axes.get_xlim()[0]))               
-        self.xminWidget.setValidator(QtGui.QDoubleValidator(self))
-        self.xmaxLabel = QtGui.QLabel(self.tr('xmax'))
-        self.xmaxWidget = QtGui.QLineEdit(self.currLocale.toString(self.axes.get_xlim()[1]))
-        self.xmaxWidget.setValidator(QtGui.QDoubleValidator(self))
-        self.yminLabel = QtGui.QLabel(self.tr('ymin'))
-        self.yminWidget = QtGui.QLineEdit(self.currLocale.toString(self.axes.get_ylim()[0])) 
-        self.yminWidget.setValidator(QtGui.QDoubleValidator(self))
-        self.ymaxLabel = QtGui.QLabel(self.tr('ymax'))
-        self.ymaxWidget = QtGui.QLineEdit(self.currLocale.toString(self.axes.get_ylim()[1])) 
-        self.ymaxWidget.setValidator(QtGui.QDoubleValidator(self))
-        self.connect(self.xminWidget, QtCore.SIGNAL('editingFinished()'), self.onAxesChange)
-        self.connect(self.xmaxWidget, QtCore.SIGNAL('editingFinished()'), self.onAxesChange)
-        self.connect(self.yminWidget, QtCore.SIGNAL('editingFinished()'), self.onAxesChange)
-        self.connect(self.ymaxWidget, QtCore.SIGNAL('editingFinished()'), self.onAxesChange)
+        self.xminLabel = QLabel(self.tr('xmin'))
+        self.xminWidget = QLineEdit(self.currLocale.toString(self.axes.get_xlim()[0]))               
+        self.xminWidget.setValidator(QDoubleValidator(self))
+        self.xmaxLabel = QLabel(self.tr('xmax'))
+        self.xmaxWidget = QLineEdit(self.currLocale.toString(self.axes.get_xlim()[1]))
+        self.xmaxWidget.setValidator(QDoubleValidator(self))
+        self.yminLabel = QLabel(self.tr('ymin'))
+        self.yminWidget = QLineEdit(self.currLocale.toString(self.axes.get_ylim()[0])) 
+        self.yminWidget.setValidator(QDoubleValidator(self))
+        self.ymaxLabel = QLabel(self.tr('ymax'))
+        self.ymaxWidget = QLineEdit(self.currLocale.toString(self.axes.get_ylim()[1])) 
+        self.ymaxWidget.setValidator(QDoubleValidator(self))
+        self.xminWidget.editingFinished.connect(self.onAxesChange)
+        self.xmaxWidget.editingFinished.connect(self.onAxesChange)
+        self.yminWidget.editingFinished.connect(self.onAxesChange)
+        self.ymaxWidget.editingFinished.connect(self.onAxesChange)
 
     def createAdditionalControlWidgets(self):
         pass
@@ -136,10 +137,10 @@ class genericPlot(QtGui.QMainWindow):
         self.gridBox.addWidget(self.ymaxWidget, 1, 3)
     def createBaseMenus(self):
         self.menubar = self.menuBar()
-        exitAction = QtGui.QAction(QtGui.QIcon('icons/exit.png'), self.tr('Exit'), self)
+        exitAction = QAction(QIcon('icons/exit.png'), self.tr('Exit'), self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.setStatusTip(self.tr('Exit application'))
-        self.connect(exitAction, QtCore.SIGNAL('triggered()'), QtCore.SLOT('close()'))
+        exitAction.triggered.connect(self.close)
         self.statusBar()
         #FILE MENU
         self.fileMenu = self.menubar.addMenu(self.tr('&File'))
@@ -150,59 +151,59 @@ class genericPlot(QtGui.QMainWindow):
         #LINE Properties sub-menu
         self.linePropertiesMenu = self.editMenu.addMenu(self.tr('&Line Properties'))
 
-        self.editMajorTickLengthAction = QtGui.QAction(self.tr('Major Tick Length'), self)
-        self.connect(self.editMajorTickLengthAction, QtCore.SIGNAL('triggered()'), self.onChangeMajorTickLength)
+        self.editMajorTickLengthAction = QAction(self.tr('Major Tick Length'), self)
+        self.editMajorTickLengthAction.triggered.connect(self.onChangeMajorTickLength)
 
-        self.editMajorTickWidthAction = QtGui.QAction(self.tr('Major Tick Width'), self)
-        self.connect(self.editMajorTickWidthAction, QtCore.SIGNAL('triggered()'), self.onChangeMajorTickWidth)
+        self.editMajorTickWidthAction = QAction(self.tr('Major Tick Width'), self)
+        self.editMajorTickWidthAction.triggered.connect(self.onChangeMajorTickWidth)
 
-        self.editMinorTickLengthAction = QtGui.QAction(self.tr('Minor Tick Length'), self)
-        self.connect(self.editMinorTickLengthAction, QtCore.SIGNAL('triggered()'), self.onChangeMinorTickLength)
+        self.editMinorTickLengthAction = QAction(self.tr('Minor Tick Length'), self)
+        self.editMinorTickLengthAction.triggered.connect(self.onChangeMinorTickLength)
 
-        self.editMinorTickWidthAction = QtGui.QAction(self.tr('Minor Tick Width'), self)
-        self.connect(self.editMinorTickWidthAction, QtCore.SIGNAL('triggered()'), self.onChangeMinorTickWidth)
+        self.editMinorTickWidthAction = QAction(self.tr('Minor Tick Width'), self)
+        self.editMinorTickWidthAction.triggered.connect(self.onChangeMinorTickWidth)
 
-        self.editGridLineWidthAction = QtGui.QAction(self.tr('Grid Line Width'), self)
-        self.connect(self.editGridLineWidthAction, QtCore.SIGNAL('triggered()'), self.onChangeGridLineWidth)
+        self.editGridLineWidthAction = QAction(self.tr('Grid Line Width'), self)
+        self.editGridLineWidthAction.triggered.connect(self.onChangeGridLineWidth)
 
-        self.editSpinesLineWidthAction = QtGui.QAction(self.tr('Spines Line Width'), self)
-        self.connect(self.editSpinesLineWidthAction, QtCore.SIGNAL('triggered()'), self.onChangeSpinesLineWidth)
+        self.editSpinesLineWidthAction = QAction(self.tr('Spines Line Width'), self)
+        self.editSpinesLineWidthAction.triggered.connect(self.onChangeSpinesLineWidth)
 
         #COLOR Properties sub-menu
         self.colorPropertiesMenu = self.editMenu.addMenu(self.tr('&Color Properties'))
 
-        self.editBackgroundColorAction = QtGui.QAction(self.tr('Background Color'), self)
-        self.connect(self.editBackgroundColorAction, QtCore.SIGNAL('triggered()'), self.onChangeBackgroundColor)
+        self.editBackgroundColorAction = QAction(self.tr('Background Color'), self)
+        self.editBackgroundColorAction.triggered.connect(self.onChangeBackgroundColor)
 
-        self.editCanvasColorAction = QtGui.QAction(self.tr('Canvas Color'), self)
-        self.connect(self.editCanvasColorAction, QtCore.SIGNAL('triggered()'), self.onChangeCanvasColor)
+        self.editCanvasColorAction = QAction(self.tr('Canvas Color'), self)
+        self.editCanvasColorAction.triggered.connect(self.onChangeCanvasColor)
 
-        self.editAxesColorAction = QtGui.QAction(self.tr('Axes Color'), self)
-        self.connect(self.editAxesColorAction, QtCore.SIGNAL('triggered()'), self.onChangeAxesColor)
+        self.editAxesColorAction = QAction(self.tr('Axes Color'), self)
+        self.editAxesColorAction.triggered.connect(self.onChangeAxesColor)
 
-        self.editGridColorAction = QtGui.QAction(self.tr('Grid Color'), self)
-        self.connect(self.editGridColorAction, QtCore.SIGNAL('triggered()'), self.onChangeGridColor)
+        self.editGridColorAction = QAction(self.tr('Grid Color'), self)
+        self.editGridColorAction.triggered.connect(self.onChangeGridColor)
 
-        self.editTickLabelColorAction = QtGui.QAction(self.tr('Tick Labels Color'), self)
-        self.connect(self.editTickLabelColorAction, QtCore.SIGNAL('triggered()'), self.onChangeTickLabelColor)
+        self.editTickLabelColorAction = QAction(self.tr('Tick Labels Color'), self)
+        self.editTickLabelColorAction.triggered.connect(self.onChangeTickLabelColor)
 
-        self.editAxesLabelColorAction = QtGui.QAction(self.tr('Axes Labels Color'), self)
-        self.connect(self.editAxesLabelColorAction, QtCore.SIGNAL('triggered()'), self.onChangeAxesLabelColor)
+        self.editAxesLabelColorAction = QAction(self.tr('Axes Labels Color'), self)
+        self.editAxesLabelColorAction.triggered.connect(self.onChangeAxesLabelColor)
 
         #LABEL Properties sub-menu
         self.labelPropertiesMenu = self.editMenu.addMenu(self.tr('&Label Properties'))
 
-        self.editXLabelAction = QtGui.QAction(self.tr('X Axis Label'), self)
-        self.connect(self.editXLabelAction, QtCore.SIGNAL('triggered()'), self.onChangeXLabel)
+        self.editXLabelAction = QAction(self.tr('X Axis Label'), self)
+        self.editXLabelAction.triggered.connect(self.onChangeXLabel)
 
-        self.editYLabelAction = QtGui.QAction(self.tr('Y Axis Label'), self)
-        self.connect(self.editYLabelAction, QtCore.SIGNAL('triggered()'), self.onChangeYLabel)
+        self.editYLabelAction = QAction(self.tr('Y Axis Label'), self)
+        self.editYLabelAction.triggered.connect(self.onChangeYLabel)
 
-        self.editLabelFontAction = QtGui.QAction(self.tr('Labels Font'), self)
-        self.connect(self.editLabelFontAction, QtCore.SIGNAL('triggered()'), self.onChangeLabelFont)
+        self.editLabelFontAction = QAction(self.tr('Labels Font'), self)
+        self.editLabelFontAction.triggered.connect(self.onChangeLabelFont)
 
-        self.editTickLabelFontAction = QtGui.QAction(self.tr('Tick Labels Font'), self)
-        self.connect(self.editTickLabelFontAction, QtCore.SIGNAL('triggered()'), self.onChangeTickLabelFont)
+        self.editTickLabelFontAction = QAction(self.tr('Tick Labels Font'), self)
+        self.editTickLabelFontAction.triggered.connect(self.onChangeTickLabelFont)
 
        
     def createAdditionalMenus(self):
@@ -294,71 +295,71 @@ class genericPlot(QtGui.QMainWindow):
   
     def onChangeMajorTickLength(self):
         msg = self.tr('Tick Length:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.majorTickLength, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.majorTickLength, 0)
         if ok:
             self.majorTickLength = value
             self.setBaseFigureProperties()
     def onChangeMajorTickWidth(self):
         msg = self.tr('Tick Width:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.majorTickWidth, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.majorTickWidth, 0)
         if ok:
             self.majorTickWidth = value
             self.setBaseFigureProperties()
     def onChangeMinorTickLength(self):
         msg = self.tr('Tick Length:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.minorTickLength, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.minorTickLength, 0)
         if ok:
             self.minorTickLength = value
             self.setBaseFigureProperties()
     def onChangeMinorTickWidth(self):
         msg = self.tr('Tick Width:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.minorTickWidth, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.minorTickWidth, 0)
         if ok:
             self.minorTickWidth = value
             self.setBaseFigureProperties()
     def onChangeGridLineWidth(self):
         msg = self.tr('Grid Line Width:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.gridLineWidth, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.gridLineWidth, 0)
         if ok:
             self.gridLineWidth = value
             self.setBaseFigureProperties()
     def onChangeSpinesLineWidth(self):
         msg = self.tr('Spines Line Width:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.spinesLineWidth, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.spinesLineWidth, 0)
         if ok:
             self.spinesLineWidth = value
             self.setBaseFigureProperties()
 
     def onChangeBackgroundColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.backgroundColor = pltColorFromQColor(col)
             self.setBaseFigureProperties()
     def onChangeCanvasColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.canvasColor = pltColorFromQColor(col)
             self.setBaseFigureProperties()
 
     def onChangeAxesColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.axesColor = pltColorFromQColor(col)
             self.setBaseFigureProperties()
 
     def onChangeGridColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.gridColor = pltColorFromQColor(col)
             self.setBaseFigureProperties()
     def onChangeTickLabelColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.tickLabelColor = pltColorFromQColor(col)
             self.setBaseFigureProperties()
 
     def onChangeAxesLabelColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.axesLabelColor = pltColorFromQColor(col)
             self.setBaseFigureProperties()
@@ -387,13 +388,13 @@ class genericPlot(QtGui.QMainWindow):
             self.setBaseFigureProperties()
     def onChangeXLabel(self):
         msg = self.tr('X Axis label:')
-        text, ok = QtGui.QInputDialog.getText(self, self.tr('Input Dialog'), msg)
+        text, ok = QInputDialog.getText(self, self.tr('Input Dialog'), msg)
         if ok:
             self.xAxisLabel = str(text)
             self.setBaseFigureProperties()
     def onChangeYLabel(self):
         msg = self.tr('Y Axis label:')
-        text, ok = QtGui.QInputDialog.getText(self, self.tr('Input Dialog'), msg)
+        text, ok = QInputDialog.getText(self, self.tr('Input Dialog'), msg)
         if ok:
             self.yAxisLabel = str(text)
             self.setBaseFigureProperties()

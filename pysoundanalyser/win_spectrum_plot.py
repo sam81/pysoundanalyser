@@ -18,6 +18,7 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QAction, QCheckBox, QComboBox, QDoubleValidator, QLabel, QInputDialog
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure
@@ -88,20 +89,20 @@ class spectrumPlot(genericPlot):
         self.canvas.draw()
 
     def createAdditionalControlWidgets(self):
-        self.windowChooser = QtGui.QComboBox()
+        self.windowChooser = QComboBox()
         self.windowChooser.addItems(self.prm['data']['available_windows'])
         self.windowChooser.setCurrentIndex(self.windowChooser.findText(self.prm['pref']['smoothingWindow']))
-        self.windowChooserLabel = QtGui.QLabel(self.tr('Window:'))
+        self.windowChooserLabel = QLabel(self.tr('Window:'))
         self.gridBox.addWidget(self.windowChooserLabel, 0, 4)
         self.gridBox.addWidget(self.windowChooser, 0, 5)
-        self.connect(self.windowChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onChangeWindowFunction)
+        self.windowChooser.currentIndexChanged[int].connect(self.onChangeWindowFunction)
 
-        self.poweroftwoOn = QtGui.QCheckBox(self.tr('Power of 2'))
+        self.poweroftwoOn = QCheckBox(self.tr('Power of 2'))
         self.poweroftwoOn.setChecked(self.prm['pref']['poweroftwo'])
-        self.connect(self.poweroftwoOn, QtCore.SIGNAL('stateChanged(int)'), self.togglePoweroftwo)
+        self.poweroftwoOn.stateChanged[int].connect(self.togglePoweroftwo)
         self.gridBox.addWidget(self.poweroftwoOn, 0, 6)
-        self.logXAxisWidget = QtGui.QCheckBox(self.tr('Log axis'))
-        self.connect(self.logXAxisWidget, QtCore.SIGNAL('stateChanged(int)'), self.toggleLogXAxis)
+        self.logXAxisWidget = QCheckBox(self.tr('Log axis'))
+        self.logXAxisWidget.stateChanged[int].connect(self.toggleLogXAxis)
         self.gridBox.addWidget(self.logXAxisWidget, 0, 7)
     def setAxesLabels(self):
         self.axes.set_xlabel(self.xAxisLabel)
@@ -124,11 +125,11 @@ class spectrumPlot(genericPlot):
         self.updatePlot()
   
     def createAdditionalMenus(self):
-        self.editLineWidthAction = QtGui.QAction(self.tr('Line Width'), self)
-        self.connect(self.editLineWidthAction, QtCore.SIGNAL('triggered()'), self.onChangeLineWidth)
+        self.editLineWidthAction = QAction(self.tr('Line Width'), self)
+        self.editLineWidthAction.triggered.connect(self.onChangeLineWidth)
 
-        self.editLineColorAction = QtGui.QAction(self.tr('Line Color'), self)
-        self.connect(self.editLineColorAction, QtCore.SIGNAL('triggered()'), self.onChangeLineColor)
+        self.editLineColorAction = QAction(self.tr('Line Color'), self)
+        self.editLineColorAction.triggered.connect(self.onChangeLineColor)
         
     def defineMenusLayout(self):
         self.linePropertiesMenu.addAction(self.editLineWidthAction)
@@ -150,14 +151,14 @@ class spectrumPlot(genericPlot):
         self.labelPropertiesMenu.addAction(self.editLabelFontAction)
         self.labelPropertiesMenu.addAction(self.editTickLabelFontAction)
     def onChangeLineColor(self):
-        col = QtGui.QColorDialog.getColor()
+        col = QColorDialog.getColor()
         if col.isValid():
             self.lineCol = pltColorFromQColor(col)
             self.line.set_color(self.lineCol)
             self.canvas.draw()
     def onChangeLineWidth(self):
         msg = self.tr('Line Width:')
-        value, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.lineWidth, 0)
+        value, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.lineWidth, 0)
         if ok:
             self.lineWidth = value
             self.line.set_linewidth(self.lineWidth)
