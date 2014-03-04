@@ -16,10 +16,16 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import SIGNAL, Qt, QEvent, QSize
-from PyQt4.QtGui import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
-
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import SIGNAL, Qt, QEvent, QSize
+    from PyQt4.QtGui import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import SIGNAL, Qt, QEvent, QSize
+    from PySide.QtGui import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
+    
 class generateSoundDialog(QDialog):
     def __init__(self, parent, sndType):
         QDialog.__init__(self, parent)

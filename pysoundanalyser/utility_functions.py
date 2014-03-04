@@ -139,7 +139,7 @@ def log_10_product(x, pos):
 def concatenateSounds(sound1, sound2, delay, delayType, fs):
     #snd1 and snd2 have only one channel
     #delay in ms
-    delay = delay/1000.
+    delay = delay/1000
     delayPnts = int(round(delay*fs))
     nSampSound1 = len(sound1)
     nSampSound2 = len(sound2)

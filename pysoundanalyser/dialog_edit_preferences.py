@@ -16,9 +16,15 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QLocale
-from PyQt4.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import QLocale
+    from PyQt4.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import QLocale
+    from PySide.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
 import copy, pickle
 
 

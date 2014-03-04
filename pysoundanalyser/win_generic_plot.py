@@ -16,8 +16,14 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+    
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 # import the Qt4Agg FigureCanvas object, that binds Figure to

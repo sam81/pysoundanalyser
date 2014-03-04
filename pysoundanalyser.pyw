@@ -20,8 +20,16 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 import sip
 sip.setapi("QString", 2)
 import sys, platform, os, copy, pickle, traceback
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QAbstractItemView, QAction, QApplication, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from pysoundanalyser.pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtGui import QAbstractItemView, QAction, QApplication, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
+    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
+    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtGui import QAbstractItemView, QAction, QApplication, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import logging, signal
 from pysoundanalyser import qrc_resources
 
@@ -367,7 +375,7 @@ class applicationWindow(QMainWindow):
         
     def onClickLoadButton(self):
         #self.sndTableWidget.setSortingEnabled(False)
-        files = QFileDialog.getOpenFileNames(self, self.tr("pysoundanalyser - Choose file to load"), '',self.tr("Supported Sound Files (*.wav);;All Files (*)"))
+        files = QFileDialog.getOpenFileNames(self, self.tr("pysoundanalyser - Choose file to load"), '',self.tr("Supported Sound Files (*.wav);;All Files (*)"))[0]
         
         for f in range(len(files)):
             sndFile = files[f]
@@ -566,7 +574,7 @@ class applicationWindow(QMainWindow):
             else:
                 wave = snd
                 nChannels = 2
-            ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write'), self.tr('.{0}').format(dialog.suggestedExtension), self.tr('All Files (*)'))
+            ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write'), self.tr('.{0}').format(dialog.suggestedExtension), self.tr('All Files (*)'))[0]
             if len(ftow) > 0:
                 if self.prm['pref']['wavmanager'] == 'scipy':
                     scipy_wavwrite(ftow, fs, int(dialog.encodingChooser.currentText()), wave)

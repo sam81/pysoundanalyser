@@ -16,14 +16,25 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QLocale
-try:  
-    from PyQt4.QtCore import QString  
-except ImportError:  
-    # we are using Python3 so QString is not defined  
-    QString = str
-from PyQt4.QtGui import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import QLocale
+    try:  
+        from PyQt4.QtCore import QString  
+    except ImportError:  
+        # we are using Python3 so QString is not defined  
+        QString = str
+    from PyQt4.QtGui import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import QLocale
+    try:  
+        from PySide.QtCore import QString  
+    except ImportError:  
+        # we are using Python3 so QString is not defined  
+        QString = str
+    from PySide.QtGui import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure
