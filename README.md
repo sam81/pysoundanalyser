@@ -1,0 +1,1 @@
+`pysoundanalyser` is a pyqt4 application which provides a graphical user interface to analyse short wav files. The software is here in the hope that it may be useful to someone looking into sound processing with Python, however, it is in pre-alpha status, so it is likely to contain bugs. For time reasons I can only provide minimal support.
