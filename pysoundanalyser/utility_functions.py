@@ -49,7 +49,7 @@ def getSpectrum(sig, sampFreq, window, poweroftwo):
     nUniquePts = ceil((nfft+1)/2.0)
     p = p[0:nUniquePts]
     p = abs(p)
-    p = p / float(sampFreq) #float(n) # scale by the number of points so that
+    p = p / float(n) #float(n) # scale by the number of points so that
     # the magnitude does not depend on the length 
     # of the signal or on its sampling frequency  
     p = p**2  # square it to get the power 
