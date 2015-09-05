@@ -17,32 +17,40 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
+
+import matplotlib
+matplotlib.rcParams['path.simplify'] = False
+
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PyQt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PySide"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QDoubleValidator, QIcon
     from PyQt5.QtWidgets import QAction, QCheckBox, QColorDialog, QComboBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt5Agg"
     
 # Matplotlib Figure object
 from matplotlib.figure import Figure
-# import the Qt4Agg FigureCanvas object, that binds Figure to
-# Qt4Agg backend. It also inherits from QWidget
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-# import the NavigationToolbar Qt4Agg widget
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+
 from matplotlib.widgets import Cursor
 from matplotlib import font_manager
 from .dialog_get_font import*
 from .utility_functions import*
 import numpy as np
-
-import matplotlib
-matplotlib.rcParams['path.simplify'] = False
 
 class genericPlot(QMainWindow):
     def __init__(self, parent, prm):

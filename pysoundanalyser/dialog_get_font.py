@@ -16,16 +16,22 @@
 #    along with pysoundanalyser. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+import matplotlib
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtGui import QDialog, QDialogButtonBox, QGridLayout, QLabel, QListWidget
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PyQt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QDialog, QDialogButtonBox, QGridLayout, QLabel, QListWidget
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PySide"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QGridLayout, QLabel, QListWidget
+    matplotlib.rcParams['backend'] = "Qt5Agg"
 import matplotlib.font_manager as fm
 from numpy import unique
 

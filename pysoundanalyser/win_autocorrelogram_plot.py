@@ -16,28 +16,37 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+import matplotlib
+matplotlib.rcParams['path.simplify'] = False
+
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtGui import QAction, QComboBox, QDoubleValidator, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PyQt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QAction, QComboBox, QDoubleValidator, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PySide"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QDoubleValidator
     from PyQt5.QtWidgets import QAction, QComboBox, QLabel, QInputDialog
+    from PyQt5.QtWidgets import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt5Agg"
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure
-# import the Qt4Agg FigureCanvas object, that binds Figure to
-# Qt4Agg backend. It also inherits from QWidget
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-# import the NavigationToolbar Qt4Agg widget
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 from matplotlib.widgets import Cursor
-import matplotlib
-matplotlib.rcParams['path.simplify'] = False
+
 
 from numpy import sin, cos, pi, sqrt, abs, arange, zeros, mean, concatenate, convolve, angle, real, log2, log10, int_, linspace, repeat, ceil, unique, hamming, hanning, blackman, bartlett, round, transpose, where
 from numpy.fft import rfft, irfft, fft, ifft

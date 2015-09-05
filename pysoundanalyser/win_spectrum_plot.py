@@ -17,32 +17,37 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+import matplotlib
+matplotlib.rcParams['path.simplify'] = False
+
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtGui import QAction, QCheckBox, QComboBox, QDoubleValidator, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PyQt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QAction, QCheckBox, QComboBox, QDoubleValidator, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PySide"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QDoubleValidator
     from PyQt5.QtWidgets import QAction, QCheckBox, QComboBox, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt5Agg"
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure
-# import the Qt4Agg FigureCanvas object, that binds Figure to
-# Qt4Agg backend. It also inherits from QWidget
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-# import the NavigationToolbar Qt4Agg widget
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
-#from navigation_toolbar_modified import*
 from matplotlib.widgets import Cursor
 from matplotlib import font_manager
 from .dialog_get_font import*
-
-import matplotlib
-matplotlib.rcParams['path.simplify'] = False
 from .win_generic_plot import*
 
 

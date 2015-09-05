@@ -234,7 +234,7 @@ class generateSoundDialog(QDialog):
 
         return x
     def get_fields_to_hide_harm_compl(self):
-        if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8):
+        if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Sinusoid",""):
             self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
@@ -254,7 +254,7 @@ class generateSoundDialog(QDialog):
                                      self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
                                      self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
           
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Narrowband Noise","", QApplication.UnicodeUTF8): 
+        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Narrowband Noise",""): 
             self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)")),
@@ -274,7 +274,7 @@ class generateSoundDialog(QDialog):
                                      self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
                                      self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
 
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","IRN","", QApplication.UnicodeUTF8):
+        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","IRN",""):
             self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Low Harmonic")),
                                    self.sndPrm['fieldLabel'].index(self.tr("High Harmonic")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
@@ -299,7 +299,7 @@ class generateSoundDialog(QDialog):
                                      self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
                           
                           
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Huggins Pitch","", QApplication.UnicodeUTF8):
+        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Huggins Pitch",""):
             self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)")),
@@ -319,7 +319,7 @@ class generateSoundDialog(QDialog):
                                      self.sndPrm['chooserLabel'].index(self.tr("IRN Type:")),
                                      self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:"))] #IPD, ITD
             
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Simple Dichotic","", QApplication.UnicodeUTF8):
+        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic",""):
             self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Iterations")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Gain")),
@@ -329,10 +329,10 @@ class generateSoundDialog(QDialog):
             self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Component Level (dB SPL)"))]
-            if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","IPD","", QApplication.UnicodeUTF8):
+            if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:",""))].currentText() == QApplication.translate("","IPD",""):
                 self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
                 self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
-            elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","ITD","", QApplication.UnicodeUTF8):
+            elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:",""))].currentText() == QApplication.translate("","ITD",""):
                 self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
                 self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
                 self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
@@ -342,7 +342,7 @@ class generateSoundDialog(QDialog):
                                          self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
                                          self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
                                          self.sndPrm['chooserLabel'].index(self.tr("IRN Type:"))]
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Narrowband Noise 2","", QApplication.UnicodeUTF8):
+        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Narrowband Noise 2",""):
             self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
                                  self.sndPrm['fieldLabel'].index(self.tr("Iterations")),
                                  self.sndPrm['fieldLabel'].index(self.tr("Gain")),
@@ -363,18 +363,18 @@ class generateSoundDialog(QDialog):
                                    self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
                                    self.sndPrm['chooserLabel'].index(self.tr("IRN Type:"))]
                 
-        if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Harmonicity:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Harmonic","", QApplication.UnicodeUTF8):
+        if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Harmonicity:",""))].currentText() == QApplication.translate("","Harmonic",""):
             self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("Harmonic Spacing (Cents)")),
                                       self.sndPrm['fieldLabel'].index(self.tr("Stretch (%)"))])
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Harmonicity:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Harmonic Stretched","", QApplication.UnicodeUTF8):
+        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Harmonicity:",""))].currentText() == QApplication.translate("","Harmonic Stretched",""):
             self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("Harmonic Spacing (Cents)"))])
             self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("Stretch (%)"))])
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Harmonicity:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Equal Cents Spacing","", QApplication.UnicodeUTF8):
+        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Harmonicity:",""))].currentText() == QApplication.translate("","Equal Cents Spacing",""):
             self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("Harmonic Spacing (Cents)"))])
 
 
     #Noise Type
-        if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Noise Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","None","", QApplication.UnicodeUTF8):
+        if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Noise Type:",""))].currentText() == QApplication.translate("","None",""):
             self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("No. 1 Low Freq. (Hz)")),
                                       self.sndPrm['fieldLabel'].index(self.tr("No. 1 High Freq. (Hz)")),
                                       self.sndPrm['fieldLabel'].index(self.tr("No. 1 S. Level (dB SPL)")),
@@ -390,7 +390,7 @@ class generateSoundDialog(QDialog):
                                       self.sndPrm['fieldLabel'].index(self.tr("No. 2 S. Level (dB SPL)"))])
 
         
-        if (self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Simple Dichotic","", QApplication.UnicodeUTF8) or QApplication.translate("","Narrowband Noise 2","", QApplication.UnicodeUTF8)):
+        if (self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic","") or QApplication.translate("","Narrowband Noise 2","")):
             self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("Low Stop")), self.sndPrm['fieldLabel'].index(self.tr("High Stop"))])
             
         else:

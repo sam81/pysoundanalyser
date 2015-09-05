@@ -16,48 +16,55 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+import matplotlib
+matplotlib.rcParams['path.simplify'] = False
+
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QApplication, QColor#.translate
+    from PyQt4.QtGui import QApplication, QColor
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PyQt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QApplication, QColor#.translate
+    from PySide.QtGui import QApplication, QColor
+    matplotlib.rcParams['backend'] = "Qt4Agg"
+    matplotlib.rcParams['backend.qt4'] = "PySide"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QColor
     from PyQt5.QtWidgets import QApplication
+    matplotlib.rcParams['backend'] = "Qt5Agg"
 
 import platform, os, pickle
-from pylab import*
 
 
 def global_parameters(prm):
-    prm['data']['available_colormaps'] = [m for m in cm.datad if not m.endswith("_r")]
+    prm['data']['available_colormaps'] = [m for m in matplotlib.cm.datad if not m.endswith("_r")]
     prm['data']['available_windows'] = ['none', 'hamming', 'hanning', 'blackman', 'bartlett']
     prm['data']['available_filters'] = ['fir2_presets']
-    prm['data']['available_languages'] = [QApplication.translate("Preferences Window","System Settings","", QApplication.UnicodeUTF8),
-                                          QApplication.translate("Preferences Window","en","", QApplication.UnicodeUTF8),
-                                          QApplication.translate("Preferences Window","it","", QApplication.UnicodeUTF8),
-                                          QApplication.translate("Preferences Window","fr","", QApplication.UnicodeUTF8),
-                                          QApplication.translate("Preferences Window","es","", QApplication.UnicodeUTF8),
-                                          QApplication.translate("Preferences Window","el","", QApplication.UnicodeUTF8)]
+    prm['data']['available_languages'] = [QApplication.translate("Preferences Window","System Settings",""),
+                                          QApplication.translate("Preferences Window","en",""),
+                                          QApplication.translate("Preferences Window","it",""),
+                                          QApplication.translate("Preferences Window","fr",""),
+                                          QApplication.translate("Preferences Window","es",""),
+                                          QApplication.translate("Preferences Window","el","")]
     prm['data']['available_countries'] = {}
     prm['data']['available_countries']['System Settings'] = ["System Settings"]
-    prm['data']['available_countries']['en'] = [QApplication.translate("Preferences Window","US","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("Preferences Window","GB","", QApplication.UnicodeUTF8)]
+    prm['data']['available_countries']['en'] = [QApplication.translate("Preferences Window","US",""),
+                                                         QApplication.translate("Preferences Window","GB","")]
 
-    prm['data']['available_countries']['it'] = [QApplication.translate("Preferences Window","IT","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("Preferences Window","CH","", QApplication.UnicodeUTF8)]
-    prm['data']['available_countries']['fr'] = [QApplication.translate("Preferences Window","FR","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("Preferences Window","CA","", QApplication.UnicodeUTF8)]
+    prm['data']['available_countries']['it'] = [QApplication.translate("Preferences Window","IT",""),
+                                                         QApplication.translate("Preferences Window","CH","")]
+    prm['data']['available_countries']['fr'] = [QApplication.translate("Preferences Window","FR",""),
+                                                         QApplication.translate("Preferences Window","CA","")]
 
-    prm['data']['available_countries']['es'] = [QApplication.translate("Preferences Window","ES","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("Preferences Window","BO","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("Preferences Window","CL","", QApplication.UnicodeUTF8)]
+    prm['data']['available_countries']['es'] = [QApplication.translate("Preferences Window","ES",""),
+                                                         QApplication.translate("Preferences Window","BO",""),
+                                                         QApplication.translate("Preferences Window","CL","")]
 
-    prm['data']['available_countries']['el'] = [QApplication.translate("Preferences Window","GR","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("Preferences Window","CY","", QApplication.UnicodeUTF8)]
+    prm['data']['available_countries']['el'] = [QApplication.translate("Preferences Window","GR",""),
+                                                         QApplication.translate("Preferences Window","CY","")]
 
     return prm
   
@@ -79,9 +86,9 @@ def def_prefs(prm):
         prm["pref"]["playCommand"] = 'aplay'
         prm["pref"]["playCommandType"] = 'aplay'
     if platform.system() == 'Windows':
-        prm['data']['available_play_commands'] = ["winsound", "sndfile-play", QApplication.translate("Preferences Window","custom","", QApplication.UnicodeUTF8)]
+        prm['data']['available_play_commands'] = ["winsound", "sndfile-play", QApplication.translate("Preferences Window","custom","")]
     else:
-        prm['data']['available_play_commands'] = ["aplay", "sndfile-play", QApplication.translate("Preferences Window","custom","", QApplication.UnicodeUTF8)]
+        prm['data']['available_play_commands'] = ["aplay", "sndfile-play", QApplication.translate("Preferences Window","custom","")]
 
     prm["pref"]["nBits"] = 16
     prm["pref"]["maxLevel"] = 100
@@ -118,16 +125,16 @@ def def_prefs(prm):
     prm['pref']['tick_label_font_size'] = 12
     prm['pref']['tick_label_font_stretch'] = 'normal'
     prm['pref']['tick_label_font_variant'] = 'normal'
-    prm['pref']['spectrum_x_axis_label'] = QApplication.translate("Spectrum Plot","Frequency (Hz)","", QApplication.UnicodeUTF8)
-    prm['pref']['spectrum_y_axis_label'] = QApplication.translate("Spectrum Plot","Level (dB)","", QApplication.UnicodeUTF8)
-    prm['pref']['waveform_x_axis_label'] = QApplication.translate("Waveform Plot","Time (s)","", QApplication.UnicodeUTF8)
-    prm['pref']['waveform_y_axis_label'] = QApplication.translate("Waveform Plot","Amplitude","", QApplication.UnicodeUTF8)
-    prm['pref']['acf_x_axis_label'] = QApplication.translate("Autocorrelation Plot","Lag (s)","", QApplication.UnicodeUTF8)
-    prm['pref']['acf_y_axis_label'] = QApplication.translate("Autocorrelation Plot","Correlation","", QApplication.UnicodeUTF8)
-    prm['pref']['spectrogram_x_axis_label'] = QApplication.translate("Spectrogram Plot","Time (s)","", QApplication.UnicodeUTF8)
-    prm['pref']['spectrogram_y_axis_label'] = QApplication.translate("Spectrogram Plot","Frequency (Hz)","", QApplication.UnicodeUTF8)
-    prm['pref']['autocorrelogram_x_axis_label'] = QApplication.translate("Autocorrelogram Plot","Time (s)","", QApplication.UnicodeUTF8)
-    prm['pref']['autocorrelogram_y_axis_label'] = QApplication.translate("Autocorrelogram Plot","Lag (s)","", QApplication.UnicodeUTF8)
+    prm['pref']['spectrum_x_axis_label'] = QApplication.translate("Spectrum Plot","Frequency (Hz)","")
+    prm['pref']['spectrum_y_axis_label'] = QApplication.translate("Spectrum Plot","Level (dB)","")
+    prm['pref']['waveform_x_axis_label'] = QApplication.translate("Waveform Plot","Time (s)","")
+    prm['pref']['waveform_y_axis_label'] = QApplication.translate("Waveform Plot","Amplitude","")
+    prm['pref']['acf_x_axis_label'] = QApplication.translate("Autocorrelation Plot","Lag (s)","")
+    prm['pref']['acf_y_axis_label'] = QApplication.translate("Autocorrelation Plot","Correlation","")
+    prm['pref']['spectrogram_x_axis_label'] = QApplication.translate("Spectrogram Plot","Time (s)","")
+    prm['pref']['spectrogram_y_axis_label'] = QApplication.translate("Spectrogram Plot","Frequency (Hz)","")
+    prm['pref']['autocorrelogram_x_axis_label'] = QApplication.translate("Autocorrelogram Plot","Time (s)","")
+    prm['pref']['autocorrelogram_y_axis_label'] = QApplication.translate("Autocorrelogram Plot","Lag (s)","")
 
     prm['pref']['language'] = 'System Settings'
     prm['pref']['country'] = 'System Settings'
