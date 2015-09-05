@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -16,7 +16,15 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
+
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    
 from numpy import sin, cos, pi, sqrt, abs, arange, floor, zeros, mean, concatenate, convolve, correlate, angle, real, log2, log10, int_, linspace, repeat, ceil, unique, hamming, hanning, blackman, bartlett, round, transpose, flipud, amax
 from numpy.fft import rfft, irfft, fft, ifft
 from scipy.signal import firwin2

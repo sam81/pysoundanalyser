@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -19,10 +19,14 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QComboBox, QDialog, QDoubleValidator, QGridLayout, QLabel, QLineEdit
+    from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QLabel, QLineEdit
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QComboBox, QDialog, QDoubleValidator, QGridLayout, QLabel, QLineEdit
+    from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QLabel, QLineEdit
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtGui import QDoubleValidator
+    from PyQt5.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit
 
 class cutDialog(QDialog):
     def __init__(self, parent, snd):
@@ -33,7 +37,6 @@ class cutDialog(QDialog):
         grid = QGridLayout()
         n = 0
        
-
             
         fromLabel = QLabel(self.tr('From: '))
         grid.addWidget(fromLabel, n, 0)

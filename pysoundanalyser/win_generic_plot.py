@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -23,6 +23,10 @@ if pyqtversion == 4:
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtGui import QDoubleValidator, QIcon
+    from PyQt5.QtWidgets import QAction, QCheckBox, QColorDialog, QComboBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
     
 # Matplotlib Figure object
 from matplotlib.figure import Figure

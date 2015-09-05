@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -35,6 +35,15 @@ elif pyqtversion == -4:
         # we are using Python3 so QString is not defined  
         QString = str
     from PySide.QtGui import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtCore import QLocale
+    try:  
+        from PyQt5.QtCore import QString  
+    except ImportError:  
+        # we are using Python3 so QString is not defined  
+        QString = str
+    from PyQt5.QtWidgets import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
 
 # Matplotlib Figure object
 from matplotlib.figure import Figure

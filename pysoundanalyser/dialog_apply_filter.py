@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -14,6 +14,7 @@
 
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 
 from .pyqtver import*
@@ -23,6 +24,10 @@ if pyqtversion == 4:
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QVBoxLayout
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtGui import QDoubleValidator, QIntValidator
+    from PyQt5.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QVBoxLayout
 
 class applyFIR2PresetsDialog(QDialog):
     def __init__(self, parent):

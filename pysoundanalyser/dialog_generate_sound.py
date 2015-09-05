@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -25,6 +25,11 @@ elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import SIGNAL, Qt, QEvent, QSize
     from PySide.QtGui import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtCore import pyqtSignal, Qt, QEvent, QSize
+    from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFontMetrics
+    from PyQt5.QtWidgets import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QHBoxLayout, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
     
 class generateSoundDialog(QDialog):
     def __init__(self, parent, sndType):

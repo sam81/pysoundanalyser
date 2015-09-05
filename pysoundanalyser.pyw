@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -23,13 +23,19 @@ import sys, platform, os, copy, pickle, traceback
 from pysoundanalyser.pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QAbstractItemView, QAction, QApplication, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+    from PyQt4.QtGui import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QAbstractItemView, QAction, QApplication, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+    from PySide.QtGui import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtGui import QIcon
+    from PyQt5.QtWidgets import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+
+    
 import logging, signal
 from pysoundanalyser import qrc_resources
 

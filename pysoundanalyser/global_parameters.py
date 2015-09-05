@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -23,6 +23,10 @@ if pyqtversion == 4:
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QApplication, QColor#.translate
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtGui import QColor
+    from PyQt5.QtWidgets import QApplication
 
 import platform, os, pickle
 from pylab import*
