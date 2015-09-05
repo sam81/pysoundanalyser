@@ -1,6 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="2.0">
 <context>
+    <name></name>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
+        <source>Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="237"/>
+        <source>Sinusoid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="257"/>
+        <source>Narrowband Noise</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="277"/>
+        <source>IRN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="302"/>
+        <source>Huggins Pitch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
+        <source>Simple Dichotic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="335"/>
+        <source>Dichotic Difference:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="332"/>
+        <source>IPD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="335"/>
+        <source>ITD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
+        <source>Narrowband Noise 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="372"/>
+        <source>Harmonicity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="366"/>
+        <source>Harmonic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="369"/>
+        <source>Harmonic Stretched</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="372"/>
+        <source>Equal Cents Spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="377"/>
+        <source>Noise Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="377"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>acfPlot</name>
     <message>
         <location filename="../pysoundanalyser/win_acf_plot.py" line="118"/>

@@ -5,77 +5,82 @@
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
         <source>Type:</source>
-        <translation type="obsolete">Tipo:</translation>
+        <translation type="unfinished">Tipo:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="237"/>
         <source>Sinusoid</source>
-        <translation type="obsolete">Sinusoide</translation>
+        <translation type="unfinished">Sinusoide</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="257"/>
         <source>Narrowband Noise</source>
-        <translation type="obsolete">Rumore a banda stretta</translation>
+        <translation type="unfinished">Rumore a banda stretta</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="277"/>
         <source>IRN</source>
-        <translation type="obsolete">IRN</translation>
+        <translation type="unfinished">IRN</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="302"/>
         <source>Huggins Pitch</source>
-        <translation type="obsolete">Pitch di Huggins</translation>
+        <translation type="unfinished">Pitch di Huggins</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
         <source>Simple Dichotic</source>
-        <translation type="obsolete">Dicotico semplice</translation>
+        <translation type="unfinished">Dicotico semplice</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="335"/>
         <source>Dichotic Difference:</source>
-        <translation type="obsolete">Differenza dicotica:</translation>
+        <translation type="unfinished">Differenza dicotica:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="335"/>
         <source>ITD</source>
-        <translation type="obsolete">ITD</translation>
+        <translation type="unfinished">ITD</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
         <source>Narrowband Noise 2</source>
-        <translation type="obsolete">Rumore a banda stretta 2</translation>
+        <translation type="unfinished">Rumore a banda stretta 2</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="372"/>
         <source>Harmonicity:</source>
-        <translation type="obsolete">Armonicità:</translation>
+        <translation type="unfinished">Armonicità:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="369"/>
         <source>Harmonic Stretched</source>
-        <translation type="obsolete">Armonico allungato</translation>
+        <translation type="unfinished">Armonico allungato</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="377"/>
         <source>Noise Type:</source>
-        <translation type="obsolete">Tipo rumore:</translation>
+        <translation type="unfinished">Tipo rumore:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="377"/>
         <source>None</source>
-        <translation type="obsolete">Nessuno</translation>
+        <translation type="unfinished">Nessuno</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="332"/>
         <source>IPD</source>
-        <translation type="obsolete">IPD</translation>
+        <translation type="unfinished">IPD</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="366"/>
         <source>Harmonic</source>
-        <translation type="obsolete">Armonico:</translation>
+        <translation type="unfinished">Armonico:</translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_generate_sound.py" line="372"/>
+        <source>Equal Cents Spacing</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
