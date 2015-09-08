@@ -58,7 +58,7 @@ class generateSinusoidDialog(QDialog):
         self.grid.addWidget(self.soundPhaseWidget, 2, 1)
         # Sound Duration
         soundDurationLabel = QLabel(self.tr('Duration (ms):'))
-        defaultDuration = 180
+        defaultDuration = 980
         self.soundDurationWidget = QLineEdit(self.currLocale.toString(defaultDuration)) 
         self.soundDurationWidget.setValidator(QDoubleValidator(self))
         self.grid.addWidget(soundDurationLabel, 3, 0)

@@ -47,6 +47,10 @@ class generateSoundDialog(QDialog):
             self.execString = "harm_compl"
         elif sndType == "Silence":
             self.execString = "silence"
+        elif sndType == "FM Tone":
+            self.execString = "fm_tone"
+        elif sndType == "AM Tone":
+            self.execString = "am_tone"
 
         self.nrows = 0
         #SOUND LABEL
@@ -106,6 +110,60 @@ class generateSoundDialog(QDialog):
     ##     size = fm.height()
     ##     return QSize(size*50, size * 60)
         
+
+    def setDefaultParameters(self):
+    
+        self.field = list(range(self.sndPrm['nFields']))
+        self.fieldLabel = list(range(self.sndPrm['nFields']))
+        fieldLabelColumn = 0
+        fieldColumn = 1
+        chooserLabelColumn = 2
+        chooserColumn = 3
+        fshift = self.nrows
+        for f in range(self.sndPrm['nFields']):
+            self.fieldLabel[f] = QLabel(self.tr(self.sndPrm['fieldLabel'][f]))
+            self.grid_0.addWidget(self.fieldLabel[f], f+fshift, fieldLabelColumn)
+            self.field[f] = QLineEdit()
+            self.field[f].setText(str(self.sndPrm['field'][f]))
+            self.field[f].setValidator(QDoubleValidator(self))
+            self.grid_0.addWidget(self.field[f], f+fshift, fieldColumn)
+         
+        self.chooser = list(range(self.sndPrm['nChoosers']))
+        self.chooserLabel = list(range(self.sndPrm['nChoosers']))
+        self.chooserOptions = list(range(self.sndPrm['nChoosers']))
+        for c in range(self.sndPrm['nChoosers']):
+            self.chooserLabel[c] = QLabel(self.tr(self.sndPrm['chooserLabel'][c]))
+            self.grid_1.addWidget(self.chooserLabel[c], c, chooserLabelColumn)
+            self.chooserOptions[c] = self.sndPrm['chooserOptions'][c]
+            self.chooser[c] = QComboBox()  
+            self.chooser[c].addItems(self.chooserOptions[c])
+            self.chooser[c].setCurrentIndex(self.chooserOptions[c].index(self.sndPrm['chooser'][c]))
+            self.grid_1.addWidget(self.chooser[c], c, chooserColumn)
+        for c in range(len(self.chooser)):
+            self.chooser[c].activated[str].connect(self.onChooserChange)
+            self.onChooserChange()
+        self.sndPrm['nFields'] = len(self.field)
+        self.sndPrm['nChoosers'] = len(self.chooser)
+
+  
+    def onChooserChange(self):
+        self.fieldsToHide = []; self.fieldsToShow = []
+        self.choosersToHide = []; self.choosersToShow = [];
+        methodToCall = getattr(self, "get_fields_to_hide_" + self.execString)
+        tmp = methodToCall()
+
+        for i in range(len(self.fieldsToHide)):
+            self.field[self.fieldsToHide[i]].hide()
+            self.fieldLabel[self.fieldsToHide[i]].hide()
+        for i in range(len(self.fieldsToShow)):
+            self.field[self.fieldsToShow[i]].show()
+            self.fieldLabel[self.fieldsToShow[i]].show()
+        for i in range(len(self.choosersToHide)):
+            self.chooser[self.choosersToHide[i]].hide()
+            self.chooserLabel[self.choosersToHide[i]].hide()
+        for i in range(len(self.choosersToShow)):
+            self.chooser[self.choosersToShow[i]].show()
+            self.chooserLabel[self.choosersToShow[i]].show()
     def select_default_parameters_harm_compl(self):
    
         field = []
@@ -169,7 +227,7 @@ class generateSoundDialog(QDialog):
         field.append(50)
     
         fieldLabel.append(self.tr("Duration (ms)"))
-        field.append(180)
+        field.append(980)
     
         fieldLabel.append(self.tr("Ramp (ms)"))
         field.append(10)
@@ -421,60 +479,104 @@ class generateSoundDialog(QDialog):
             
         ## else:
         ##     self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("Low Stop")), self.sndPrm['fieldLabel'].index(self.tr("High Stop"))])
+    def select_default_parameters_fm_tone(self):
 
-    def setDefaultParameters(self):
+        field = []
+        fieldLabel = []
+        chooser = []
+        chooserLabel = []
+        chooserOptions = []
+
+        fieldLabel.append(self.tr("Carrier Frequency (Hz)"))
+        field.append(1000)    
+
+        fieldLabel.append(self.tr("Modulation Frequency (Hz)"))
+        field.append(40)
+
+        fieldLabel.append(self.tr("Modulation Index"))
+        field.append(1)
+
+        fieldLabel.append(self.tr("Carrier Phase (radians)"))
+        field.append(0)    
+
+        fieldLabel.append(self.tr("Duration (ms)"))
+        field.append(980)    
+
+        fieldLabel.append(self.tr("Ramp (ms)"))
+        field.append(10)    
+
+        fieldLabel.append(self.tr("Level (dB SPL)"))
+        field.append(65)    
+
+
+        chooserOptions.append([self.tr("Right"), self.tr("Left"), self.tr("Both")])
+        chooserLabel.append(self.tr("Ear:"))
+        chooser.append(self.tr("Both"))
+
+        x = {}
+        x['nFields'] = len(fieldLabel)
+        x['nChoosers'] = len(chooserLabel)
+        x['field'] = field
+        x['fieldLabel'] = fieldLabel
+        x['chooser'] = chooser
+        x['chooserLabel'] = chooserLabel
+        x['chooserOptions'] =  chooserOptions
+
+        return x
     
-        self.field = list(range(self.sndPrm['nFields']))
-        self.fieldLabel = list(range(self.sndPrm['nFields']))
-        fieldLabelColumn = 0
-        fieldColumn = 1
-        chooserLabelColumn = 2
-        chooserColumn = 3
-        fshift = self.nrows
-        for f in range(self.sndPrm['nFields']):
-            self.fieldLabel[f] = QLabel(self.tr(self.sndPrm['fieldLabel'][f]))
-            self.grid_0.addWidget(self.fieldLabel[f], f+fshift, fieldLabelColumn)
-            self.field[f] = QLineEdit()
-            self.field[f].setText(str(self.sndPrm['field'][f]))
-            self.field[f].setValidator(QDoubleValidator(self))
-            self.grid_0.addWidget(self.field[f], f+fshift, fieldColumn)
-         
-        self.chooser = list(range(self.sndPrm['nChoosers']))
-        self.chooserLabel = list(range(self.sndPrm['nChoosers']))
-        self.chooserOptions = list(range(self.sndPrm['nChoosers']))
-        for c in range(self.sndPrm['nChoosers']):
-            self.chooserLabel[c] = QLabel(self.tr(self.sndPrm['chooserLabel'][c]))
-            self.grid_1.addWidget(self.chooserLabel[c], c, chooserLabelColumn)
-            self.chooserOptions[c] = self.sndPrm['chooserOptions'][c]
-            self.chooser[c] = QComboBox()  
-            self.chooser[c].addItems(self.chooserOptions[c])
-            self.chooser[c].setCurrentIndex(self.chooserOptions[c].index(self.sndPrm['chooser'][c]))
-            self.grid_1.addWidget(self.chooser[c], c, chooserColumn)
-        for c in range(len(self.chooser)):
-            self.chooser[c].activated[str].connect(self.onChooserChange)
-            self.onChooserChange()
-        self.sndPrm['nFields'] = len(self.field)
-        self.sndPrm['nChoosers'] = len(self.chooser)
+    def get_fields_to_hide_fm_tone(self):
+        pass
 
-  
-    def onChooserChange(self):
-        self.fieldsToHide = []; self.fieldsToShow = []
-        self.choosersToHide = []; self.choosersToShow = [];
-        methodToCall = getattr(self, "get_fields_to_hide_" + self.execString)
-        tmp = methodToCall()
+    def select_default_parameters_am_tone(self):
 
-        for i in range(len(self.fieldsToHide)):
-            self.field[self.fieldsToHide[i]].hide()
-            self.fieldLabel[self.fieldsToHide[i]].hide()
-        for i in range(len(self.fieldsToShow)):
-            self.field[self.fieldsToShow[i]].show()
-            self.fieldLabel[self.fieldsToShow[i]].show()
-        for i in range(len(self.choosersToHide)):
-            self.chooser[self.choosersToHide[i]].hide()
-            self.chooserLabel[self.choosersToHide[i]].hide()
-        for i in range(len(self.choosersToShow)):
-            self.chooser[self.choosersToShow[i]].show()
-            self.chooserLabel[self.choosersToShow[i]].show()
+        field = []
+        fieldLabel = []
+        chooser = []
+        chooserLabel = []
+        chooserOptions = []
+
+        fieldLabel.append(self.tr("Frequency (Hz)"))
+        field.append(1000)    
+
+        fieldLabel.append(self.tr("AM Frequency (Hz)"))
+        field.append(10)
+
+        fieldLabel.append(self.tr("AM Depth"))
+        field.append(1)
+
+        fieldLabel.append(self.tr("Carrier Phase (radians)"))
+        field.append(0)    
+
+        fieldLabel.append(self.tr("Modulation Phase (radians)"))
+        field.append(0)    
+
+        fieldLabel.append(self.tr("Duration (ms)"))
+        field.append(980)    
+
+        fieldLabel.append(self.tr("Ramp (ms)"))
+        field.append(10)    
+
+        fieldLabel.append(self.tr("Level (dB SPL)"))
+        field.append(65)    
+
+
+        chooserOptions.append([self.tr("Right"), self.tr("Left"), self.tr("Both")])
+        chooserLabel.append(self.tr("Ear:"))
+        chooser.append(self.tr("Both"))
+
+        x = {}
+        x['nFields'] = len(fieldLabel)
+        x['nChoosers'] = len(chooserLabel)
+        x['field'] = field
+        x['fieldLabel'] = fieldLabel
+        x['chooser'] = chooser
+        x['chooserLabel'] = chooserLabel
+        x['chooserOptions'] =  chooserOptions
+
+        return x
+    
+    def get_fields_to_hide_am_tone(self):
+        pass
 
         
     def select_default_parameters_silence(self):

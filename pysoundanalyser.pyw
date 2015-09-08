@@ -161,6 +161,12 @@ class applicationWindow(QMainWindow):
         self.generateHarmComplAction = QAction(self.tr('Harmonic Complex'), self)
         self.generateMenu.addAction(self.generateHarmComplAction)
         self.generateHarmComplAction.triggered.connect(self.onClickGenerateHarmCompl)
+        self.generateAMToneAction = QAction(self.tr('AM Tone'), self)
+        self.generateMenu.addAction(self.generateAMToneAction)
+        self.generateAMToneAction.triggered.connect(self.onClickGenerateAMTone)
+        self.generateFMToneAction = QAction(self.tr('FM Tone'), self)
+        self.generateMenu.addAction(self.generateFMToneAction)
+        self.generateFMToneAction.triggered.connect(self.onClickGenerateFMTone)
         self.generateNoiseAction = QAction(self.tr('Noise'), self)
         self.generateMenu.addAction(self.generateNoiseAction)
         self.generateNoiseAction.triggered.connect(self.onClickGenerateNoise)
@@ -958,12 +964,26 @@ class applicationWindow(QMainWindow):
                 ear = 'Left'
             elif ear == self.tr('Both'):
                 ear = 'Both'
-            if dialog.currNoiseType == self.tr('white'):
+            if dialog.currNoiseType == self.tr('White'):
                 thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
-            elif dialog.currNoiseType == self.tr('pink'):
+            elif dialog.currNoiseType == self.tr('Pink'):
                 refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
                 thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
                 thisNoise = sndlib.makePinkRef(thisNoise, fs, refHz)
+            elif dialog.currNoiseType == self.tr('Red'):
+                refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.makeRedRef(thisNoise, fs, refHz)
+            elif dialog.currNoiseType == self.tr('Blue'):
+                refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.makeBlueRef(thisNoise, fs, refHz)
+            elif dialog.currNoiseType == self.tr('Violet'):
+                refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.makeVioletRef(thisNoise, fs, refHz)
+
+
 
             if ear == 'Right' or ear == 'Left':
                 thisSnd = {}
@@ -1211,7 +1231,59 @@ class applicationWindow(QMainWindow):
                 self.stimulusCorrect = self.stimulusCorrect + noise 
           
             thisSound = self.stimulusCorrect
-            self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)           
+            self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
+
+    def onClickGenerateAMTone(self):
+        dialog = generateSoundDialog(self, "AM Tone")
+        if dialog.exec_():
+
+            for i in range(dialog.sndPrm['nFields']):
+                dialog.sndPrm['field'][i] = self.currLocale.toDouble(dialog.field[i].text())[0]
+            for i in range(dialog.sndPrm['nChoosers']):
+                dialog.sndPrm['chooser'][i] = dialog.chooser[i].currentText()
+            
+            label = dialog.soundLabelWidget.text()
+            fs = self.currLocale.toInt(dialog.sampRateWidget.text())[0]
+            freq            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Frequency (Hz)"))]
+            AMFreq            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("AM Frequency (Hz)"))]
+            AMDepth            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("AM Depth"))]
+            carrPhase            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Carrier Phase (radians)"))]
+            modPhase            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Modulation Phase (radians)"))]
+            duration            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Duration (ms)"))]
+            ramp            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Ramp (ms)"))]
+            level            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Level (dB SPL)"))]            
+            channel           = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Ear:"))]
+            
+            thisSound = sndlib.AMTone(frequency=freq, AMFreq=AMFreq, AMDepth=AMDepth, phase=carrPhase, AMPhase=modPhase, level=level,
+            duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+            #thisSound = self.stimulusCorrect
+            self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
+
+                        
+    def onClickGenerateFMTone(self):
+        dialog = generateSoundDialog(self, "FM Tone")
+        if dialog.exec_():
+
+            for i in range(dialog.sndPrm['nFields']):
+                dialog.sndPrm['field'][i] = self.currLocale.toDouble(dialog.field[i].text())[0]
+            for i in range(dialog.sndPrm['nChoosers']):
+                dialog.sndPrm['chooser'][i] = dialog.chooser[i].currentText()
+            
+            label = dialog.soundLabelWidget.text()
+            fs = self.currLocale.toInt(dialog.sampRateWidget.text())[0]
+            carrFreq            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Carrier Frequency (Hz)"))]
+            modFreq            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Modulation Frequency (Hz)"))]
+            modInd            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Modulation Index"))]
+            carrPhase            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Carrier Phase (radians)"))]
+            duration            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Duration (ms)"))]
+            ramp            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Ramp (ms)"))]
+            level            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Level (dB SPL)"))]            
+            channel           = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Ear:"))]
+            
+            thisSound = sndlib.FMTone(fc=carrFreq, fm=modFreq, mi=modInd, phase=carrPhase, level=level, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+            #thisSound = self.stimulusCorrect
+            self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
+
 
     def onClickGenerateSilence(self):
         dialog = generateSoundDialog(self, "Silence")

@@ -1,7 +1,3 @@
-Remove all button
-Make silence
-FM tone
-AM tone
 Threaded player
 automatic player recognition
 recording

@@ -40,7 +40,7 @@ class generateNoiseDialog(QDialog):
         # Noise Type
         noiseTypeLabel = QLabel(self.tr('Noise Type: '))
         self.noiseTypeChooser = QComboBox()
-        self.noiseTypeChooser.addItems([self.tr('white'), self.tr('pink')])
+        self.noiseTypeChooser.addItems([self.tr('White'), self.tr('Pink'), self.tr("Red"), self.tr("Blue"), self.tr("Violet")])
         self.noiseTypeChooser.setCurrentIndex(0)
         self.grid.addWidget(noiseTypeLabel, 0, 0)
         self.grid.addWidget(self.noiseTypeChooser, 0, 1)
@@ -52,7 +52,7 @@ class generateNoiseDialog(QDialog):
         self.grid.addWidget(self.noiseLabelWidget, 0, 3)
         # Noise Duration
         noiseDurationLabel = QLabel(self.tr('Duration (ms):'))
-        defaultDuration = 180
+        defaultDuration = 980
         self.noiseDurationWidget = QLineEdit(self.currLocale.toString(defaultDuration)) 
         self.noiseDurationWidget.setValidator(QDoubleValidator(self))
         self.grid.addWidget(noiseDurationLabel, 1, 0)
@@ -85,7 +85,7 @@ class generateNoiseDialog(QDialog):
         self.noiseEarChooser.setCurrentIndex(0)
         self.grid.addWidget(noiseEarLabel, 3, 2)
         self.grid.addWidget(self.noiseEarChooser, 3, 3)
-        self.currNoiseType = self.tr('white')
+        self.currNoiseType = self.tr('White')
        
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
                                      QDialogButtonBox.Cancel)
@@ -102,16 +102,16 @@ class generateNoiseDialog(QDialog):
         prevNoiseType = self.currNoiseType
         self.currNoiseType = self.noiseTypeChooser.currentText()
         if self.currNoiseType != prevNoiseType:
-            if prevNoiseType == self.tr('white'):
+            if prevNoiseType == self.tr('White'):
                 pass
-            elif prevNoiseType == self.tr('pink'):
+            elif prevNoiseType in [self.tr('Pink'), self.tr("Red"), self.tr("Blue"), self.tr("Violet")]:
                 self.grid.removeWidget(self.reLabel)
                 self.reLabel.setParent(None)
                 self.grid.removeWidget(self.reWidget)
                 self.reWidget.setParent(None)
 
                 
-            if self.currNoiseType == self.tr('pink'):
+            if self.currNoiseType in [self.tr('Pink'), self.tr("Red"), self.tr("Blue"), self.tr("Violet")]:
                 self.reLabel = QLabel(self.tr('re. (Hz): '))
                 defaultRe = 1000
                 self.reWidget = QLineEdit(self.currLocale.toString(defaultRe)) 

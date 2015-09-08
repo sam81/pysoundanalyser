@@ -3,8 +3,6 @@ Requirements:
 - python
 - numpy, 
 - matplotlib, 
-- scikits.audiolab: http://www.ar.media.kyoto-u.ac.jp/members/david/softwares/audiolab/sphinx/index.html
-- scikits.samplerate: http://www.ar.media.kyoto-u.ac.jp/members/david/softwares/samplerate/sphinx/index.html
 - pyqt4
 
 On Windows:

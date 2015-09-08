@@ -3022,6 +3022,67 @@ def makePink(sig, fs):
     
     return sig
 
+def makeBlueRef(sig, fs, refHz):
+    """
+    Convert a white noise into a blue noise.
+
+    The spectrum level of the blue noise at the frequency 'refHz'
+    will be equal to the spectrum level of the white noise input
+    to the function.
+
+    Parameters
+    ----------
+    sig : array of floats
+        The white noise to be turned into a blue noise.
+    fs : int
+        Sampling frequency of the sound.
+    refHz : int
+        Reference frequency in Hz. The amplitude of the other
+        frequencies will be scaled with respect to the amplitude
+        of this frequency.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    Examples
+    --------
+     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
+     ...     channel='Both', fs=48000, maxLevel=100)
+     >>> noise = makeBlueRef(sig=noise, fs=48000, refHz=1000)
+    
+    """
+    
+    nSamples = len(sig[:,0])
+    ref = 1 + (refHz * nSamples/fs)
+
+    x = rfft(sig[:,0])
+    idx = arange(1, len(x))
+    mag = zeros(len(x))
+    mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*idx)
+    mag[0] = abs(x[0])
+    ph = angle(x)
+    x = mag * (cos(ph) + 1j * sin(ph))
+    
+    sig0 = irfft(x)
+
+
+    x = rfft(sig[:,1])
+    idx = arange(1, len(x))
+    mag = zeros(len(x))
+    mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*idx)
+    mag[0] = abs(x[0])
+    ph = angle(x)
+    x = mag * (cos(ph) + 1j * sin(ph))
+
+    sig1 = irfft(x)
+
+    sig[:, 0] = sig0
+    sig[:, 1] = sig1
+    
+    return sig
+
 
 def makePinkRef(sig, fs, refHz):
     """
@@ -3073,6 +3134,128 @@ def makePinkRef(sig, fs, refHz):
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref/idx)
+    mag[0] = abs(x[0])
+    ph = angle(x)
+    x = mag * (cos(ph) + 1j * sin(ph))
+
+    sig1 = irfft(x)
+
+    sig[:, 0] = sig0
+    sig[:, 1] = sig1
+    
+    return sig
+
+def makeRedRef(sig, fs, refHz):
+    """
+    Convert a white noise into a red noise.
+
+    The spectrum level of the red noise at the frequency 'refHz'
+    will be equal to the spectrum level of the white noise input
+    to the function.
+
+    Parameters
+    ----------
+    sig : array of floats
+        The white noise to be turned into a red noise.
+    fs : int
+        Sampling frequency of the sound.
+    refHz : int
+        Reference frequency in Hz. The amplitude of the other
+        frequencies will be scaled with respect to the amplitude
+        of this frequency.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    Examples
+    --------
+     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
+     ...     channel='Both', fs=48000, maxLevel=100)
+     >>> noise = makeRedRef(sig=noise, fs=48000, refHz=1000)
+    
+    """
+    
+    nSamples = len(sig[:,0])
+    ref = 1 + (refHz * nSamples/fs)
+
+    x = rfft(sig[:,0])
+    idx = arange(1, len(x))
+    mag = zeros(len(x))
+    mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref/(idx**2))
+    mag[0] = abs(x[0])
+    ph = angle(x)
+    x = mag * (cos(ph) + 1j * sin(ph))
+    
+    sig0 = irfft(x)
+
+
+    x = rfft(sig[:,1])
+    idx = arange(1, len(x))
+    mag = zeros(len(x))
+    mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref/(idx**2))
+    mag[0] = abs(x[0])
+    ph = angle(x)
+    x = mag * (cos(ph) + 1j * sin(ph))
+
+    sig1 = irfft(x)
+
+    sig[:, 0] = sig0
+    sig[:, 1] = sig1
+    
+    return sig
+
+def makeVioletRef(sig, fs, refHz):
+    """
+    Convert a white noise into a violet noise.
+
+    The spectrum level of the violet noise at the frequency 'refHz'
+    will be equal to the spectrum level of the white noise input
+    to the function.
+
+    Parameters
+    ----------
+    sig : array of floats
+        The white noise to be turned into a violet noise.
+    fs : int
+        Sampling frequency of the sound.
+    refHz : int
+        Reference frequency in Hz. The amplitude of the other
+        frequencies will be scaled with respect to the amplitude
+        of this frequency.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    Examples
+    --------
+     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
+     ...     channel='Both', fs=48000, maxLevel=100)
+     >>> noise = makeVioletRef(sig=noise, fs=48000, refHz=1000)
+    
+    """
+    
+    nSamples = len(sig[:,0])
+    ref = 1 + (refHz * nSamples/fs)
+
+    x = rfft(sig[:,0])
+    idx = arange(1, len(x))
+    mag = zeros(len(x))
+    mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*(idx**2))
+    mag[0] = abs(x[0])
+    ph = angle(x)
+    x = mag * (cos(ph) + 1j * sin(ph))
+    
+    sig0 = irfft(x)
+
+
+    x = rfft(sig[:,1])
+    idx = arange(1, len(x))
+    mag = zeros(len(x))
+    mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*(idx**2))
     mag[0] = abs(x[0])
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
