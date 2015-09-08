@@ -73,7 +73,7 @@ class generateNoiseDialog(QDialog):
         self.grid.addWidget(self.noiseLevelWidget, 2, 1)
         #Noise Sampling Rate
         sampRateLabel = QLabel(self.tr('Sampling Rate'))
-        defaultSampRate = 44100
+        defaultSampRate = 48000
         self.sampRateWidget = QLineEdit(self.currLocale.toString(defaultSampRate)) 
         self.sampRateWidget.setValidator(QIntValidator(self))
         self.grid.addWidget(sampRateLabel, 3, 0)

@@ -19,12 +19,13 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QMessageBox
+    from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLineEdit, QMessageBox
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QMessageBox
+    from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLineEdit, QMessageBox
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
+    from PyQt5.QtGui import QIntValidator
     from PyQt5.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QMessageBox
 
 class resampleDialog(QDialog):

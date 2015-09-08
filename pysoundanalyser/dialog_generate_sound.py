@@ -45,11 +45,13 @@ class generateSoundDialog(QDialog):
 
         if sndType == "Harmonic Complex":
             self.execString = "harm_compl"
+        elif sndType == "Silence":
+            self.execString = "silence"
 
         self.nrows = 0
         #SOUND LABEL
         soundLabelLabel = QLabel(self.tr('Sound Label: '))
-        self.soundLabelWidget = QLineEdit(self.tr('Harmonic Complex'))
+        self.soundLabelWidget = QLineEdit(self.tr(sndType))
         self.grid_0.addWidget(soundLabelLabel, self.nrows, 0)
         self.grid_0.addWidget(self.soundLabelWidget, self.nrows, 1)
         self.nrows = self.nrows + 1
@@ -201,7 +203,7 @@ class generateSoundDialog(QDialog):
         chooserOptions.append([self.tr("Right"), self.tr("Left"), self.tr("Both"), self.tr("Odd Left"), self.tr("Odd Right")])
         chooserLabel.append(self.tr("Ear:"))
         chooser.append(self.tr("Both"))
-        chooserOptions.append([self.tr("Sinusoid"), self.tr("Narrowband Noise"), self.tr("IRN"), self.tr("Huggins Pitch"), self.tr("Simple Dichotic"), self.tr("Narrowband Noise 2")])
+        chooserOptions.append([self.tr("Sinusoid"), self.tr("Narrowband Noise"), self.tr("IRN"), self.tr("Huggins Pitch")])
         chooserLabel.append(self.tr("Type:"))
         chooser.append(self.tr("Sinusoid"))
         chooserOptions.append([self.tr("Sine"), self.tr("Cosine"), self.tr("Alternating"), self.tr("Schroeder"), self.tr("Random")])
@@ -210,18 +212,25 @@ class generateSoundDialog(QDialog):
         chooserOptions.append([self.tr("White"), self.tr("Pink"), self.tr("None")])
         chooserLabel.append(self.tr("Noise Type:"))
         chooser.append(self.tr("White"))
+
+        chooserOptions.append([self.tr("White"), self.tr("Pink")])
+        chooserLabel.append(self.tr("Dichotic Noise Type:"))
+        chooser.append(self.tr("White"))
         chooserOptions.append([self.tr("Add Same"), self.tr("Add Original")])
         chooserLabel.append(self.tr("IRN Type:"))
         chooser.append(self.tr("Add Same"))
         chooserOptions.append([self.tr("NoSpi"), self.tr("NpiSo")])
         chooserLabel.append(self.tr("Phase relationship:"))
         chooser.append(self.tr("NoSpi"))
-        chooserOptions.append([self.tr("IPD"), self.tr("ITD")])
+        chooserOptions.append([self.tr("IPD Linear"), self.tr("IPD Stepped"), self.tr("ITD")])
         chooserLabel.append(self.tr("Dichotic Difference:"))
-        chooser.append( self.tr("IPD"))
+        chooser.append( self.tr("IPD Stepped"))
         chooserOptions.append([self.tr("Harmonic"), self.tr("Harmonic Stretched")])
         chooserLabel.append(self.tr("Harmonicity:"))
         chooser.append(self.tr("Harmonic"))
+        chooserOptions.append([self.tr("Hz"), self.tr("Cent"), self.tr("ERB")])
+        chooserLabel.append(self.tr("Bandwidth Unit:"))
+        chooser.append(self.tr("Hz"))
    
         x = {}
         x['nFields'] = len(fieldLabel)
@@ -248,6 +257,8 @@ class generateSoundDialog(QDialog):
             self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Harmonic Level (dB SPL)"))]
             self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("IRN Type:")),
                                      self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")),
+                                     self.sndPrm['chooserLabel'].index(self.tr("Bandwidth Unit:")),
+                                     self.sndPrm['chooserLabel'].index(self.tr("Dichotic Noise Type:")), #white, pink
                                      self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:"))]
             self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Ear:")),
                                      self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
@@ -265,14 +276,16 @@ class generateSoundDialog(QDialog):
                                    self.sndPrm['fieldLabel'].index(self.tr("Harmonic Level (dB SPL)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Component Level (dB SPL)"))]
             self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Spectrum Level (dB SPL)"))]
+                                self.sndPrm['fieldLabel'].index(self.tr("Spectrum Level (dB SPL)"))]
             self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
                                      self.sndPrm['chooserLabel'].index(self.tr("IRN Type:")),
                                      self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
                                      self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:"))] #IPD, ITD
             self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Ear:")),
-                                     self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
-                                     self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
+                                    self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
+                                    self.sndPrm['chooserLabel'].index(self.tr("Dichotic Noise Type:")), #white, pink
+                                    self.sndPrm['chooserLabel'].index(self.tr("Bandwidth Unit:")),
+                                    self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
 
         elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","IRN",""):
             self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Low Harmonic")),
@@ -294,9 +307,11 @@ class generateSoundDialog(QDialog):
                                      self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
                                      self.sndPrm['chooserLabel'].index(self.tr("IRN Type:"))]
             self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
-                                     self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
-                                     self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:")), #IPD, ITD
-                                     self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
+                                    self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
+                                    self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:")), #IPD, ITD
+                                    self.sndPrm['chooserLabel'].index(self.tr("Bandwidth Unit:")),
+                                    self.sndPrm['chooserLabel'].index(self.tr("Dichotic Noise Type:")), #white, pink
+                                    self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
                           
                           
         elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Huggins Pitch",""):
@@ -312,56 +327,67 @@ class generateSoundDialog(QDialog):
             self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
                                    self.sndPrm['fieldLabel'].index(self.tr("Spectrum Level (dB SPL)"))]
             self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
-                                     self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
+                                    self.sndPrm['chooserLabel'].index(self.tr("Bandwidth Unit:")),
+                                    self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:")), 
+                                    self.sndPrm['chooserLabel'].index(self.tr("Dichotic Noise Type:")), #white, pink
+                                    self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))] #Harmonic, equal cents spacing
             self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("Ear:")), #left, right, both, odd left, odd right
                                      self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
-                                     self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
                                      self.sndPrm['chooserLabel'].index(self.tr("IRN Type:")),
                                      self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:"))] #IPD, ITD
-            
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic",""):
-            self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Iterations")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Gain")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Harmonic Level (dB SPL)")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Spectrum Level (dB SPL)")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Narrow Band Component Level (dB SPL)"))]
-            self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
-                                   self.sndPrm['fieldLabel'].index(self.tr("Component Level (dB SPL)"))]
-            if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:",""))].currentText() == QApplication.translate("","IPD",""):
-                self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
-                self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
+            if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:",""))].currentText() in [QApplication.translate("","IPD Linear",""), QApplication.translate("","IPD Stepped","")]:
+                 self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
+                 self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
             elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:",""))].currentText() == QApplication.translate("","ITD",""):
-                self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
-                self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
-                self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
-                                         self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:")), #IPD, ITD
-                                         self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))]
-                self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("Ear:")), #left, right, both, odd left, odd right
-                                         self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
-                                         self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
-                                         self.sndPrm['chooserLabel'].index(self.tr("IRN Type:"))]
-        elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Narrowband Noise 2",""):
-            self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("Iterations")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("Gain")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("Harmonic Level (dB SPL)")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("Spectrum Level (dB SPL)")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))]
-            self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("Narrow Band Component Level (dB SPL)")),
-                                 self.sndPrm['fieldLabel'].index(self.tr("Component Level (dB SPL)"))]
+                 self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
+                 self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
+
+            
+        ## elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic",""):
+        ##     self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
+        ##                            self.sndPrm['fieldLabel'].index(self.tr("Iterations")),
+        ##                            self.sndPrm['fieldLabel'].index(self.tr("Gain")),
+        ##                            self.sndPrm['fieldLabel'].index(self.tr("Harmonic Level (dB SPL)")),
+        ##                            self.sndPrm['fieldLabel'].index(self.tr("Spectrum Level (dB SPL)")),
+        ##                            self.sndPrm['fieldLabel'].index(self.tr("Narrow Band Component Level (dB SPL)"))]
+        ##     self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
+        ##                            self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
+        ##                            self.sndPrm['fieldLabel'].index(self.tr("Component Level (dB SPL)"))]
+        ##     if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:",""))].currentText() == QApplication.translate("","IPD",""):
+        ##         self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
+        ##         self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
+        ##     elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Dichotic Difference:",""))].currentText() == QApplication.translate("","ITD",""):
+        ##         self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)"))])
+        ##         self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))])
+        ##         self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
+        ##                                  self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:")), #IPD, ITD
+        ##                                  self.sndPrm['chooserLabel'].index(self.tr("Bandwidth Unit:")),
+        ##                                  self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))]
+        ##         self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("Ear:")), #left, right, both, odd left, odd right
+        ##                                  self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
+        ##                                  self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
+        ##                                  self.sndPrm['chooserLabel'].index(self.tr("Dichotic Noise Type:")), #white, pink
+        ##                                  self.sndPrm['chooserLabel'].index(self.tr("IRN Type:"))]
+        ## elif self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Narrowband Noise 2",""):
+        ##     self.fieldsToHide = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Hz)")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("Iterations")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("Gain")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("Harmonic Level (dB SPL)")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("Spectrum Level (dB SPL)")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("IPD (radians)")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("ITD (micro s)"))]
+        ##     self.fieldsToShow = [self.sndPrm['fieldLabel'].index(self.tr("Bandwidth (Cents)")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("Spacing (Cents)")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("Narrow Band Component Level (dB SPL)")),
+        ##                          self.sndPrm['fieldLabel'].index(self.tr("Component Level (dB SPL)"))]
                            
-            self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
-                                   self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))]
-            self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("Ear:")), #left, right, both, odd left, odd right
-                                   self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:")),
-                                   self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
-                                   self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
-                                   self.sndPrm['chooserLabel'].index(self.tr("IRN Type:"))]
+        ##     self.choosersToShow = [self.sndPrm['chooserLabel'].index(self.tr("Phase relationship:")), #NoSpi, NpiSo
+        ##                            self.sndPrm['chooserLabel'].index(self.tr("Harmonicity:"))]
+        ##     self.choosersToHide = [self.sndPrm['chooserLabel'].index(self.tr("Ear:")), #left, right, both, odd left, odd right
+        ##                            self.sndPrm['chooserLabel'].index(self.tr("Dichotic Difference:")),
+        ##                            self.sndPrm['chooserLabel'].index(self.tr("Phase:")), #sine cos schroeder, etc
+        ##                            self.sndPrm['chooserLabel'].index(self.tr("Noise Type:")), #white, pink
+        ##                            self.sndPrm['chooserLabel'].index(self.tr("IRN Type:"))]
                 
         if self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Harmonicity:",""))].currentText() == QApplication.translate("","Harmonic",""):
             self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("Harmonic Spacing (Cents)")),
@@ -390,11 +416,11 @@ class generateSoundDialog(QDialog):
                                       self.sndPrm['fieldLabel'].index(self.tr("No. 2 S. Level (dB SPL)"))])
 
         
-        if (self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic","") or QApplication.translate("","Narrowband Noise 2","")):
-            self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("Low Stop")), self.sndPrm['fieldLabel'].index(self.tr("High Stop"))])
+        ## if (self.chooser[self.sndPrm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic","") or QApplication.translate("","Narrowband Noise 2","")):
+        ##     self.fieldsToHide.extend([self.sndPrm['fieldLabel'].index(self.tr("Low Stop")), self.sndPrm['fieldLabel'].index(self.tr("High Stop"))])
             
-        else:
-            self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("Low Stop")), self.sndPrm['fieldLabel'].index(self.tr("High Stop"))])
+        ## else:
+        ##     self.fieldsToShow.extend([self.sndPrm['fieldLabel'].index(self.tr("Low Stop")), self.sndPrm['fieldLabel'].index(self.tr("High Stop"))])
 
     def setDefaultParameters(self):
     
@@ -451,3 +477,32 @@ class generateSoundDialog(QDialog):
             self.chooserLabel[self.choosersToShow[i]].show()
 
         
+    def select_default_parameters_silence(self):
+   
+        field = []
+        fieldLabel = []
+        chooser = []
+        chooserLabel = []
+        chooserOptions = []
+    
+        fieldLabel.append( self.tr("Duration (ms)"))
+        field.append(1000)    
+
+       
+        chooserOptions.append([self.tr("Right"), self.tr("Left"), self.tr("Both")])
+        chooserLabel.append(self.tr("Ear:"))
+        chooser.append(self.tr("Both"))
+
+        x = {}
+        x['nFields'] = len(fieldLabel)
+        x['nChoosers'] = len(chooserLabel)
+        x['field'] = field
+        x['fieldLabel'] = fieldLabel
+        x['chooser'] = chooser
+        x['chooserLabel'] = chooserLabel
+        x['chooserOptions'] =  chooserOptions
+
+        return x
+    
+    def get_fields_to_hide_silence(self):
+        pass

@@ -79,7 +79,7 @@ class generateSinusoidDialog(QDialog):
         self.grid.addWidget(self.soundLevelWidget, 5, 1)
         #Sound Sampling Rate
         sampRateLabel = QLabel(self.tr('Sampling Rate'))
-        defaultSampRate = 44100
+        defaultSampRate = 48000
         self.sampRateWidget = QLineEdit(self.currLocale.toString(defaultSampRate)) 
         self.sampRateWidget.setValidator(QIntValidator(self))
         self.grid.addWidget(sampRateLabel, 6, 0)

@@ -76,7 +76,8 @@ def excepthook(except_type, except_val, tbck):
 if platform.system() == 'Windows':
     import winsound
 
-import pysoundanalyser.pysndlib as sndlib
+#import pysoundanalyser.pysndlib as sndlib
+from pysoundanalyser import sndlib
 from pysoundanalyser.utility_functions import*
 #from pysoundanalyser.utility_generate_stimuli import*
 import pysoundanalyser.random_id as random_id
@@ -157,15 +158,19 @@ class applicationWindow(QMainWindow):
 
         #GENERATE MENU
         self.generateMenu = self.menubar.addMenu(self.tr('&Generate'))
-        self.generateNoiseAction = QAction(self.tr('Noise'), self)
-        self.generateMenu.addAction(self.generateNoiseAction)
-        self.generateNoiseAction.triggered.connect(self.onClickGenerateNoise)
-        self.generateSinusoidAction = QAction(self.tr('Sinusoid'), self)
-        self.generateMenu.addAction(self.generateSinusoidAction)
-        self.generateSinusoidAction.triggered.connect(self.onClickGenerateSinusoid)
         self.generateHarmComplAction = QAction(self.tr('Harmonic Complex'), self)
         self.generateMenu.addAction(self.generateHarmComplAction)
         self.generateHarmComplAction.triggered.connect(self.onClickGenerateHarmCompl)
+        self.generateNoiseAction = QAction(self.tr('Noise'), self)
+        self.generateMenu.addAction(self.generateNoiseAction)
+        self.generateNoiseAction.triggered.connect(self.onClickGenerateNoise)
+        self.generateSilenceAction = QAction(self.tr('Silence'), self)
+        self.generateMenu.addAction(self.generateSilenceAction)
+        self.generateSilenceAction.triggered.connect(self.onClickGenerateSilence)
+        self.generateSinusoidAction = QAction(self.tr('Sinusoid'), self)
+        self.generateMenu.addAction(self.generateSinusoidAction)
+        self.generateSinusoidAction.triggered.connect(self.onClickGenerateSinusoid)
+
         #PLOT MENU
         self.plotMenu = self.menubar.addMenu(self.tr('&Plot'))
         self.plotWaveformAction = QAction(self.tr('Waveform'), self)
@@ -495,8 +500,8 @@ class applicationWindow(QMainWindow):
         elif len(ids) == 2:
             snd1 = self.sndList[ids[0]]
             snd2 = self.sndList[ids[1]]
-            rms1 = sndlib.getRms(snd1['wave'])
-            rms2 = sndlib.getRms(snd2['wave'])
+            rms1 = sndlib.getRMS(snd1['wave'], channel=0)
+            rms2 = sndlib.getRMS(snd2['wave'], channel=0)
             dbDiff = 20*log10(rms1/rms2)
             if dbDiff >= 0:
                 w = '+'
@@ -682,8 +687,8 @@ class applicationWindow(QMainWindow):
         else:
             snd1 = self.sndList[ids[0]]
             snd2 = self.sndList[ids[1]]
-            rms1 = sndlib.getRms(snd1['wave'])
-            rms2 = sndlib.getRms(snd2['wave'])
+            rms1 = sndlib.getRMS(snd1['wave'], channel=0)
+            rms2 = sndlib.getRMS(snd2['wave'], channel=0)
             dbDiff = 20*log10(rms1/rms2)
             if dbDiff >= 0:
                 w = '+'
@@ -723,7 +728,7 @@ class applicationWindow(QMainWindow):
         msg = self.tr('')
         for i in range(len(ids)):
             selectedSound = ids[i]
-            rmsVals.append(sndlib.getRms(self.sndList[selectedSound]['wave']))
+            rmsVals.append(sndlib.getRMS(self.sndList[selectedSound]['wave'], channel=0))
             msg = self.tr('{0} {1} : {2} \n').format(msg, self.sndList[selectedSound]['label'], self.currLocale.toString(rmsVals[i])) 
         QMessageBox.information(self, self.tr('Root Mean Square'), msg)
       
@@ -1137,7 +1142,7 @@ class applicationWindow(QMainWindow):
             itd                 = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("ITD (micro s)"))]
             ipd                 = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("IPD (radians)"))]
             narrowbandCmpLevel  = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Narrow Band Component Level (dB SPL)"))]
-            iterations          = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Iterations"))]
+            iterations          = int(dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Iterations"))])
             gain                = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Gain"))]
             lowHarm             = int(dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Low Harmonic"))])
             highHarm            = int(dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("High Harmonic"))])
@@ -1163,37 +1168,30 @@ class applicationWindow(QMainWindow):
             harmType          = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Type:"))]
             harmPhase         = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Phase:"))]
             noiseType         = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Noise Type:"))]
+            dichoticNoiseType = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Dichotic Noise Type:"))]
             irnConfiguration  = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("IRN Type:"))]
             hugginsPhaseRel   = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Phase relationship:"))]
             dichoticDifference= dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Dichotic Difference:"))]
             harmonicity       = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Harmonicity:"))]
+            bandwidthUnit     = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Bandwidth Unit:"))]
 
             lowStop = 0.8
             highStop = 1.2
 
             if harmType == self.tr("Sinusoid"):
-                self.stimulusCorrect = sndlib.complexTone(F0, harmPhase, lowHarm, highHarm, stretch, harmonicLevel, duration, ramp, channel, fs, self.prm['pref']['maxLevel'])
+                self.stimulusCorrect = sndlib.complexTone(F0=F0, harmPhase=harmPhase, lowHarm=lowHarm, highHarm=highHarm, stretch=stretch, level=harmonicLevel, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
             elif harmType == self.tr("Narrowband Noise"):
-                self.stimulusCorrect = sndlib.harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, spectrumLevel, bandwidth, duration, ramp, channel, fs, self.prm['pref']['maxLevel'])
+                self.stimulusCorrect = sndlib.harmComplFromNarrowbandNoise(F0=F0, lowHarm=lowHarm, highHarm=highHarm, level=spectrumLevel, bandwidth=bandwidth, bandwidthUnit=bandwidthUnit, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
             elif harmType == self.tr("IRN"):
                 delay = 1/float(F0)
-                self.stimulusCorrect = sndlib.makeIRN(delay, gain, iterations, irnConfiguration, spectrumLevel, duration, ramp, channel, fs, self.prm['pref']['maxLevel'])
+                self.stimulusCorrect = sndlib.makeIRN(delay=delay, gain=gain, iterations=iterations, configuration=irnConfiguration, spectrumLevel=spectrumLevel, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
             elif harmType == self.tr("Huggins Pitch"):
-                self.stimulusCorrect = sndlib.makeHuggins(F0, lowHarm, highHarm, spectrumLevel, bandwidth, hugginsPhaseRel, "White", duration, ramp, fs, self.prm['pref']['maxLevel'])
+                if dichoticDifference in [self.tr("IPD Linear"), self.tr("IPD Stepped")]:
+                    dichoticDifferenceValue = ipd
+                elif dichoticDifference == self.tr("ITD"):
+                    dichoticDifferenceValue = itd
+                self.stimulusCorrect = sndlib.makeHugginsPitch(F0=F0, lowHarm=lowHarm, highHarm=highHarm, spectrumLevel=spectrumLevel, bandwidth=bandwidth, bandwidthUnit=bandwidthUnit, dichoticDifference=dichoticDifference, dichoticDifferenceValue=dichoticDifferenceValue, phaseRelationship=hugginsPhaseRel, noiseType=dichoticNoiseType, duration=duration, ramp=ramp, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
                 channel = self.tr("Both")
-            elif harmType == self.tr("Simple Dichotic"):
-                self.stimulusCorrect = sndlib.makeSimpleDichotic(F0, lowHarm, highHarm, componentLevel, lowFreq, highFreq,
-                                                            spacingCents, bandwidthCents, hugginsPhaseRel, dichoticDifference,
-                                                            itd, ipd, 0, duration, ramp, fs, self.prm['pref']['maxLevel'])
-                channel = self.tr("Both")
-            elif harmType == self.tr("Narrowband Noise 2"):
-                self.stimulusCorrect = sndlib.makeSimpleDichotic(F0, lowHarm, highHarm, componentLevel, lowFreq, highFreq,
-                                                            spacingCents, bandwidthCents, hugginsPhaseRel, "Level",
-                                                            0, 0, narrowbandCmpLevel, duration, ramp, fs, self.prm['pref']['maxLevel'])
-                channel = self.tr("Both")
-        
-            if harmType != self.tr("Simple Dichotic") and harmType != self.tr("Narrowband Noise 2"):
-                self.stimulusCorrect = sndlib.fir2Filt(lowFreq*lowStopComplex, lowFreq, highFreq, highFreq*highStopComplex, self.stimulusCorrect, fs)
         
             if noiseType != self.tr("None"):
                 if channel == self.tr("Odd Left") or channel == self.tr("Odd Right"): #alternating harmonics, different noise to the two ears
@@ -1203,7 +1201,7 @@ class applicationWindow(QMainWindow):
                 else:
                     noise = sndlib.broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, channel, fs, self.prm['pref']['maxLevel'])
                 if noiseType == self.tr("Pink"):
-                    noise = sndlib.makePink(noise, self.prm)
+                    noise = sndlib.makePink(noise, fs)
                 noise1 = sndlib.fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, fs)
                 noise2 = sndlib.scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
                 noise2 = sndlib.fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, fs)
@@ -1213,13 +1211,34 @@ class applicationWindow(QMainWindow):
                 self.stimulusCorrect = self.stimulusCorrect + noise 
           
             thisSound = self.stimulusCorrect
+            self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)           
 
-            if channel in ['Right', 'Left']:
+    def onClickGenerateSilence(self):
+        dialog = generateSoundDialog(self, "Silence")
+        if dialog.exec_():
+
+            for i in range(dialog.sndPrm['nFields']):
+                dialog.sndPrm['field'][i] = self.currLocale.toDouble(dialog.field[i].text())[0]
+            for i in range(dialog.sndPrm['nChoosers']):
+                dialog.sndPrm['chooser'][i] = dialog.chooser[i].currentText()
+            
+            label = dialog.soundLabelWidget.text()
+            fs = self.currLocale.toInt(dialog.sampRateWidget.text())[0]
+            duration            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Duration (ms)"))]            
+            channel           = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Ear:"))]
+            
+            thisSound = sndlib.makeSilence(duration=duration, fs=fs)
+            #thisSound = self.stimulusCorrect
+            self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
+
+           
+    def setupNewSound(self, sndData, label, channel, fs):
+        if channel in ['Right', 'Left']:
                 thisSnd = {}
                 if channel == 'Right':
-                    thisSnd['wave'] = thisSound[:,1]
+                    thisSnd['wave'] = sndData[:,1]
                 elif channel == 'Left':
-                    thisSnd['wave'] = thisSound[:,0]
+                    thisSnd['wave'] = sndData[:,0]
                 thisSnd['fs'] = fs
                 #thisSnd['nBits'] = 0
                 thisSnd['chan'] = channel
@@ -1245,39 +1264,39 @@ class applicationWindow(QMainWindow):
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
-            if channel in ['Both', 'Odd Right', 'Odd Left']:
-                for i in range(2):
-                    thisSnd = {}
-                    if i == 0:
-                        thisSnd['wave'] = thisSound[:,1]
-                        thisSnd['chan'] = self.tr('Right')
+        if channel in ["Both", "Odd Right", "Odd Left"]:
+            for i in range(2):
+                thisSnd = {}
+                if i == 0:
+                    thisSnd['wave'] = sndData[:,1]
+                    thisSnd['chan'] = self.tr('Right')
+                else:
+                    thisSnd['wave'] = sndData[:,0]
+                    thisSnd['chan'] = self.tr('Left')
+                thisSnd['fs'] = fs
+                thisSnd['nSamples'] = len(thisSnd['wave'])
+                thisSnd['duration'] = thisSnd['nSamples'] / thisSnd['fs']
+                thisSnd['label'] = label
+                condSat = 0
+                while condSat == 0:
+                    tmp_id = random_id.random_id(5, 'alphanumeric')
+                    if tmp_id in self.sndList:
+                        condSat = 0
                     else:
-                        thisSnd['wave'] = thisSound[:,0]
-                        thisSnd['chan'] = self.tr('Left')
-                    thisSnd['fs'] = fs
-                    thisSnd['nSamples'] = len(thisSnd['wave'])
-                    thisSnd['duration'] = thisSnd['nSamples'] / thisSnd['fs']
-                    thisSnd['label'] = label
-                    condSat = 0
-                    while condSat == 0:
-                        tmp_id = random_id.random_id(5, 'alphanumeric')
-                        if tmp_id in self.sndList:
-                            condSat = 0
-                        else:
-                            condSat = 1
-                    self.sndList[tmp_id] = copy.copy(thisSnd)
-                    currCount = len(self.sndList)
-                    self.sndTableWidget.setRowCount(currCount)
-                    newItem = QTableWidgetItem(thisSnd['label'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-                    self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                    newItem = QTableWidgetItem(thisSnd['chan'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-                    self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                    self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
-                    self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
-           
- 
+                        condSat = 1
+                self.sndList[tmp_id] = copy.copy(thisSnd)
+                currCount = len(self.sndList)
+                self.sndTableWidget.setRowCount(currCount)
+                newItem = QTableWidgetItem(thisSnd['label'])
+                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                self.sndTableWidget.setItem(currCount-1, 0, newItem)
+                newItem = QTableWidgetItem(thisSnd['chan'])
+                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                self.sndTableWidget.setItem(currCount-1, 1, newItem)
+                self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
+                self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
+
+        
     def onAbout(self):
         QMessageBox.about(self, self.tr("About pysoundanalyser"),
                                 self.tr("""<b>Python Sound Analyser</b> <br>

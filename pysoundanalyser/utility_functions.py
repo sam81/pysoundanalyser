@@ -29,7 +29,8 @@ from numpy import sin, cos, pi, sqrt, abs, arange, floor, zeros, mean, concatena
 from numpy.fft import rfft, irfft, fft, ifft
 from scipy.signal import firwin2
 import copy
-import pysoundanalyser.pysndlib as sndlib
+#import pysoundanalyser.pysndlib as sndlib
+from pysoundanalyser import sndlib
 
 def pltColorFromQColor(qcolor):
     col = (qcolor.red()/255., qcolor.green()/255., qcolor.blue()/255.)
@@ -90,7 +91,7 @@ def getSpectrogram(sig, sampFreq, winLength, overlap, winType, poweroftwo):
         powerMatrix[:,i] = p
 
     timeInd = arange(0, len(sig), step)
-    timeArray = 1./sampFreq * (timeInd)
+    timeArray = 1/sampFreq * (timeInd)
     return powerMatrix, freqArray, timeArray
 
 
@@ -135,7 +136,7 @@ def getAutocorrelogram(sig, sampFreq, winLength, overlap, winType, maxLag, norma
         acfMatrix[:,i] = acf
 
     timeInd = arange(0, len(sig), step)
-    timeArray = 1./sampFreq * (timeInd)
+    timeArray = 1/sampFreq * (timeInd)
     return acfMatrix, lags, timeArray
             
 

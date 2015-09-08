@@ -1,4 +1,4 @@
 #!/bin/sh
 
-./mkupdate_pyqt4.sh
+./mkupdate.sh
 ./distbuild.sh 
