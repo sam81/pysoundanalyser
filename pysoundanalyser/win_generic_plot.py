@@ -71,7 +71,10 @@ class genericPlot(QMainWindow):
         self.labelFontWeight = self.prm['pref']['label_font_weight']
         self.labelFontStyle = self.prm['pref']['label_font_style']
         self.labelFontSize = self.prm['pref']['label_font_size']
-        self.labelFont = font_manager.FontProperties(family=self.labelFontFamily, weight=self.labelFontWeight, style= self.labelFontStyle, size=self.labelFontSize)
+        self.labelFont = font_manager.FontProperties(family=self.labelFontFamily,
+                                                     weight=self.labelFontWeight,
+                                                     style= self.labelFontStyle,
+                                                     size=self.labelFontSize)
         
         self.majorTickLength = self.prm['pref']['major_tick_length']
         self.majorTickWidth = self.prm['pref']['major_tick_width']
@@ -81,7 +84,10 @@ class genericPlot(QMainWindow):
         self.tickLabelFontWeight = self.prm['pref']['tick_label_font_weight']
         self.tickLabelFontStyle = self.prm['pref']['tick_label_font_style']
         self.tickLabelFontSize = self.prm['pref']['tick_label_font_size']
-        self.tickLabelFont = font_manager.FontProperties(family=self.tickLabelFontFamily, weight=self.tickLabelFontWeight, style= self.tickLabelFontStyle, size=self.tickLabelFontSize)
+        self.tickLabelFont = font_manager.FontProperties(family=self.tickLabelFontFamily,
+                                                         weight=self.tickLabelFontWeight,
+                                                         style= self.tickLabelFontStyle,
+                                                         size=self.tickLabelFontSize)
         self.xAxisLabel = ''
         self.yAxisLabel = ''
         self.dpi = self.prm['pref']['dpi']

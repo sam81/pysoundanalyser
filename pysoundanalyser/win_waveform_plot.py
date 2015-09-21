@@ -54,6 +54,7 @@ class waveformPlot(genericPlot):
     def __init__(self, parent, sound, prm):
         genericPlot.__init__(self, parent, prm)
         self.currLocale = self.parent().prm['data']['currentLocale']
+        #self.currLocale = prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.sound = sound
         self.lineCol = pltColorFromQColor(self.prm['pref']['lineColor1'])

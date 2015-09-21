@@ -23,7 +23,7 @@ Alpha Version of pysoundanalyser, a program for visualizing sounds
         'Topic :: Scientific/Engineering :: Bio-Informatics'
         ],
     license="GPL v3",
-    name="pysoundanalyser",
+    name="pysoundanalyser-pyqt4",
     url="https://bitbucket.org/samuele_c/pysoundanalyser",
     requires=['PyQt (>=4.8.4)', 'matplotlib (>=1.0.1)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
     packages=["pysoundanalyser"],

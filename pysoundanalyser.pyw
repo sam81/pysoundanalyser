@@ -46,6 +46,7 @@ from tempfile import mkstemp
 from pysoundanalyser.global_parameters import*
 from pysoundanalyser._version_info import*
 from pysoundanalyser.utilities_open_manual import*
+from pysoundanalyser.threaded_plotters import*
 __version__ = pysoundanalyser_version
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
@@ -119,7 +120,7 @@ class applicationWindow(QMainWindow):
         # main widget
         self.main_widget = QWidget(self)
         #MENU-----------------------------------
-
+        self.waveformPlotter = threadedWaveformPlot(self)
         self.menubar = self.menuBar()
         #FILE MENU
         self.fileMenu = self.menubar.addMenu(self.tr('&File'))
@@ -254,7 +255,7 @@ class applicationWindow(QMainWindow):
         
         #PLOT BUTTON
         plotButton = QPushButton(self.tr("Plot Waveform"), self)
-        plotButton.clicked.connect( self.onClickPlotButton)
+        plotButton.clicked.connect(self.onClickPlotButton)
         #RESAMPLE BUTTON
         resampleButton = QPushButton(self.tr("Resample"), self)
         resampleButton.clicked.connect(self.onClickResampleButton)
@@ -635,6 +636,7 @@ class applicationWindow(QMainWindow):
         for i in range(len(ids)):
            selectedSound = ids[i]
            waveformPlot(self, self.sndList[selectedSound], self.prm)
+           #self.waveformPlotter.plotWaveformThreaded(self.sndList[selectedSound], self.prm)
     def onClickSpectrumButton(self):
        ids = self.findSelectedItemIds()
        for i in range(len(ids)):
@@ -1374,7 +1376,7 @@ class applicationWindow(QMainWindow):
                                 self.tr("""<b>Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
                                 - build date: {1} <br>
-                                <p> Copyright &copy; 2010-2012 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
+                                <p> Copyright &copy; 2010-2015 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
                                 All rights reserved. <p>
                 This program is free software: you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by
