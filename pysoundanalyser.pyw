@@ -28,6 +28,7 @@ if pyqtversion == 4:
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
 elif pyqtversion == -4:
+    import PySide
     from PySide import QtGui, QtCore
     from PySide.QtGui import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 elif pyqtversion == 5:
@@ -1370,8 +1371,17 @@ class applicationWindow(QMainWindow):
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
-        
     def onAbout(self):
+        if pyqtversion in [4,5]:
+            qt_compiled_ver = QtCore.QT_VERSION_STR
+            qt_runtime_ver = QtCore.qVersion()
+            qt_pybackend_ver = QtCore.PYQT_VERSION_STR
+            qt_pybackend = "PyQt"
+        elif pyqtversion == -4:
+            qt_compiled_ver = QtCore.__version__
+            qt_runtime_ver = QtCore.qVersion()
+            qt_pybackend_ver = PySide.__version__
+            qt_pybackend = "PySide"
         QMessageBox.about(self, self.tr("About pysoundanalyser"),
                                 self.tr("""<b>Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
@@ -1390,9 +1400,7 @@ class applicationWindow(QMainWindow):
                 <p>
                 You should have received a copy of the GNU General Public License
                 along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
-                <p>Python {2} - Qt {3} - PyQt {4} on {5}""").format(__version__, self.prm['builddate'], platform.python_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR, platform.system()))
-    
-
+                <p>Python {2} - {3} {4} compiled against Qt {5}, and running with Qt {6} on {7}""").format(__version__, self.prm['builddate'], platform.python_version(), qt_pybackend, qt_pybackend_ver, qt_compiled_ver, qt_runtime_ver, platform.system()))
 
 
 def main(argv):
