@@ -36,7 +36,6 @@ elif pyqtversion == 5:
     from PyQt5.QtGui import QIcon
     from PyQt5.QtWidgets import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
-    
 import logging, signal
 from pysoundanalyser import qrc_resources
 
@@ -61,7 +60,6 @@ stderrFile = os.path.expanduser("~") +'/.local/share/data/pysoundanalyser/pysoun
 logging.basicConfig(filename=stderrFile,level=logging.DEBUG,)
 
 
-
 def excepthook(except_type, except_val, tbck):
     """ Show errors in message box"""
     # recover traceback
@@ -73,15 +71,11 @@ def excepthook(except_type, except_val, tbck):
     logMsg = timeStamp + ''.join(tb)
     logging.debug(logMsg)
 
-#__version__ = "2012.10.02"
-
 if platform.system() == 'Windows':
     import winsound
 
-#import pysoundanalyser.pysndlib as sndlib
 from pysoundanalyser import sndlib
 from pysoundanalyser.utility_functions import*
-#from pysoundanalyser.utility_generate_stimuli import*
 import pysoundanalyser.random_id as random_id
 from pysoundanalyser.win_waveform_plot import*
 from pysoundanalyser.win_spectrum_plot import*
@@ -98,7 +92,7 @@ from pysoundanalyser.dialog_apply_filter import*
 from pysoundanalyser.dialog_generate_sound import*
 from pysoundanalyser.dialog_generate_noise import*
 from pysoundanalyser.dialog_generate_sinusoid import*
-#from pysoundanalyser.dialog_get_font import*
+
 tmpprm = {}; tmpprm['data'] = {}
 tmpprm = global_parameters(tmpprm)
 tmpprm = get_prefs(tmpprm)
@@ -204,10 +198,13 @@ class applicationWindow(QMainWindow):
         #HELP MENU
         self.helpMenu = self.menubar.addMenu(self.tr('&Help'))
 
-        self.onShowManualPdfAction = QAction(self.tr('Manual'), self)
+        self.onShowManualHTMLAction = QAction(self.tr('Manual (html)'), self)
+        self.helpMenu.addAction(self.onShowManualHTMLAction)
+        self.onShowManualHTMLAction.triggered.connect(onShowManualHTML)
+
+        self.onShowManualPdfAction = QAction(self.tr('Manual (pdf)'), self)
         self.helpMenu.addAction(self.onShowManualPdfAction)
         self.onShowManualPdfAction.triggered.connect(onShowManualPdf)
-
         
         self.onAboutAction = QAction(self.tr('About pysoundanalyser'), self)
         self.helpMenu.addAction(self.onAboutAction)
@@ -325,7 +322,6 @@ class applicationWindow(QMainWindow):
         vbl3.addWidget(self.infoPane)
         vbl3.addStretch(1)
         grid = QGridLayout(self.main_widget)
-        #grid.addLayout(vbl1, 1, 1)
         grid.addLayout(vbl, 1, 1)
         grid.addWidget(self.sndTableWidget,1,2)
         grid.addLayout(vbl3,1,3)
@@ -1383,7 +1379,7 @@ class applicationWindow(QMainWindow):
             qt_pybackend_ver = PySide.__version__
             qt_pybackend = "PySide"
         QMessageBox.about(self, self.tr("About pysoundanalyser"),
-                                self.tr("""<b>Python Sound Analyser</b> <br>
+                                self.tr("""<b>pysoundanalyser - Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
                                 - build date: {1} <br>
                                 <p> Copyright &copy; 2010-2015 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 

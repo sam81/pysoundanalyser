@@ -30,7 +30,11 @@ elif pyqtversion == 5:
 import os
 
 def onShowManualPdf():
-    fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/manual/pysoundanalyser_manual.pdf'
+    fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/_build/latex/pysoundanalyser.pdf'
+    QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
+
+def onShowManualHTML():
+    fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/_build/html/index.html'
     QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
 
 

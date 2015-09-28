@@ -76,18 +76,29 @@ def main(argv):
     f.close()
 
 
-    # f = open('pysoundanalyser/doc/conf.py', 'r')
-    # ln = f.readlines()
-    # f.close()
-    # for i in range(len(ln)):
-    #     if ln[i].strip().split('=')[0].strip() == "version":
-    #         ln[i] = 'version = "' + gittag +'",\n'
-    #     if ln[i].strip().split('=')[0].strip() == "release":
-    #         ln[i] = 'release = "' + gittag + '",\n'
+    f = open('pysoundanalyser/doc/conf.py', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if ln[i].strip().split('=')[0].strip() == "version":
+            ln[i] = 'version = "' + gittag +'",\n'
+        if ln[i].strip().split('=')[0].strip() == "release":
+            ln[i] = 'release = "' + gittag + '",\n'
 
-    # f = open('pysoundanalyser/doc/conf.py', 'w')
-    # f.writelines(ln)
-    # f.close()
+    f = open('pysoundanalyser/doc/conf.py', 'w')
+    f.writelines(ln)
+    f.close()
+
+    f = open('pysoundanalyser.desktop', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if ln[i].strip().split('=')[0].strip() == "Version":
+            ln[i] = 'Version = ' + gittag +',\n'
+
+    f = open('pysoundanalyser.desktop', 'w')
+    f.writelines(ln)
+    f.close()
 
  
     subprocess.call('git commit -a -m"' + message+'"', shell=True)
