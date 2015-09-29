@@ -179,7 +179,7 @@ class preferencesDialog(QDialog):
         
         self.soundPrefWidget.setLayout(soundPrefGrid)
 
-        self.tabWidget.addTab(self.appPrefWidget, self.tr("Application&n"))
+        self.tabWidget.addTab(self.appPrefWidget, self.tr("Applicatio&n"))
         self.tabWidget.addTab(self.plotPrefWidget, self.tr("Plot&s"))
         self.tabWidget.addTab(self.signalPrefWidget, self.tr("Signa&l"))
         self.tabWidget.addTab(self.soundPrefWidget, self.tr("Soun&d"))
