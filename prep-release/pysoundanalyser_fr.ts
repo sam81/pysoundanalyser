@@ -1665,11 +1665,6 @@ Bits: {3}</source>
 <context>
     <name>preferencesDialog</name>
     <message>
-        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="182"/>
-        <source>Application&amp;n</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="183"/>
         <source>Plot&amp;s</source>
         <translation type="unfinished"></translation>
@@ -1767,6 +1762,11 @@ Bits: {3}</source>
     <message>
         <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="173"/>
         <source>Max Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="182"/>
+        <source>Applicatio&amp;n</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

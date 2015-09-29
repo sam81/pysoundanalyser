@@ -41,7 +41,7 @@ from pysoundanalyser import qrc_resources
 
 from numpy import sin, cos, pi, sqrt, abs, arange, zeros, mean, concatenate, convolve, angle, real, log2, log10, int_, linspace, repeat, ceil, unique, hamming, hanning, blackman, bartlett, round, transpose
 from numpy.fft import rfft, irfft, fft, ifft
-import scipy
+import scipy, time
 from tempfile import mkstemp
 from pysoundanalyser.global_parameters import*
 from pysoundanalyser._version_info import*
