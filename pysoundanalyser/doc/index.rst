@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 2
 
    intro
+   installation
    user_interface
 
 Indices and tables

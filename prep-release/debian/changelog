@@ -1,3 +1,9 @@
+pysoundanalyser (0.2.25) unstable; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 29 Sep 2015 18:56:00 +0100
+
 pysoundanalyser (0.2.24) unstable; urgency=low
 
   * New upstream release

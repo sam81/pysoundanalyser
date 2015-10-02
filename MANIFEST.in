@@ -6,3 +6,4 @@ include pysoundanalyser.desktop
 include INSTALL.txt
 include README.txt
 include TODO.txt
+include scripts/*
