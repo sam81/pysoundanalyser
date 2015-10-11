@@ -805,22 +805,22 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="63"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="62"/>
         <source>Delay Type: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="71"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="70"/>
         <source>Delay (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="78"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="77"/>
         <source>Sound Label: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="84"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="83"/>
         <source>Output Channel: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -835,17 +835,17 @@ Bits: {3}</source>
         <translation type="obsolete">G</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="105"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="104"/>
         <source>Concatenate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="87"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="86"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="87"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="86"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it_IT">
+<!DOCTYPE TS><TS version="2.0" language="it_IT" sourcelanguage="">
 <context>
     <name></name>
     <message>
@@ -920,22 +919,22 @@ Bits: {3}</source>
         <translation>Scambia i suoni</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="63"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="62"/>
         <source>Delay Type: </source>
         <translation>Tipo di intervallo:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="71"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="70"/>
         <source>Delay (ms): </source>
         <translation>Intervallo (ms):</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="78"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="77"/>
         <source>Sound Label: </source>
         <translation>Nome Suono:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="84"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="83"/>
         <source>Output Channel: </source>
         <translation>Canale output:</translation>
     </message>
@@ -950,17 +949,17 @@ Bits: {3}</source>
         <translation type="obsolete">S</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="105"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="104"/>
         <source>Concatenate</source>
         <translation>Concatena</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="87"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="86"/>
         <source>Right</source>
         <translation>Destro</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_concatenate.py" line="87"/>
+        <location filename="../pysoundanalyser/dialog_concatenate.py" line="86"/>
         <source>Left</source>
         <translation>Sinistro</translation>
     </message>
@@ -1288,17 +1287,17 @@ Bits: {3}</source>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_noise.py" line="114"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rosso</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_noise.py" line="114"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Blu</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_noise.py" line="114"/>
         <source>Violet</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Viola</translation>
     </message>
 </context>
 <context>
@@ -1729,12 +1728,12 @@ Bits: {3}</source>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="283"/>
         <source>IPD Linear</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IPD Lineare</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="285"/>
         <source>IPD Stepped</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IPD a scalino</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="291"/>
