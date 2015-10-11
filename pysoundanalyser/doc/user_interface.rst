@@ -34,22 +34,22 @@ User Interface
 
 - **Plot Waveform** The ``Plot Wavform`` button allows you to plot the waveform of the currently selected sound.
     
-- **Spectrum**
+- **Spectrum** Plot the spectrum of the currently selected sound.
     
-- **Spectrogram**
+- **Spectrogram** Plot the spectrogram of the currently selected sound.
 
-- **Autocorrelation**
+- **Autocorrelation** Plot the autocorrelation function of the currently selected sound.
 
-- **Autocorrelogram**
+- **Autocorrelogram** Plot the autocorrelogram of the currently selected sound.
 
-- **Level Difference**
+- **Level Difference** Show the difference in level between two selected sounds.
 
-- **Scale**
+- **Scale** Change the level of the currently selected sound.
 
-- **Resample**
+- **Resample** Resample the currently selected sound.
 
-- **Rename**
+- **Rename** Rename the currently selected sound.
 
-- **Remove**
+- **Remove** Remove the currently selected sound from the workspace.
 
-- **Remove All**
+- **Remove All** Remove all sounds from the workspace.

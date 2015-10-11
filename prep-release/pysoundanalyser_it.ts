@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="it_IT" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.0" language="it_IT">
 <context>
     <name></name>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="375"/>
         <source>Type:</source>
-        <translation type="unfinished">Tipo:</translation>
+        <translation>Tipo:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="304"/>
         <source>Sinusoid</source>
-        <translation type="unfinished">Sinusoide</translation>
+        <translation>Sinusoide</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="326"/>
         <source>Narrowband Noise</source>
-        <translation type="unfinished">Rumore a banda stretta</translation>
+        <translation>Rumore a banda stretta</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="348"/>
         <source>IRN</source>
-        <translation type="unfinished">IRN</translation>
+        <translation>IRN</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="375"/>
         <source>Huggins Pitch</source>
-        <translation type="unfinished">Pitch di Huggins</translation>
+        <translation>Pitch di Huggins</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
@@ -35,12 +36,12 @@
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="399"/>
         <source>Dichotic Difference:</source>
-        <translation type="unfinished">Differenza dicotica:</translation>
+        <translation>Differenza dicotica:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="399"/>
         <source>ITD</source>
-        <translation type="unfinished">ITD</translation>
+        <translation>ITD</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="393"/>
@@ -50,22 +51,22 @@
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="456"/>
         <source>Harmonicity:</source>
-        <translation type="unfinished">Armonicità:</translation>
+        <translation>Armonicità:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="453"/>
         <source>Harmonic Stretched</source>
-        <translation type="unfinished">Armonico allungato</translation>
+        <translation>Armonico allungato</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="461"/>
         <source>Noise Type:</source>
-        <translation type="unfinished">Tipo rumore:</translation>
+        <translation>Tipo rumore:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="461"/>
         <source>None</source>
-        <translation type="unfinished">Nessuno</translation>
+        <translation>Nessuno</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="332"/>
@@ -75,7 +76,7 @@
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="450"/>
         <source>Harmonic</source>
-        <translation type="unfinished">Armonico:</translation>
+        <translation>Armonico:</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="456"/>
@@ -85,12 +86,12 @@
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="396"/>
         <source>IPD Linear</source>
-        <translation type="unfinished"></translation>
+        <translation>IPD Lineare</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="396"/>
         <source>IPD Stepped</source>
-        <translation type="unfinished"></translation>
+        <translation>IPD a scalino</translation>
     </message>
 </context>
 <context>
@@ -669,67 +670,67 @@ Bits: {3}</source>
     <message>
         <location filename="../pysoundanalyser.pyw" line="235"/>
         <source>Remove All</source>
-        <translation type="unfinished"></translation>
+        <translation>Rimuovi tutti</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="169"/>
         <source>Silence</source>
-        <translation type="unfinished"></translation>
+        <translation>Silenzio</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="1211"/>
         <source>IPD Linear</source>
-        <translation type="unfinished"></translation>
+        <translation>IPD Lineare</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="1211"/>
         <source>IPD Stepped</source>
-        <translation type="unfinished"></translation>
+        <translation>IPD a scalino</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="1213"/>
         <source>ITD</source>
-        <translation type="unfinished">ITD</translation>
+        <translation>ITD</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="160"/>
         <source>AM Tone</source>
-        <translation type="unfinished"></translation>
+        <translation>Tono AM </translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="163"/>
         <source>FM Tone</source>
-        <translation type="unfinished"></translation>
+        <translation>Tono FM</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="969"/>
         <source>White</source>
-        <translation type="unfinished">Bianco</translation>
+        <translation>Bianco</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="975"/>
         <source>Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rosso</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="979"/>
         <source>Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Blu</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="983"/>
         <source>Violet</source>
-        <translation type="unfinished"></translation>
+        <translation>Viola</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="201"/>
         <source>Manual (html)</source>
-        <translation type="unfinished"></translation>
+        <translation>Manuale (html)</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="205"/>
         <source>Manual (pdf)</source>
-        <translation type="unfinished"></translation>
+        <translation>Manuale (pdf)</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser.pyw" line="1384"/>
@@ -1783,7 +1784,7 @@ Bits: {3}</source>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="538"/>
         <source>Frequency (Hz)</source>
-        <translation type="unfinished">Frequenza (Hz)</translation>
+        <translation>Frequenza (Hz)</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/dialog_generate_sound.py" line="541"/>

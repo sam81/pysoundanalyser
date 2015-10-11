@@ -19,14 +19,14 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QComboBox, QDialog, QDoubleValidator, QGridLayout, QLabel, QLineEdit, QPushButton
+    from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QLabel, QLineEdit, QPushButton
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QComboBox, QDialog, QDoubleValidator, QGridLayout, QLabel, QLineEdit, QPushButton
+    from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QLabel, QLineEdit, QPushButton
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QDoubleValidator
-    from PyQt5.QtWidgets import QComboBox, QDialog, QGridLayout, QLabel, QLineEdit, QPushButton
+    from PyQt5.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QPushButton
 
 class concatenateDialog(QDialog):
     def __init__(self, parent, snd1, snd2):
@@ -55,8 +55,7 @@ class concatenateDialog(QDialog):
         self.snd2Widget.setReadOnly(True)
         grid.addWidget(self.snd2Widget, n, 1)
         swapButton = QPushButton(self.tr("Swap Sounds"), self)
-        QtCore.QObject.connect(swapButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickSwapButton)
+        swapButton.clicked.connect(self.onClickSwapButton)
         grid.addWidget(swapButton, n, 2)
         n = n+1
         

@@ -1,26 +1,40 @@
-Threaded player
-automatic player recognition
-recording
-fix spectrogram for silent regions
+Priority High:
 
-3D plots
-FFT or other functions only for certain portions of a sound 
+- Threaded player
+- complete documentation
 
+Priority Medium:
 
-- logarithmic axis for spectrogram
-- 3d plots 
 - data cursor
+- add more filtering options
+- gate sound button
+
+Priority Low:
+
+- Record Sound Button
+- 3D plots
+- FFT or other functions only for certain portions of a sound 
 - add other windowing functions
 - remove unused buttons from navigation toolbar
 - set graphic properties:
-custom label (with math annotation and custom font)
-line width
-tick positions, tick labels, tick length
-- filter
-- complex sound generator
-- gate sound
+   custom label (with math annotation and custom font)
+   line width
+   tick positions, tick labels, tick length
 - improve GUI layout
-- add documentation
 - save spectrum
-
 save data in graphic itself self.x self.y
+- Internazionalization (check requirements for sndlib)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
