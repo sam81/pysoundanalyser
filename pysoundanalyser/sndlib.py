@@ -25,6 +25,7 @@ import copy, numpy, multiprocessing, warnings
 from numpy import abs, angle, arange, array, asarray, ceil, concatenate, convolve, cos, cumsum, floor, int_, int64, log, log2, log10, linspace, logspace, mean, ones, pi, real, repeat, sin, sqrt, where, zeros
 from numpy.fft import fft, ifft, irfft, rfft
 from scipy.signal import firwin2
+from PyQt5.QtWidgets import QApplication
 
 
 def addSounds(snd1, snd2, delay, fs):
@@ -772,13 +773,13 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
     timeRamp = arange(0, nRamp) 
 
     snd = zeros((nTot, 2))
-    if channel == "Right" or channel == "Left" or channel == "Both":
+    if channel == QApplication.translate("","Right","") or channel == QApplication.translate("","Left", "") or channel == QApplication.translate("","Both", ""):
         tone = zeros(nTot)
     elif channel == "Odd Left" or channel == "Odd Right":
         toneOdd = zeros(nTot)
         toneEven = zeros(nTot)
-
-    if harmPhase == "Sine":
+    print(harmPhase)
+    if harmPhase == QApplication.translate("","Sine",""):
         for i in range(lowHarm, highHarm+1):
             if channel == "Right" or channel == "Left" or channel == "Both":
                 tone =  tone + sin(2 * pi * ((F0 * i) + stretchHz) * timeAll)

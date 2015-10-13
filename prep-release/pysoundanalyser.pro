@@ -15,5 +15,6 @@ SOURCES	     += ../pysoundanalyser/win_autocorrelogram_plot.py
 SOURCES	     += ../pysoundanalyser/win_spectrogram_plot.py
 SOURCES	     += ../pysoundanalyser/win_spectrum_plot.py
 SOURCES	     += ../pysoundanalyser/win_waveform_plot.py
+SOURCES	     += ../pysoundanalyser/sndlib.py
 TRANSLATIONS += pysoundanalyser_it.ts pysoundanalyser_fr.ts pysoundanalyser_en_GB.ts pysoundanalyser_el.ts pysoundanalyser_es.ts pysoundanalyser_de.ts pysoundanalyser_ru.ts
 

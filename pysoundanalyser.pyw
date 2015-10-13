@@ -401,7 +401,7 @@ class applicationWindow(QMainWindow):
                 
                 x,fs,nb = self.loadWav(sndFile)
                 thisSnd = {}
-                if len(x.shape) == 2:
+                if len(x.shape) > 1:
                     thisSnd['wave'] = x[:,0]
                 else:
                     thisSnd['wave'] = x
@@ -437,33 +437,35 @@ class applicationWindow(QMainWindow):
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
                 
         
-                if len(x.shape) == 2:
-                    thisSnd = {}
-                    thisSnd['wave'] = x[:,1]
-                    thisSnd['fs'] = int(fs)
-                    thisSnd['nBits'] = nb
-                    thisSnd['chan'] = self.tr('Left')
-                    thisSnd['nSamples'] = len(thisSnd['wave'])
-                    thisSnd['duration'] = thisSnd['nSamples'] / thisSnd['fs']
-                    thisSnd['label'] = tmpNameL
-                    condSat = 0
-                    while condSat == 0:
-                        tmp_id = random_id.random_id(5, 'alphanumeric')
-                        if tmp_id in self.sndList:
-                            condSat = 0
-                        else:
-                            condSat = 1
-                    self.sndList[tmp_id] = copy.copy(thisSnd)
-                    currCount = len(self.sndList)
-                    self.sndTableWidget.setRowCount(currCount)
-                    newItem = QTableWidgetItem(thisSnd['label'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-                    self.sndTableWidget.setItem(currCount-1, 0, newItem)
-                    newItem = QTableWidgetItem(thisSnd['chan'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-                    self.sndTableWidget.setItem(currCount-1, 1, newItem)
-                    self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
-                    self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
+                if len(x.shape) > 1:
+                    nChans = x.shape[1]
+                    for nsnd in range(1, nChans):
+                        thisSnd = {}
+                        thisSnd['wave'] = x[:,nsnd]
+                        thisSnd['fs'] = int(fs)
+                        thisSnd['nBits'] = nb
+                        thisSnd['chan'] = self.tr('Left')
+                        thisSnd['nSamples'] = len(thisSnd['wave'])
+                        thisSnd['duration'] = thisSnd['nSamples'] / thisSnd['fs']
+                        thisSnd['label'] = tmpNameL
+                        condSat = 0
+                        while condSat == 0:
+                            tmp_id = random_id.random_id(5, 'alphanumeric')
+                            if tmp_id in self.sndList:
+                                condSat = 0
+                            else:
+                                condSat = 1
+                        self.sndList[tmp_id] = copy.copy(thisSnd)
+                        currCount = len(self.sndList)
+                        self.sndTableWidget.setRowCount(currCount)
+                        newItem = QTableWidgetItem(thisSnd['label'])
+                        newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                        self.sndTableWidget.setItem(currCount-1, 0, newItem)
+                        newItem = QTableWidgetItem(thisSnd['chan'])
+                        newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                        self.sndTableWidget.setItem(currCount-1, 1, newItem)
+                        self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
+                        self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
        
                 

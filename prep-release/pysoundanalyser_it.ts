@@ -92,6 +92,26 @@
         <source>IPD Stepped</source>
         <translation>IPD a scalino</translation>
     </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="776"/>
+        <source>Right</source>
+        <translation>Destro</translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="776"/>
+        <source>Left</source>
+        <translation>Sinistro</translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="776"/>
+        <source>Both</source>
+        <translation>Entrambe</translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="782"/>
+        <source>Sine</source>
+        <translation>Sin</translation>
+    </message>
 </context>
 <context>
     <name>Preferences Window</name>

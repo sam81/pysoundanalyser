@@ -77,6 +77,26 @@
         <source>IPD Stepped</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="776"/>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="776"/>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="776"/>
+        <source>Both</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser/sndlib.py" line="782"/>
+        <source>Sine</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>acfPlot</name>
