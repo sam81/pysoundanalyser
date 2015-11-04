@@ -1,3 +1,15 @@
+pysoundanalyser (0.2.28-ppa0~vivid) vivid; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 30 Oct 2015 10:20:58 +0100
+
+pysoundanalyser (0.2.28-ppa0~wily) wily; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 28 Oct 2015 01:17:14 +0100
+
 pysoundanalyser (0.2.24-ppa0~vivid) vivid; urgency=low
 
   * New upstream release

@@ -5,6 +5,5 @@ include icons/*
 include pysoundanalyser.desktop
 include INSTALL.txt
 include COPYING.txt
-include README.txt
-include TODO.txt
+include README.md
 include scripts/*
