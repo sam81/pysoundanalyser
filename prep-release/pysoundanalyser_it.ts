@@ -777,12 +777,12 @@ Bits: {3}</source>
 <context>
     <name>applyChanges</name>
     <message>
-        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="303"/>
+        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="302"/>
         <source>There are unsaved changes. Apply Changes?</source>
         <translation>Ci sono modifiche non salvate. Applicare le modifiche?</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="312"/>
+        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="311"/>
         <source>Apply Changes</source>
         <translation>Applica le modifiche</translation>
     </message>
@@ -1894,22 +1894,22 @@ Bits: {3}</source>
         <translation>Comando:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="208"/>
+        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="207"/>
         <source>Warning</source>
         <translation>Avviso</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="203"/>
+        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="202"/>
         <source>dpi value not valid</source>
         <translation>valore dpi non valido</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="208"/>
+        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="207"/>
         <source>dpi value too small</source>
         <translation>valore dpi troppo piccolo</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="266"/>
+        <location filename="../pysoundanalyser/dialog_edit_preferences.py" line="265"/>
         <source>custom</source>
         <translation>personalizzato</translation>
     </message>

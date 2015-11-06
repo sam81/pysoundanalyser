@@ -82,6 +82,9 @@ def def_prefs(prm):
     if platform.system() == 'Windows':
         prm["pref"]["playCommand"] = 'winsound'
         prm["pref"]["playCommandType"] = 'winsound'
+    elif platform.system() == "Darwin":
+        prm["pref"]["playCommand"] = 'afplay'
+        prm["pref"]["playCommandType"] = QApplication.translate("Preferences Window","custom","")
     else:
         prm["pref"]["playCommand"] = 'aplay'
         prm["pref"]["playCommandType"] = 'aplay'

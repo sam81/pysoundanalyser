@@ -20,16 +20,16 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
+    from PyQt4.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import QLocale
-    from PySide.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
+    from PySide.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
     from PyQt5.QtGui import QDoubleValidator, QIntValidator
-    from PyQt5.QtWidgets import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
+    from PyQt5.QtWidgets import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
 
 import copy, pickle
 
@@ -193,8 +193,7 @@ class preferencesDialog(QDialog):
         layout.addWidget(self.tabWidget)
         layout.addWidget(buttonBox)
         self.setLayout(layout)
-        #grid = QGridLayout()
-        #n = 0
+      
 
     def ondpiChange(self):
         try:
