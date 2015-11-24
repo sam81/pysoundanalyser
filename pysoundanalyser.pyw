@@ -555,6 +555,9 @@ class applicationWindow(QMainWindow):
 
     def onClickSaveButton(self):
         ids = self.findSelectedItemIds()
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         sampRate = self.sndList[ids[0]]['fs']
         condition = True
         nSampList = []
@@ -607,6 +610,9 @@ class applicationWindow(QMainWindow):
     def onClickCloneButton(self):
         #self.sndTableWidget.setSortingEnabled(False)
         ids = self.findSelectedItemIds()
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         for i in range(len(ids)):
             selectedSound = ids[i]
             thisSnd = copy.copy(self.sndList[selectedSound])
@@ -632,27 +638,42 @@ class applicationWindow(QMainWindow):
             #self.sndTableWidget.setSortingEnabled(True)
     def onClickPlotButton(self):
         ids = self.findSelectedItemIds()
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         for i in range(len(ids)):
            selectedSound = ids[i]
            waveformPlot(self, self.sndList[selectedSound], self.prm)
            #self.waveformPlotter.plotWaveformThreaded(self.sndList[selectedSound], self.prm)
     def onClickSpectrumButton(self):
        ids = self.findSelectedItemIds()
+       if len(ids)<1:
+           QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+           return
        for i in range(len(ids)):
            selectedSound = ids[i]
            spectrumPlot(self, self.sndList[selectedSound], self.prm)
     def onClickAutocorrelationButton(self):
        ids = self.findSelectedItemIds()
+       if len(ids)<1:
+           QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+           return
        for i in range(len(ids)):
            selectedSound = ids[i]
            acfPlot(self, self.sndList[selectedSound], self.prm)
     def onClickAutocorrelogramButton(self):
        ids = self.findSelectedItemIds()
+       if len(ids)<1:
+           QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+           return
        for i in range(len(ids)):
            selectedSound = ids[i]
            autocorrelogramPlot(self, self.sndList[selectedSound], self.prm)
     def onClickSpectrogramButton(self):
        ids = self.findSelectedItemIds()
+       if len(ids)<1:
+           QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+           return
        for i in range(len(ids)):
            selectedSound = ids[i]
            spectrogramPlot(self, self.sndList[selectedSound], self.prm)
@@ -661,7 +682,8 @@ class applicationWindow(QMainWindow):
         if len(ids) > 1:
             QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one sound can be renamed at a time'))
         elif len(ids) < 1:
-            pass
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         else:
             selectedSound = ids[0]
             msg = self.tr('New name:')
@@ -687,9 +709,10 @@ class applicationWindow(QMainWindow):
           
     def onClickLevelDiffButton(self):
         ids = self.findSelectedItemIds()
-        if len(ids) == 1:
-            pass
-        elif len(ids) > 2:
+        if len(ids)<2:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
+        if len(ids) > 2:
             QMessageBox.warning(self, self.tr('Level Difference'), self.tr('Only two sounds can be compared at a time'))
         else:
             snd1 = self.sndList[ids[0]]
@@ -707,6 +730,9 @@ class applicationWindow(QMainWindow):
 
     def onClickScaleButton(self):
         ids = self.findSelectedItemIds()
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         val, ok = QInputDialog.getDouble(self, self.tr('Scale Level'), self.tr('Add or subtract decibels'))
         if ok:
             for i in range(len(ids)):
@@ -717,6 +743,9 @@ class applicationWindow(QMainWindow):
 
     def onClickRemoveButton(self):
         ids = self.findSelectedItemIds()
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         for i in range(len(ids)):
             selectedSound = ids[i]
             self.sndTableWidget.removeRow(self.sndList[selectedSound]['qid'].row())
@@ -731,6 +760,9 @@ class applicationWindow(QMainWindow):
 
     def onClickGetRMSButton(self):
         ids = self.findSelectedItemIds()
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         rmsVals = []
         msg = self.tr('')
         for i in range(len(ids)):
@@ -743,6 +775,9 @@ class applicationWindow(QMainWindow):
        
     def onClickPlayButton(self):
         ids = self.findSelectedItemIds()
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         sampRate = self.sndList[ids[0]]['fs']
         condition = True
         nSampList = []
@@ -806,8 +841,9 @@ class applicationWindow(QMainWindow):
             
     def onClickResampleButton(self):
         ids = self.findSelectedItemIds()
-        if len(ids) < 1:
-            pass
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         else:
             if len(ids) == 1:
                 multipleSelection = False
@@ -832,8 +868,9 @@ class applicationWindow(QMainWindow):
 
     def onClickConcatenateButton(self):
         ids = self.findSelectedItemIds()
-        if len(ids) == 1:
-            pass
+        if len(ids)<2:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sounds selected.'))
+            return
         elif len(ids) > 2:
             QMessageBox.warning(self, self.tr('Concatenate Sounds'), self.tr('Only two sounds can be concatenated at a time'))
         else:
@@ -883,7 +920,9 @@ class applicationWindow(QMainWindow):
 
     def onClickCutButton(self):
         ids = self.findSelectedItemIds()
-
+        if len(ids)<1:
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         for i in range(len(ids)):
             snd = self.sndList[ids[i]]
             fs = snd["fs"]
@@ -913,7 +952,8 @@ class applicationWindow(QMainWindow):
     def onClickApplyFIR2PresetsButton(self):
         ids = self.findSelectedItemIds()
         if len(ids) < 1:
-            pass
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No sound selected.'))
+            return
         else:
             dialog = applyFIR2PresetsDialog(self)
             if dialog.exec_():

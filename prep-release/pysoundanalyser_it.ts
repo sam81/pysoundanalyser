@@ -95,22 +95,22 @@
     <message>
         <location filename="../pysoundanalyser/sndlib.py" line="776"/>
         <source>Right</source>
-        <translation>Destro</translation>
+        <translation type="obsolete">Destro</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/sndlib.py" line="776"/>
         <source>Left</source>
-        <translation>Sinistro</translation>
+        <translation type="obsolete">Sinistro</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/sndlib.py" line="776"/>
         <source>Both</source>
-        <translation>Entrambe</translation>
+        <translation type="obsolete">Entrambe</translation>
     </message>
     <message>
         <location filename="../pysoundanalyser/sndlib.py" line="782"/>
         <source>Sine</source>
-        <translation>Sin</translation>
+        <translation type="obsolete">Sin</translation>
     </message>
 </context>
 <context>
@@ -182,7 +182,7 @@
         <translation>Preferenze</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1386"/>
+        <location filename="../pysoundanalyser.pyw" line="1426"/>
         <source>About pysoundanalyser</source>
         <translation>Riguardo pysoundanalyser</translation>
     </message>
@@ -272,7 +272,7 @@
         <translation>Cambia Freq. Campionamento</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="707"/>
+        <location filename="../pysoundanalyser.pyw" line="730"/>
         <source>Level Difference</source>
         <translation>Differenza di livello</translation>
     </message>
@@ -297,7 +297,7 @@
         <translation>Impossibile aprire %1 IOError</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="754"/>
+        <location filename="../pysoundanalyser.pyw" line="958"/>
         <source>Warning</source>
         <translation>Avviso</translation>
     </message>
@@ -322,27 +322,27 @@
         <translation type="obsolete">S</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="663"/>
+        <location filename="../pysoundanalyser.pyw" line="684"/>
         <source>Only one sound can be renamed at a time</source>
         <translation>Si può cambiare solo il nome di un suono alla volta</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="668"/>
+        <location filename="../pysoundanalyser.pyw" line="690"/>
         <source>New name:</source>
         <translation>Nuovo nome:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="669"/>
+        <location filename="../pysoundanalyser.pyw" line="691"/>
         <source>Input Dialog</source>
         <translation>Dialogo di input</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="677"/>
+        <location filename="../pysoundanalyser.pyw" line="699"/>
         <source>Only sound can be changed at a time</source>
         <translation>Si può cambiare solo un suono alla volta</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="694"/>
+        <location filename="../pysoundanalyser.pyw" line="717"/>
         <source>Only two sounds can be compared at a time</source>
         <translation>Solo due suoni alla volta possono essere comparati</translation>
     </message>
@@ -361,12 +361,12 @@
  %4</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="565"/>
+        <location filename="../pysoundanalyser.pyw" line="568"/>
         <source>Cannot write sounds with different sample rates</source>
         <translation>Impossibile salvare suoni con frequenze di campionamento diverse</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="595"/>
+        <location filename="../pysoundanalyser.pyw" line="598"/>
         <source>Choose file to write</source>
         <translation>Scegli il file da salvare</translation>
     </message>
@@ -376,12 +376,12 @@
         <translation type="obsolete">.%1</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="595"/>
+        <location filename="../pysoundanalyser.pyw" line="598"/>
         <source>All Files (*)</source>
         <translation>Tutti i file (*)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="754"/>
+        <location filename="../pysoundanalyser.pyw" line="789"/>
         <source>Cannot play sounds with different sample rates</source>
         <translation>Non è possibile riprodurre suoni con frequenza di campionamento diversa</translation>
     </message>
@@ -413,17 +413,17 @@ Formato: %4</translation>
         <translation>Concatena</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="846"/>
+        <location filename="../pysoundanalyser.pyw" line="883"/>
         <source>Concatenate Sounds</source>
         <translation>Concatena suoni</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="840"/>
+        <location filename="../pysoundanalyser.pyw" line="877"/>
         <source>Only two sounds can be concatenated at a time</source>
         <translation>Solo due suoni alla volta possono essere concatenati</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="846"/>
+        <location filename="../pysoundanalyser.pyw" line="883"/>
         <source>Cannot concatenate sounds with different sampling rates</source>
         <translation>Impossibile concatenare suoni con frequenze di campionamento differenti</translation>
     </message>
@@ -433,12 +433,12 @@ Formato: %4</translation>
         <translation>Scalare</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="712"/>
+        <location filename="../pysoundanalyser.pyw" line="738"/>
         <source>Scale Level</source>
         <translation>Scalare il livello</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="712"/>
+        <location filename="../pysoundanalyser.pyw" line="738"/>
         <source>Add or subtract decibels</source>
         <translation>Aggiungi o rimuovi decibel</translation>
     </message>
@@ -473,7 +473,7 @@ Formato: %4</translation>
         <translation>Rumore</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1205"/>
+        <location filename="../pysoundanalyser.pyw" line="1245"/>
         <source>Sinusoid</source>
         <translation>Sinusoide</translation>
     </message>
@@ -493,22 +493,22 @@ Formato: %4</translation>
         <translation>Canale</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="923"/>
+        <location filename="../pysoundanalyser.pyw" line="963"/>
         <source>lowpass</source>
         <translation>passabasso</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="930"/>
+        <location filename="../pysoundanalyser.pyw" line="970"/>
         <source>highpass</source>
         <translation>passaalto</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="937"/>
+        <location filename="../pysoundanalyser.pyw" line="977"/>
         <source>bandpass</source>
         <translation>passabanda</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="946"/>
+        <location filename="../pysoundanalyser.pyw" line="986"/>
         <source>bandstop</source>
         <translation>fermabanda</translation>
     </message>
@@ -518,17 +518,17 @@ Formato: %4</translation>
         <translation type="obsolete">bianco</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1348"/>
+        <location filename="../pysoundanalyser.pyw" line="1388"/>
         <source>Right</source>
         <translation>Destro</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1351"/>
+        <location filename="../pysoundanalyser.pyw" line="1391"/>
         <source>Left</source>
         <translation>Sinistro</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1218"/>
+        <location filename="../pysoundanalyser.pyw" line="1258"/>
         <source>Both</source>
         <translation>Entrambe</translation>
     </message>
@@ -543,7 +543,7 @@ Formato: %4</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="742"/>
+        <location filename="../pysoundanalyser.pyw" line="774"/>
         <source>Root Mean Square</source>
         <translation></translation>
     </message>
@@ -601,58 +601,58 @@ Bits: {3}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="589"/>
+        <location filename="../pysoundanalyser.pyw" line="592"/>
         <source>Mono</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="595"/>
+        <location filename="../pysoundanalyser.pyw" line="598"/>
         <source>.{0}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="707"/>
+        <location filename="../pysoundanalyser.pyw" line="730"/>
         <source>{0} is {1} {2} dB than {3}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="741"/>
+        <location filename="../pysoundanalyser.pyw" line="773"/>
         <source>{0} {1} : {2} 
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="826"/>
+        <location filename="../pysoundanalyser.pyw" line="862"/>
         <source>none</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="909"/>
+        <location filename="../pysoundanalyser.pyw" line="948"/>
         <source>Cut Sound</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="907"/>
+        <location filename="../pysoundanalyser.pyw" line="946"/>
         <source>Values out of range</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="909"/>
+        <location filename="../pysoundanalyser.pyw" line="948"/>
         <source>Cannot cut entire sound, please use remove button</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1207"/>
+        <location filename="../pysoundanalyser.pyw" line="1247"/>
         <source>Narrowband Noise</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1209"/>
+        <location filename="../pysoundanalyser.pyw" line="1249"/>
         <source>IRN</source>
         <translation>IRN</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1212"/>
+        <location filename="../pysoundanalyser.pyw" line="1252"/>
         <source>Huggins Pitch</source>
         <translation>Pitch di Huggins</translation>
     </message>
@@ -667,22 +667,22 @@ Bits: {3}</source>
         <translation type="obsolete">Rumore a banda stretta 2</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1220"/>
+        <location filename="../pysoundanalyser.pyw" line="1260"/>
         <source>None</source>
         <translation>Nessuno</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1221"/>
+        <location filename="../pysoundanalyser.pyw" line="1261"/>
         <source>Odd Left</source>
         <translation>Dispari a sinistra</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1221"/>
+        <location filename="../pysoundanalyser.pyw" line="1261"/>
         <source>Odd Right</source>
         <translation>Dispari a destra</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1227"/>
+        <location filename="../pysoundanalyser.pyw" line="1267"/>
         <source>Pink</source>
         <translation>Rosa</translation>
     </message>
@@ -697,17 +697,17 @@ Bits: {3}</source>
         <translation>Silenzio</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1213"/>
+        <location filename="../pysoundanalyser.pyw" line="1253"/>
         <source>IPD Linear</source>
         <translation>IPD Lineare</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1213"/>
+        <location filename="../pysoundanalyser.pyw" line="1253"/>
         <source>IPD Stepped</source>
         <translation>IPD a scalino</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1215"/>
+        <location filename="../pysoundanalyser.pyw" line="1255"/>
         <source>ITD</source>
         <translation>ITD</translation>
     </message>
@@ -722,22 +722,22 @@ Bits: {3}</source>
         <translation>Tono FM</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="971"/>
+        <location filename="../pysoundanalyser.pyw" line="1011"/>
         <source>White</source>
         <translation>Bianco</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="977"/>
+        <location filename="../pysoundanalyser.pyw" line="1017"/>
         <source>Red</source>
         <translation>Rosso</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="981"/>
+        <location filename="../pysoundanalyser.pyw" line="1021"/>
         <source>Blue</source>
         <translation>Blu</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="985"/>
+        <location filename="../pysoundanalyser.pyw" line="1025"/>
         <source>Violet</source>
         <translation>Viola</translation>
     </message>
@@ -752,7 +752,7 @@ Bits: {3}</source>
         <translation>Manuale (pdf)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1386"/>
+        <location filename="../pysoundanalyser.pyw" line="1426"/>
         <source>&lt;b&gt;pysoundanalyser - Python Sound Analyser&lt;/b&gt; &lt;br&gt;
                                 - version: {0}; &lt;br&gt;
                                 - build date: {1} &lt;br&gt;
@@ -771,6 +771,16 @@ Bits: {3}</source>
                 You should have received a copy of the GNU General Public License
                 along with this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;
                 &lt;p&gt;Python {2} - {3} {4} compiled against Qt {5}, and running with Qt {6} on {7}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser.pyw" line="958"/>
+        <source>No sound selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser.pyw" line="874"/>
+        <source>No sounds selected.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -987,237 +997,237 @@ Bits: {3}</source>
 <context>
     <name>dialog</name>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1162"/>
+        <location filename="../pysoundanalyser.pyw" line="1202"/>
         <source>F0 (Hz)</source>
         <translation>F0 (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1163"/>
+        <location filename="../pysoundanalyser.pyw" line="1203"/>
         <source>Bandwidth (Hz)</source>
         <translation>Larghezza di banda (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1164"/>
+        <location filename="../pysoundanalyser.pyw" line="1204"/>
         <source>Bandwidth (Cents)</source>
         <translation>Larghezza di banda (centesimi)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1165"/>
+        <location filename="../pysoundanalyser.pyw" line="1205"/>
         <source>Spacing (Cents)</source>
         <translation>Intervallo (centesimi)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1166"/>
+        <location filename="../pysoundanalyser.pyw" line="1206"/>
         <source>ITD (micro s)</source>
         <translation>ITD (micro s)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1167"/>
+        <location filename="../pysoundanalyser.pyw" line="1207"/>
         <source>IPD (radians)</source>
         <translation>IPD (radianti)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1168"/>
+        <location filename="../pysoundanalyser.pyw" line="1208"/>
         <source>Narrow Band Component Level (dB SPL)</source>
         <translation>Livello componenti banda stretta (dB SPL)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1169"/>
+        <location filename="../pysoundanalyser.pyw" line="1209"/>
         <source>Iterations</source>
         <translation>Iterazioni</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1170"/>
+        <location filename="../pysoundanalyser.pyw" line="1210"/>
         <source>Gain</source>
         <translation>Gain</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1171"/>
+        <location filename="../pysoundanalyser.pyw" line="1211"/>
         <source>Low Harmonic</source>
         <translation>Armonica inferiore</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1172"/>
+        <location filename="../pysoundanalyser.pyw" line="1212"/>
         <source>High Harmonic</source>
         <translation>Armonica superiore</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1173"/>
+        <location filename="../pysoundanalyser.pyw" line="1213"/>
         <source>Low Freq. (Hz)</source>
         <translation>Frequenza inferiore (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1174"/>
+        <location filename="../pysoundanalyser.pyw" line="1214"/>
         <source>High Freq. (Hz)</source>
         <translation>Frequenza superiore (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1175"/>
+        <location filename="../pysoundanalyser.pyw" line="1215"/>
         <source>Low Stop</source>
         <translation>Stop inferiore</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1176"/>
+        <location filename="../pysoundanalyser.pyw" line="1216"/>
         <source>High Stop</source>
         <translation>Stop superiore</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1177"/>
+        <location filename="../pysoundanalyser.pyw" line="1217"/>
         <source>Harmonic Level (dB SPL)</source>
         <translation>Livello armonico (dB SPL)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1178"/>
+        <location filename="../pysoundanalyser.pyw" line="1218"/>
         <source>Spectrum Level (dB SPL)</source>
         <translation>Livello spettrale (dB SPL)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1179"/>
+        <location filename="../pysoundanalyser.pyw" line="1219"/>
         <source>Component Level (dB SPL)</source>
         <translation>Livello componente (dB SPL)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1303"/>
+        <location filename="../pysoundanalyser.pyw" line="1343"/>
         <source>Duration (ms)</source>
         <translation>Durata (ms)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1283"/>
+        <location filename="../pysoundanalyser.pyw" line="1323"/>
         <source>Ramp (ms)</source>
         <translation>Rampa (sm)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1182"/>
+        <location filename="../pysoundanalyser.pyw" line="1222"/>
         <source>No. 1 Low Freq. (Hz)</source>
         <translation>Rumore 1 frequenza inferiore (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1183"/>
+        <location filename="../pysoundanalyser.pyw" line="1223"/>
         <source>No. 1 High Freq. (Hz)</source>
         <translation>Rumore 1 frequenza superiore (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1184"/>
+        <location filename="../pysoundanalyser.pyw" line="1224"/>
         <source>No. 1 S. Level (dB SPL)</source>
         <translation>Livello rumore 1 (dB SPL)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1185"/>
+        <location filename="../pysoundanalyser.pyw" line="1225"/>
         <source>No. 2 Low Freq. (Hz)</source>
         <translation>Rumore 2 frequenza inferiore (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1186"/>
+        <location filename="../pysoundanalyser.pyw" line="1226"/>
         <source>No. 2 High Freq. (Hz)</source>
         <translation>Rumore 1 frequenza superiore (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1187"/>
+        <location filename="../pysoundanalyser.pyw" line="1227"/>
         <source>No. 2 S. Level (dB SPL)</source>
         <translation>Livello rumore 2 (dB SPL)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1188"/>
+        <location filename="../pysoundanalyser.pyw" line="1228"/>
         <source>Stretch (%)</source>
         <translation>Allungamento (%)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1189"/>
+        <location filename="../pysoundanalyser.pyw" line="1229"/>
         <source>Harmonic Spacing (Cents)</source>
         <translation>Intervallo armonico (centesimi)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1304"/>
+        <location filename="../pysoundanalyser.pyw" line="1344"/>
         <source>Ear:</source>
         <translation>Orecchio:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1192"/>
+        <location filename="../pysoundanalyser.pyw" line="1232"/>
         <source>Type:</source>
         <translation>Tipo:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1193"/>
+        <location filename="../pysoundanalyser.pyw" line="1233"/>
         <source>Phase:</source>
         <translation>Fase:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1194"/>
+        <location filename="../pysoundanalyser.pyw" line="1234"/>
         <source>Noise Type:</source>
         <translation>Tipo rumore:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1196"/>
+        <location filename="../pysoundanalyser.pyw" line="1236"/>
         <source>IRN Type:</source>
         <translation>Tipo IRN:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1197"/>
+        <location filename="../pysoundanalyser.pyw" line="1237"/>
         <source>Phase relationship:</source>
         <translation>Relazione di fase:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1198"/>
+        <location filename="../pysoundanalyser.pyw" line="1238"/>
         <source>Dichotic Difference:</source>
         <translation>Differenza dicotica:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1199"/>
+        <location filename="../pysoundanalyser.pyw" line="1239"/>
         <source>Harmonicity:</source>
         <translation>Armonicità:</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1195"/>
+        <location filename="../pysoundanalyser.pyw" line="1235"/>
         <source>Dichotic Noise Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1200"/>
+        <location filename="../pysoundanalyser.pyw" line="1240"/>
         <source>Bandwidth Unit:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1251"/>
+        <location filename="../pysoundanalyser.pyw" line="1291"/>
         <source>Frequency (Hz)</source>
         <translation type="unfinished">Frequenza (Hz)</translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1252"/>
+        <location filename="../pysoundanalyser.pyw" line="1292"/>
         <source>AM Frequency (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1253"/>
+        <location filename="../pysoundanalyser.pyw" line="1293"/>
         <source>AM Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1281"/>
+        <location filename="../pysoundanalyser.pyw" line="1321"/>
         <source>Carrier Phase (radians)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1255"/>
+        <location filename="../pysoundanalyser.pyw" line="1295"/>
         <source>Modulation Phase (radians)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1284"/>
+        <location filename="../pysoundanalyser.pyw" line="1324"/>
         <source>Level (dB SPL)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1278"/>
+        <location filename="../pysoundanalyser.pyw" line="1318"/>
         <source>Carrier Frequency (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1279"/>
+        <location filename="../pysoundanalyser.pyw" line="1319"/>
         <source>Modulation Frequency (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser.pyw" line="1280"/>
+        <location filename="../pysoundanalyser.pyw" line="1320"/>
         <source>Modulation Index</source>
         <translation type="unfinished"></translation>
     </message>

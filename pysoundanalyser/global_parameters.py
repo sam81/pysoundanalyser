@@ -25,16 +25,19 @@ if pyqtversion == 4:
     from PyQt4.QtGui import QApplication, QColor
     matplotlib.rcParams['backend'] = "Qt4Agg"
     matplotlib.rcParams['backend.qt4'] = "PyQt4"
+    prefFileSuffix = "-pyqt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QApplication, QColor
     matplotlib.rcParams['backend'] = "Qt4Agg"
     matplotlib.rcParams['backend.qt4'] = "PySide"
+    prefFileSuffix = "-pyside"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QColor
     from PyQt5.QtWidgets import QApplication
     matplotlib.rcParams['backend'] = "Qt5Agg"
+    prefFileSuffix = ""
 
 import platform, os, pickle
 
@@ -148,7 +151,7 @@ def def_prefs(prm):
 
 def get_prefs(prm):
     prm = def_prefs(prm)
-    prm['prefFile'] = os.path.expanduser("~") +'/.config/pysoundanalyser/preferences'
+    prm['prefFile'] = os.path.expanduser("~") +'/.config/pysoundanalyser/preferences'+prefFileSuffix
 
     if os.path.exists(os.path.expanduser("~") +'/.config/') == False:
         os.mkdir(os.path.expanduser("~") +'/.config/')
