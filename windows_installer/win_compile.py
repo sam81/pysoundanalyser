@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, platform, requests, time
+import ftplib, os, platform, requests, time
+publish = input("publish ('y'/'n')?: ")
 
-winpythonpath = "/home/sam/tmp/pysoundanalyser_for_win/"
+winpythonpath = "pysoundanalyser_for_win/"
 
 f = open('../setup.py', 'r')
 ln = f.readlines()
@@ -49,7 +50,6 @@ os.system(cmd)
 # Publish on Bintray
 #####################
 
-publish = 1
 package = "pysoundanalyser"
 exeName = "pysoundanalyser_"+ver+"-setup.exe"
 exePath = "Output/"+exeName
@@ -63,7 +63,8 @@ if publish == 1 or publish == "y":
 
     USERNAME = "sam81"
 
-    URL = "https://api.bintray.com/content/sam81/hearinglab-win/"+ package + "/" + ver + "/pysoundanalyser_" + ver + "/" + exeName + "?publish=1"
+    #URL = "https://api.bintray.com/content/sam81/hearinglab-win/"+ package + "/" + ver + "/pysoundanalyser_" + ver + "/" + exeName + "?publish=1"
+    URL = "https://api.bintray.com/content/sam81/hearinglab-win/"+ "/pysoundanalyser_" + ver + "/" + exeName + "?publish=1"
     parameters = {"publish": "1"}
     headers = {
         "X-Bintray-Package": "pysoundanalyser",
@@ -88,7 +89,7 @@ if publish == 1 or publish == "y":
 
     for i in range(len(lns)):
         if lns[i][0:73] == '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/':
-            lns[i] = '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/pysoundanalyser_'+ver+'/pysoundanalyser_'+ver+'-setup.exe">pysoundanalyser_'+ver+'-setup.exe<a> Windows installer (experimental) </li>'
+            lns[i] = '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/pysoundanalyser_'+ver+'/pysoundanalyser_'+ver+'-setup.exe">pysoundanalyser_'+ver+'-setup.exe</a> Windows installer (experimental) </li>'
 
     fOut = open(htmlPagePath, 'w')
     fOut.writelines(lns)

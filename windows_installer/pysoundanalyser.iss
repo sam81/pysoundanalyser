@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "pysoundanalyser"
-#define MyAppVersion "0.2.28"
+#define MyAppVersion "0.2.29"
 #define MyAppPublisher "Samuele Carcagno"
 #define MyAppURL "http://samcarcagno.altervista.org/pysoundanalyser/pysoundanalyser.html"
 
@@ -20,8 +20,8 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-LicenseFile=Z:\home\sam\tmp\pysoundanalyser_for_win\pysoundanalyser\COPYING.txt
-InfoBeforeFile=Z:\home\sam\tmp\pysoundanalyser_for_win\pysoundanalyser\README.txt
+LicenseFile=Z:\media\ntfsShared\lin_home\auditory\code\pysoundanalyser\windows_installer\pysoundanalyser_for_win\pysoundanalyser\COPYING.txt
+InfoBeforeFile=Z:\media\ntfsShared\lin_home\auditory\code\pysoundanalyser\windows_installer\pysoundanalyser_for_win\pysoundanalyser\README.md
 OutputBaseFilename=pysoundanalyser_{#MyAppVersion}-setup
 Compression=lzma2/ultra64
 SolidCompression=yes
@@ -38,7 +38,7 @@ Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 ;Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "Z:\home\sam\tmp\pysoundanalyser_for_win\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Z:\media\ntfsShared\lin_home\auditory\code\pysoundanalyser\windows_installer\pysoundanalyser_for_win\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

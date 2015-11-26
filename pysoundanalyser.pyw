@@ -17,8 +17,7 @@
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-import sip
-sip.setapi("QString", 2)
+
 import sys, platform, os, copy, pickle, traceback
 from pysoundanalyser.pyqtver import*
 if pyqtversion == 4:
