@@ -20,26 +20,26 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import SIGNAL, Qt, QEvent, QSize
-    from PyQt4.QtGui import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
+    from PyQt4.QtGui import  QApplication, QCheckBox, QFrame, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout, QWidget, QDesktopWidget
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import SIGNAL, Qt, QEvent, QSize
-    from PySide.QtGui import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
+    from PySide.QtGui import  QApplication, QCheckBox, QFrame, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout, QWidget, QDesktopWidget
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import pyqtSignal, Qt, QEvent, QSize
     from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFontMetrics
-    from PyQt5.QtWidgets import  QApplication, QCheckBox, QGridLayout, QDialog, QDialogButtonBox, QHBoxLayout, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout
+    from PyQt5.QtWidgets import  QApplication, QCheckBox, QFrame, QGridLayout, QDialog, QDialogButtonBox, QHBoxLayout, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout, QWidget, QDesktopWidget
     
 class generateSoundDialog(QDialog):
     def __init__(self, parent, sndType):
         QDialog.__init__(self, parent)
+
         self.prm = parent.prm
         self.currLocale = self.parent().prm['data']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.vbl = QVBoxLayout()
         self.hbl = QHBoxLayout()
-        #we need two separate grids for the resize to work properly when hiding widgets
         self.grid_0 = QGridLayout()
         self.grid_1 = QGridLayout()
 
@@ -80,23 +80,23 @@ class generateSoundDialog(QDialog):
         self.grid_1.setAlignment(Qt.AlignTop)
         self.hbl.addLayout(self.grid_0)
         self.hbl.addLayout(self.grid_1)
-        self.vbl.addLayout(self.hbl)
+
+        self.scrollAreaWidgetContents = QWidget()#QFrame()
+        #self.scrollAreaWidgetContents.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
+        self.scrollAreaWidgetContents.setLayout(self.hbl)
+        
+        self.scrollArea = QScrollArea()
+        #self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.scrollAreaWidgetContents.layout().setSizeConstraint(QLayout.SetFixedSize)
+
+        self.vbl.addWidget(self.scrollArea)
         self.vbl.addWidget(buttonBox)
         self.setLayout(self.vbl)
-        self.cw_scrollarea = QScrollArea()
-        self.cw_scrollarea.setWidget(self)
-        self.layout().setSizeConstraint(QLayout.SetFixedSize)
-        self.setNewSize()
-        
-        self.cw_scrollarea.show()
-      
+        screen = QDesktopWidget().screenGeometry()
+        self.resize(int(0.3*screen.width()), int(0.5*screen.height()))
         self.setWindowTitle(self.tr("Generate Sound"))
 
-   
-    def setNewSize(self):
-        self.cw_scrollarea.resize(550, 550)
-        self.update()
-        self.updateGeometry()
     
     ## def minimumSizeHint(self):
     ##     size = self.sizeHint()
