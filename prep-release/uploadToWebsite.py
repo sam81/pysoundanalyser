@@ -12,13 +12,13 @@ for i in range(len(ln)):
     if ln[i].strip().split('=')[0].strip() == "version":
            ver = ln[i].strip().split('=')[1].strip()
            ver = ver[1:len(ver)-2]
-# fPaths = ["../dist/pysoundanalyser-" + ver + ".tar.gz",
-#           "../dist/pysoundanalyser-" + ver + ".zip",
-#           "../dist/pysoundanalyser-pyqt4-" + ver + ".tar.gz",
-#           "../dist/pysoundanalyser-pyqt4-" + ver + ".zip",
-#           "../dist/pysoundanalyser-pyside-" + ver + ".tar.gz",
-#           "../dist/pysoundanalyser-pyside-" + ver + ".zip"]
-fPaths = []
+fPaths = ["../dist/pysoundanalyser-" + ver + ".tar.gz",
+          "../dist/pysoundanalyser-" + ver + ".zip",
+          "../dist/pysoundanalyser-pyqt4-" + ver + ".tar.gz",
+          "../dist/pysoundanalyser-pyqt4-" + ver + ".zip",
+          "../dist/pysoundanalyser-pyside-" + ver + ".tar.gz",
+          "../dist/pysoundanalyser-pyside-" + ver + ".zip"]
+#fPaths = []
 
 for fPath in fPaths:
     print("Uploading: " + fPath)

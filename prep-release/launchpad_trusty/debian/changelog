@@ -1,3 +1,9 @@
+pysoundanalyser (0.2.32-ppa0~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Dec 2015 11:07:57 +0100
+
 pysoundanalyser (0.2.28-ppa0~trusty) trusty; urgency=low
 
   * New upstream release

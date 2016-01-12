@@ -1,3 +1,9 @@
+pysoundanalyser (0.2.32-ppa0~wily) wily; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Dec 2015 11:12:58 +0100
+
 pysoundanalyser (0.2.31-ppa0~wily) wily; urgency=low
 
   * New upstream release

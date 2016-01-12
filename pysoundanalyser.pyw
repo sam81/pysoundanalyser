@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2016 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -406,7 +406,7 @@ class applicationWindow(QMainWindow):
                     thisSnd['wave'] = x
                 thisSnd['fs'] = int(fs)
                 thisSnd['nBits'] = nb
-                thisSnd['chan'] = self.tr('Right')
+                thisSnd['chan'] = self.tr('Left')
                 thisSnd['nSamples'] = len(thisSnd['wave'])
                 thisSnd['duration'] = thisSnd['nSamples'] / thisSnd['fs']
                 tmpName = sndFile
@@ -443,7 +443,7 @@ class applicationWindow(QMainWindow):
                         thisSnd['wave'] = x[:,nsnd]
                         thisSnd['fs'] = int(fs)
                         thisSnd['nBits'] = nb
-                        thisSnd['chan'] = self.tr('Left')
+                        thisSnd['chan'] = self.tr('Right')
                         thisSnd['nSamples'] = len(thisSnd['wave'])
                         thisSnd['duration'] = thisSnd['nSamples'] / thisSnd['fs']
                         thisSnd['label'] = tmpNameL
@@ -578,11 +578,6 @@ class applicationWindow(QMainWindow):
                 elif self.sndList[selectedSound]['chan'] == self.tr('Left'):
                     snd[:,0] =  snd[:,0] + concatenate((self.sndList[selectedSound]['wave'], zeros(nSampDiff)), axis=0)
 
-        #Apparently there's an inversion to do
-        thisSnd = copy.copy(snd)
-        snd[:,1] = thisSnd[:,0]
-        snd[:,0] = thisSnd[:,1]
-        #if 
        
         dialog = saveSoundDialog(self)
         if dialog.exec_():

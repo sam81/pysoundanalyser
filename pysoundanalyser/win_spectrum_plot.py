@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2015 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2016 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
