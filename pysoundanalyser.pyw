@@ -18,7 +18,7 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 
-import sys, platform, os, copy, pickle, traceback
+import argparse, sys, platform, os, copy, pickle, traceback
 from pysoundanalyser.pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
@@ -105,6 +105,7 @@ class applicationWindow(QMainWindow):
     """main window"""
     def __init__(self, prm):
         QMainWindow.__init__(self)
+        self.setAcceptDrops(True)
         self.prm = prm
         self.prm['version'] = __version__
         self.prm['builddate'] = pysoundanalyser_builddate
@@ -329,6 +330,10 @@ class applicationWindow(QMainWindow):
         self.main_widget.setFocus()
         # set the central widget of MainWindow to main_widget
         self.setCentralWidget(self.main_widget)
+
+        if self.prm['calledWithWAVFiles'] == True:
+            self.loadFiles(self.prm['WAVFilesToLoad'])
+            
     def tableItemChanged(self, item):
         pass
         
@@ -390,7 +395,9 @@ class applicationWindow(QMainWindow):
     def onClickLoadButton(self):
         #self.sndTableWidget.setSortingEnabled(False)
         files = QFileDialog.getOpenFileNames(self, self.tr("pysoundanalyser - Choose file to load"), '',self.tr("Supported Sound Files (*.wav);;All Files (*)"))[0]
+        self.loadFiles(files)
         
+    def loadFiles(self, files):
         for f in range(len(files)):
             sndFile = files[f]
             #xxxxxxxxxxxxxxx
@@ -1403,6 +1410,24 @@ class applicationWindow(QMainWindow):
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+            
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+            l = []
+            for url in event.mimeData().urls():
+                l.append(str(url.toLocalFile()))
+            self.loadFiles(l)
+        else:
+            event.ignore()
+
+
     def onAbout(self):
         if pyqtversion in [4,5]:
             qt_compiled_ver = QtCore.QT_VERSION_STR
@@ -1434,14 +1459,48 @@ class applicationWindow(QMainWindow):
                 along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
                 <p>Python {2} - {3} {4} compiled against Qt {5}, and running with Qt {6} on {7}""").format(__version__, self.prm['builddate'], platform.python_version(), qt_pybackend, qt_pybackend_ver, qt_compiled_ver, qt_runtime_ver, platform.system()))
 
+class DropMainWindow(QMainWindow):
+    drpd = QtCore.Signal(str) 
+    def __init__(self, parent):
+        QMainWindow.__init__(self, parent)
+        self.setAcceptDrops(True)
+        
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.CopyAction)
+            event.accept()
+            l = []
+            for url in event.mimeData().urls():
+                l.append(str(url.toLocalFile()))
+                self.drpd.emit(l[len(l)-1])
+        else:
+            event.ignore()
+
 
 def main(argv):
+    
     prm = {}
     prm['data'] = {}
     #prm['data'] = {}; prm['prefs'] = {}
     # create the GUI application
     qApp = QApplication(sys.argv)
     sys.excepthook = excepthook
+
+    prm['calledWithWAVFiles'] = False
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument("-f", "--file", help="Load WAV file", nargs='*', default='')
+    args = parser.parse_args()
+    if len(args.file) > 0:
+        prm['calledWithWAVFiles'] = True
+        prm['WAVFilesToLoad'] = args.file
+    
     #first read the locale settings
     locale = QtCore.QLocale().system().name() #returns a string such as en_US
     qtTranslator = QtCore.QTranslator()

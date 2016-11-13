@@ -1,13 +1,14 @@
 [Desktop Entry]
-Version = 0.2.33,
+Version = 0.2.34,
 Name=pysoundanalyser
 Name[en_GB]=pysoundanalyser 
 GenericName=pysoundanalyser
 GenericName[en_GB]=pysoundanalyser
 Comment=Sound processing software
 Comment[en_GB]=Sound processing software
+MimeType=audio/x-wav;
 Terminal=false
 Type=Application
-Exec=/usr/bin/pysoundanalyser
+Exec=/usr/bin/pysoundanalyser -f %F
 Icon=/usr/share/icons/johnny_automatic_crashing_wave.svg
 Categories=Education;Science;

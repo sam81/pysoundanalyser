@@ -55,7 +55,7 @@ def getSpectrum(sig, sampFreq, window, poweroftwo):
         
          
     p = fft(sig, nfft) # take the fourier transform 
-    nUniquePts = ceil((nfft+1)/2.0)
+    nUniquePts = int(ceil((nfft+1)/2.0))
     p = p[0:nUniquePts]
     p = abs(p)
     p = p / float(n) #float(n) # scale by the number of points so that
