@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2016 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -83,40 +83,56 @@ class applyFIR2PresetsDialog(QDialog):
             if prevFilterType == self.tr('lowpass'):
                 self.grid.removeWidget(self.cutoffLabel)
                 self.cutoffLabel.setParent(None)
+                self.cutoffLabel.deleteLater()
                 self.grid.removeWidget(self.endCutoffLabel)
                 self.endCutoffLabel.setParent(None)
+                self.endCutoffLabel.deleteLater()
                 self.grid.removeWidget(self.cutoffWidget)
                 self.cutoffWidget.setParent(None)
+                self.cutoffWidget.deleteLater()
                 self.grid.removeWidget(self.endCutoffWidget)
                 self.endCutoffWidget.setParent(None)
+                self.endCutoffWidget.deleteLater()
 
             elif prevFilterType == self.tr('highpass'):
                 self.grid.removeWidget(self.cutoffLabel)
                 self.cutoffLabel.setParent(None)
+                self.cutoffLabel.deleteLater()
                 self.grid.removeWidget(self.startCutoffLabel)
                 self.startCutoffLabel.setParent(None)
+                self.startCutoffLabel.deleteLater()
                 self.grid.removeWidget(self.cutoffWidget)
                 self.cutoffWidget.setParent(None)
+                self.cutoffWidget.deleteLater()
                 self.grid.removeWidget(self.startCutoffWidget)
                 self.startCutoffWidget.setParent(None)
+                self.startCutoffWidget.deleteLater()
             elif prevFilterType == self.tr('bandpass') or prevFilterType == self.tr('bandstop'):
                 self.grid.removeWidget(self.lowerCutoffLabel)
                 self.lowerCutoffLabel.setParent(None)
+                self.lowerCutoffLabel.deleteLater()
                 self.grid.removeWidget(self.startCutoffLabel)
                 self.startCutoffLabel.setParent(None)
+                self.startCutoffLabel.deleteLater()
                 self.grid.removeWidget(self.lowerCutoffWidget)
                 self.lowerCutoffWidget.setParent(None)
+                self.lowerCutoffWidget.deleteLater()
                 self.grid.removeWidget(self.startCutoffWidget)
                 self.startCutoffWidget.setParent(None)
+                self.startCutoffWidget.deleteLater()
                 
                 self.grid.removeWidget(self.higherCutoffLabel)
                 self.higherCutoffLabel.setParent(None)
+                self.higherCutoffLabel.deleteLater()
                 self.grid.removeWidget(self.endCutoffLabel)
                 self.endCutoffLabel.setParent(None)
+                self.endCutoffLabel.deleteLater()
                 self.grid.removeWidget(self.higherCutoffWidget)
                 self.higherCutoffWidget.setParent(None)
+                self.higherCutoffWidget.deleteLater()
                 self.grid.removeWidget(self.endCutoffWidget)
                 self.endCutoffWidget.setParent(None)
+                self.endCutoffWidget.deleteLater()
                 
             if self.currFilterType == self.tr('lowpass'):
                 self.cutoffLabel = QLabel(self.tr('Cutoff: '))

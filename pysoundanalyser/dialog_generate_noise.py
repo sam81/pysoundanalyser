@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2016 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -107,8 +107,10 @@ class generateNoiseDialog(QDialog):
             elif prevNoiseType in [self.tr('Pink'), self.tr("Red"), self.tr("Blue"), self.tr("Violet")]:
                 self.grid.removeWidget(self.reLabel)
                 self.reLabel.setParent(None)
+                self.reLabel.deleteLater()
                 self.grid.removeWidget(self.reWidget)
                 self.reWidget.setParent(None)
+                self.reWidget.deleteLater()
 
                 
             if self.currNoiseType in [self.tr('Pink'), self.tr("Red"), self.tr("Blue"), self.tr("Violet")]:

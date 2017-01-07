@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2016 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -1443,7 +1443,7 @@ class applicationWindow(QMainWindow):
                                 self.tr("""<b>pysoundanalyser - Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
                                 - build date: {1} <br>
-                                <p> Copyright &copy; 2010-2016 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
+                                <p> Copyright &copy; 2010-2017 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
                                 All rights reserved. <p>
                 This program is free software: you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by

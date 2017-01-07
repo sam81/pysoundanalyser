@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2016 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -115,25 +115,33 @@ class generateSinusoidDialog(QDialog):
             if prevChannel == self.tr('Both'):
                 self.grid.removeWidget(self.itdLabel)
                 self.itdLabel.setParent(None)
+                self.itdLabel.deleteLater()
                 self.grid.removeWidget(self.itdWidget)
                 self.itdWidget.setParent(None)
+                self.itdWidget.deleteLater()
 
                 self.grid.removeWidget(self.itdRefLabel)
                 self.itdRefLabel.setParent(None)
+                self.itdRefLabel.deleteLater()
                 self.grid.removeWidget(self.itdRefChooser)
                 self.itdRefChooser.setParent(None)
+                self.itdRefChooser.deleteLater()
 
                 
 
                 self.grid.removeWidget(self.ildLabel)
                 self.ildLabel.setParent(None)
+                self.ildLabel.deleteLater()
                 self.grid.removeWidget(self.ildWidget)
                 self.ildWidget.setParent(None)
+                self.ildWidget.deleteLater()
 
                 self.grid.removeWidget(self.ildRefLabel)
                 self.ildRefLabel.setParent(None)
+                self.ildRefLabel.deleteLater()
                 self.grid.removeWidget(self.ildRefChooser)
                 self.ildRefChooser.setParent(None)
+                self.ildRefChooser.deleteLater()
                 
             elif prevChannel in [self.tr('Right'), self.tr('Left')]:
                 pass
