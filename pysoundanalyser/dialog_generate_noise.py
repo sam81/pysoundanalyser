@@ -106,10 +106,10 @@ class generateNoiseDialog(QDialog):
                 pass
             elif prevNoiseType in [self.tr('Pink'), self.tr("Red"), self.tr("Blue"), self.tr("Violet")]:
                 self.grid.removeWidget(self.reLabel)
-                self.reLabel.setParent(None)
+                #self.reLabel.setParent(None)
                 self.reLabel.deleteLater()
                 self.grid.removeWidget(self.reWidget)
-                self.reWidget.setParent(None)
+                #self.reWidget.setParent(None)
                 self.reWidget.deleteLater()
 
                 

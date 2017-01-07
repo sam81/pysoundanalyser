@@ -633,11 +633,21 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../pysoundanalyser.pyw" line="959"/>
+        <source>No sound selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pysoundanalyser.pyw" line="875"/>
+        <source>No sounds selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../pysoundanalyser.pyw" line="1445"/>
         <source>&lt;b&gt;pysoundanalyser - Python Sound Analyser&lt;/b&gt; &lt;br&gt;
                                 - version: {0}; &lt;br&gt;
                                 - build date: {1} &lt;br&gt;
-                                &lt;p&gt; Copyright &amp;copy; 2010-2015 Samuele Carcagno. &lt;a href=&quot;mailto:sam.carcagno@gmail.com&quot;&gt;sam.carcagno@gmail.com&lt;/a&gt; 
+                                &lt;p&gt; Copyright &amp;copy; 2010-2017 Samuele Carcagno. &lt;a href=&quot;mailto:sam.carcagno@gmail.com&quot;&gt;sam.carcagno@gmail.com&lt;/a&gt; 
                                 All rights reserved. &lt;p&gt;
                 This program is free software: you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by
@@ -652,16 +662,6 @@ Bits: {3}</source>
                 You should have received a copy of the GNU General Public License
                 along with this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;
                 &lt;p&gt;Python {2} - {3} {4} compiled against Qt {5}, and running with Qt {6} on {7}</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pysoundanalyser.pyw" line="959"/>
-        <source>No sound selected.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pysoundanalyser.pyw" line="875"/>
-        <source>No sounds selected.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -686,22 +686,22 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="121"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="137"/>
         <source>lowpass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="133"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="149"/>
         <source>highpass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="145"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="161"/>
         <source>bandpass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="169"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="185"/>
         <source>bandstop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -711,12 +711,12 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="134"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="150"/>
         <source>Cutoff: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="171"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="187"/>
         <source>End Transition Band = Cutoff *</source>
         <translation type="unfinished"></translation>
     </message>
@@ -726,17 +726,17 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="183"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="199"/>
         <source>Start Transition Band = Cutoff *</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="170"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="186"/>
         <source>Lower Cutoff: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="182"/>
+        <location filename="../pysoundanalyser/dialog_apply_filter.py" line="198"/>
         <source>Higher Cutoff: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1141,7 +1141,7 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="115"/>
+        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="117"/>
         <source>re. (Hz): </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1171,22 +1171,22 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="114"/>
+        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="116"/>
         <source>Pink</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="114"/>
+        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="116"/>
         <source>Red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="114"/>
+        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="116"/>
         <source>Blue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="114"/>
+        <location filename="../pysoundanalyser/dialog_generate_noise.py" line="116"/>
         <source>Violet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1239,17 +1239,17 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="164"/>
+        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="172"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="164"/>
+        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="172"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="140"/>
+        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="148"/>
         <source>Both</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1259,17 +1259,17 @@ Bits: {3}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="141"/>
+        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="149"/>
         <source>ITD (us)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="162"/>
+        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="170"/>
         <source>Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="155"/>
+        <location filename="../pysoundanalyser/dialog_generate_sinusoid.py" line="163"/>
         <source>ILD (dB)</source>
         <translation type="unfinished"></translation>
     </message>
