@@ -1,3 +1,27 @@
+pysoundanalyser (0.2.36-ppa0~bionic) bionic; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 28 Apr 2018 17:44:17 +0100
+
+pysoundanalyser (0.2.36-ppa1~xenial) xenial; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 11 Jan 2017 01:16:14 +0100
+
+pysoundanalyser (0.2.36-ppa0~xenial) xenial; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 08 Jan 2017 15:11:34 +0100
+
+pysoundanalyser (0.2.36-ppa0~xenial) xenial; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 08 Jan 2017 15:10:40 +0100
+
 pysoundanalyser (0.2.34-ppa0~xenial) xenial; urgency=low
 
   * New upstream release

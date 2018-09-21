@@ -18,7 +18,7 @@ for i in range(len(ln)):
            ver = ln[i].strip().split('=')[1].strip()
            ver = ver[1:len(ver)-2]
 tarball_path = "../dist/pysoundanalyser-pyqt4-" + ver + ".tar.gz"
-buildpath = "../../pkg_source_build/" + platform.linux_distribution()[0] + '_' + platform.linux_distribution()[1].replace('/', '_') + '_' + platform.uname()[4]
+buildpath = "../../pkg_source_build/" + platform.linux_distribution()[0] + '_' + series #platform.linux_distribution()[1].replace('/', '_') + '_' + platform.uname()[4]
 
 if os.path.exists(buildpath) == False:
     os.makedirs(buildpath)
@@ -64,3 +64,10 @@ os.chdir("pysoundanalyser-pyqt4-" + ver)
 
 #For Launchpad Upload
 os.system("debuild -S -sa")
+
+
+#back to the buildpath directory
+os.chdir("../")
+#upload to launchpad
+uploadCmd = "dput ppa:samuele-carcagno/hearinglab " + "pysoundanalyser_"+ ver + pparev + "~" + series + "_source.changes"
+os.system(uploadCmd)

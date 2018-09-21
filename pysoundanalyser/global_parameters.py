@@ -88,6 +88,9 @@ def def_prefs(prm):
     elif platform.system() == "Darwin":
         prm["pref"]["playCommand"] = 'afplay'
         prm["pref"]["playCommandType"] = QApplication.translate("Preferences Window","custom","")
+    elif platform.system() == 'FreeBSD':
+        prm['appData']['available_play_commands'] = ["wavplay"]
+        prm['appData']['available_play_commands'].append(QApplication.translate("Preferences Window","custom",""))
     else:
         prm["pref"]["playCommand"] = 'aplay'
         prm["pref"]["playCommandType"] = 'aplay'
