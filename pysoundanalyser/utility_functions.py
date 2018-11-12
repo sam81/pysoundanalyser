@@ -109,7 +109,7 @@ def getAcf(sig, sampRate, maxLag, normalised, window):
         sig = sig*w
     sampRate = float(sampRate) 
     acf = correlate(sig, sig, mode=str('full'))
-    acf = acf[acf.size/2:]
+    acf = acf[int(acf.size/2):]
     maxLagPnt = int(round(maxLag*sampRate))
     if maxLagPnt > len(acf):
          maxLagPnt = int(len(acf))
