@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of sndlib
 
 #    sndlib is free software: you can redistribute it and/or modify
@@ -98,7 +98,6 @@ def addSounds(snd1, snd2, delay, fs):
         
     return snd
 
-
 def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
            duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
@@ -118,7 +117,7 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
     AMPhase : float
         Starting AM phase in radians.
     level : float
-        Tone level in dB SPL. 
+        Average tone level in dB SPL. See notes.
     duration : float
         Tone duration (excluding ramps) in milliseconds.
     ramp : float
@@ -134,12 +133,103 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
     Returns
     -------
     snd : 2-dimensional array of floats
+
+    Notes
+    ------
+    For a fixed base amplitude, the average power of an AM tone (as defined in this function) increases proportionally with AM depth by a factor of 1+AMDepth^2/2 (Viemeister, 1979, Yost et al., 1989, Hartmann, 2004). This function compensates for this average increase in power. You can use the `AMToneVarLev` function if you want to generate AM tones varying in average power with AM depth.
+
+    References
+    ----------
+    .. [H] Hartmann, W. M. (2004). Signals, Sound, and Sensation. Springer Science & Business Media
+    .. Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
+    .. [YSO] Yost, W., Sheft, S., & Opie, J. (1989). Modulation interference in detection and discrimination of amplitude modulation. The Journal of the Acoustical Society of America, 86(December 1989), 2138–2147. https://doi.org/10.1121/1.398474
        
     Examples
     --------
     >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, 
     ...     AMPhase=1.5*pi, level=65, duration=180, ramp=10, channel='Both', 
     ...     fs=48000, maxLevel=100)
+    
+    """        
+
+    duration = duration / 1000 #convert from ms to sec
+    
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp/1000 * fs))
+    nTot = nSamples + (nRamp * 2)
+
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp) 
+
+    snd = zeros((nTot, 2))
+
+    if channel == "Right":
+        snd[:, 1] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
+    elif channel == "Left":
+        snd[:, 0] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
+    elif channel == "Both":
+        snd[:, 0] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
+        snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
+
+    snd = setLevel_(level, snd, maxLevel, channel=channel)
+    snd = gate(ramp, snd, fs)
+
+    return snd
+
+
+def AMToneVarLev(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
+                 duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+    """
+    Generate an amplitude modulated (AM) tone.
+
+    Parameters
+    ----------
+    frequency : float
+        Carrier frequency in hertz.
+    AMFreq : float
+        Amplitude modulation frequency in Hz.
+    AMDepth : float
+        Amplitude modulation depth (a value of 1
+        corresponds to 100% modulation). 
+    phase : float
+        Starting phase in radians.
+    AMPhase : float
+        Starting AM phase in radians.
+    level : float
+        Average level of the tone in dB SPL when the `AMDepth` is zero. The level of the tone will be higher when `AMDepth` is > zero. See notes. 
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : string ('Right', 'Left' or 'Both')
+        Channel in which the tone will be generated.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+
+    Notes
+    ------
+    For a fixed base amplitude, the average power of an AM tone (as defined in this function) increases proportionally with AM depth by a factor of 1+AMDepth^2/2 (Viemeister, 1979, Yost et al., 1989, Hartmann, 2004). This function does not compensate for this average increase in power. You can use the `AMTone` function if you want to generate AM tones matched in average power irrespective of AM depth.
+
+    References
+    ----------
+    .. [H] Hartmann, W. M. (2004). Signals, Sound, and Sensation. Springer Science & Business Media
+    .. Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
+    .. [YSO] Yost, W., Sheft, S., & Opie, J. (1989). Modulation interference in detection and discrimination of amplitude modulation. The Journal of the Acoustical Society of America, 86(December 1989), 2138–2147. https://doi.org/10.1121/1.398474
+       
+    Examples
+    --------
+    >>> snd = AMToneVarLev(frequency=1000, AMFreq=20, AMDepth=1, phase=0, 
+    ...       AMPhase=1.5*pi, level=65, duration=180, ramp=10, channel='Both', 
+    ...       fs=48000, maxLevel=100)
     
     """        
 
@@ -424,16 +514,15 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
     
     """
     """ Comments:.
-    The intensity spectrum level in dB is SL
-    The peak amplitude A to achieve a desired SL is
-    SL = 10*log10(RMS^2/NHz) that is the total RMS^2 divided by the freq band
-    SL/10 = log10(RMS^2/NHz)
-    10^(SL/10) = RMS^2/NHz
-    RMS^2 = 10^(SL/10) * NHz
-    RMS = 10^(SL/20) * sqrt(NHz)
+    The intensity spectrum level in dB is ISL
+    The peak amplitude A to achieve a desired ISL is
+    ISL = 10*log10(A^2/NHz) that is the total intensity (A^2) divided by the freq band
+    ISL/10 = log10(A^2/NHz)
+    10^(ISL/10) = A^2/NHz
+    A^2 = 10^(ISL/10) * NHz
+    A = 10^(ISL/20) * sqrt(NHz)
     NHz = sampRate / 2 (Nyquist)
     
-
     """
     amp = sqrt(fs/2)*(10**((spectrumLevel - maxLevel) / 20))
     duration = duration / 1000 #convert from ms to sec
@@ -451,8 +540,8 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
     #random is a numpy module
     noise = (numpy.random.random(nTot) + numpy.random.random(nTot)) - (numpy.random.random(nTot) + numpy.random.random(nTot))
     RMS = sqrt(mean(noise*noise))
-    #scale the noise so that the maxAmplitude goes from -1 to 1
-    #since A = RMS*sqrt(2)
+    #noise/RMS would scale the noise so that its RMS = 1
+    #noise/(RMS*sqrt(2)) scales the noise so that its RMS equals the RMS of a sinusoid with peak amplitude 1 (that is 1/sqrt(2))
     scaled_noise = noise / (RMS * sqrt(2))
 
     snd_mono[0:nRamp] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
@@ -463,7 +552,7 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
         snd_mono2 = zeros(nTot)
         noise2 = (numpy.random.random(nTot) + numpy.random.random(nTot)) - (numpy.random.random(nTot) + numpy.random.random(nTot))
         RMS = sqrt(mean(noise2*noise2))
-        #scale the noise so that the maxAmplitude goes from -1 to 1
+        #scale the noise so that its RMS = 1
         #since A = RMS*sqrt(2)
         scaled_noise2 = noise2 / (RMS * sqrt(2))
 
@@ -721,7 +810,7 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
     ----------
     F0 : float
         Tone fundamental frequency in hertz.
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -809,9 +898,19 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
                     tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
                 elif channel == "Odd Left" or channel == "Odd Right":
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-    elif harmPhase == "Schroeder":
+    elif harmPhase == "Schroeder-":
         for i in range(lowHarm, highHarm+1):
-            phase = -pi * i * (i - 1) / float(highHarm)
+            phase = -pi*i*(i - 1)/(highHarm-lowHarm+1)
+            if channel == "Right" or channel == "Left" or channel == "Both":
+                tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            elif channel == "Odd Left" or channel == "Odd Right":
+                if i%2 > 0: #odd harmonic
+                    toneOdd = toneOdd + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+                else:
+                    toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+    elif harmPhase == "Schroeder+":
+        for i in range(lowHarm, highHarm+1):
+            phase = pi*i*(i - 1)/(highHarm-lowHarm+1)
             if channel == "Right" or channel == "Left" or channel == "Both":
                 tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
             elif channel == "Odd Left" or channel == "Odd Right":
@@ -830,7 +929,7 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
                 else:
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
     else:
-        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
 
 
     if channel == "Right":
@@ -882,7 +981,7 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
     ----------
     F0 : float
         Tone fundamental frequency in hertz.
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -960,12 +1059,14 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
                 thisPhase = 0
             else:
                 thisPhase = pi/2
-        elif harmPhase == "Schroeder":
-            thisPhase = -pi * i * (i - 1) / highHarm
+        elif harmPhase == "Schroeder-":
+            thisPhase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
+        elif harmPhase == "Schroeder+":
+            thisPhase = pi * i * (i - 1) / (highHarm-lowHarm+1)
         elif harmPhase == "Random":
             thisPhase =  numpy.random.random() * 2 * pi
         else:
-            raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+            raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
                 
         pool.apply_async(pureTone, (F0*i+stretchHz, thisPhase, level, duration, ramp, thisChan, fs, maxLevel), callback=tn.append)
 
@@ -975,6 +1076,121 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
     for i in range(len(tn)):
         snd = snd + tn[i]
         
+    return snd
+
+def complexToneIPD(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=60, duration=980, ramp=10, IPD=3.14, targetEar="Right", fs=48000, maxLevel=101):
+    """
+    Synthetise a complex tone with an interaural phase difference (IPD).
+
+    Parameters
+    ----------
+    F0 : float
+        Tone fundamental frequency in hertz.
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
+        Phase relationship between the partials of the complex tone.
+    lowHarm : int
+        Lowest harmonic component number.
+    highHarm : int
+        Highest harmonic component number.
+    stretch : float
+        Harmonic stretch in %F0. Increase each harmonic frequency by a fixed value
+        that is equal to (F0*stretch)/100. If 'stretch' is different than
+        zero, an inhanmonic complex tone will be generated.
+    level : float
+        The level of each partial in dB SPL.
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    IPD : float
+        Interaural phase difference, in radians.
+    targetEar : string
+        The ear in which the phase will be shifted.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    Examples
+    --------
+    >>> ct = complexToneIPD(F0=440, harmPhase='Sine', lowHarm=3, highHarm=10,
+    ...     stretch=0, level=55, duration=180, ramp=10, IPD=3.14, targetEar="Right",
+    ...     fs=48000, maxLevel=100)
+    
+    """
+    amp = 10**((level - maxLevel) / 20)
+    duration = duration / 1000. #convert from ms to sec
+    ramp = ramp / 1000
+    stretchHz = (F0*stretch)/100
+    
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+    
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp) 
+
+    snd = zeros((nTot, 2))
+    tone = zeros(nTot)
+    toneShift = zeros(nTot)
+
+    if harmPhase == "Sine":
+        for i in range(lowHarm, highHarm+1):
+            tone =  tone + sin(2 * pi * ((F0 * i) + stretchHz) * timeAll)
+            toneShift =  toneShift + sin(2 * pi * ((F0 * i) + stretchHz) * timeAll + IPD)
+    elif harmPhase == "Cosine":
+        for i in range(lowHarm, highHarm+1):
+            tone = tone + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
+            toneShift = toneShift + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll + IPD)
+    elif harmPhase == "Alternating":
+        for i in range(lowHarm, highHarm+1):
+            if i%2 > 0: #odd harmonic
+                tone = tone + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
+                toneShift = toneShift + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll + IPD)
+            else: #even harmonic
+                tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
+                toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + IPD)
+    elif harmPhase == "Schroeder-":
+        for i in range(lowHarm, highHarm+1):
+            phase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
+            tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)
+    elif harmPhase == "Schroeder+":
+        for i in range(lowHarm, highHarm+1):
+            phase = pi * i * (i - 1) / (highHarm-lowHarm+1)
+            tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)      
+    elif harmPhase == "Random":
+        for i in range(lowHarm, highHarm+1):
+            phase = numpy.random.random() * 2 * pi
+            tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)
+    else:
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
+
+    if targetEar == "Right":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:len(timeAll)]
+
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneShift[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * toneShift[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneShift[nRamp+nSamples:len(timeAll)]
+    elif targetEar == "Left":
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:len(timeAll)]
+
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneShift[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * toneShift[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneShift[nRamp+nSamples:len(timeAll)]
+
     return snd
 
 
@@ -1512,7 +1728,7 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     ----------
     midF0 : float
         F0 at the FM zero crossing
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', or 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -1679,9 +1895,12 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
-    elif harmPhase == "Schroeder":
+    elif harmPhase in ["Schroeder-", "Schroeder+"]:
         for i in range(lowHarm, highHarm+1):
-            phase = -pi * i * (i - 1) / float(highHarm)
+            if harmPhase == "Schroeder-":
+                phase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
+            elif harmPhase == "Schroeder+":
+                phase = pi * i * (i - 1) / (highHarm-lowHarm+1)
             if channel == "Right" or channel == "Left" or channel == "Both":
                 tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
                 phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
@@ -1724,7 +1943,7 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
     else:
-        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
             
 
     #numpy.savetxt('ptone.txt', tone)
@@ -1788,7 +2007,7 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     ----------
     midF0 : float
         F0 at the FM zero crossing
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -1923,8 +2142,18 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                         tone = tone + sin(ang)
                     elif channel == "Odd Left" or channel == "Odd Right":
                         toneEven = toneEven + sin(ang)
-            elif harmPhase == "Schroeder":
-                phase = -pi * i * (i - 1) / highHarm
+            elif harmPhase == "Schroeder-":
+                phase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
+                ang = cumsum(2*pi*fArr/fs + phase)
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone = tone + sin(ang)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    if i%2 > 0: #odd harmonic
+                        toneOdd = toneOdd + sin(ang)
+                    else:
+                        toneEven = toneEven + sin(ang)
+            elif harmPhase == "Schroeder+":
+                phase = pi * i * (i - 1) / (highHarm-lowHarm+1)
                 ang = cumsum(2*pi*fArr/fs + phase)
                 if channel == "Right" or channel == "Left" or channel == "Both":
                     tone = tone + sin(ang)
@@ -1944,7 +2173,7 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     else:
                         toneEven = toneEven + sin(ang)
             else:
-                raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+                raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
 
 
     #level correction --------------
@@ -3660,7 +3889,7 @@ def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="
     
     """
     
-    amp = 10**((level - maxLevel) / 20.)
+    amp = 10**((level - maxLevel) / 20)
     duration = duration / 1000 #convert from ms to sec
     ramp = ramp / 1000
 
@@ -3721,6 +3950,49 @@ def scale(level, sig):
     sig = sig * 10**(level/20)
     return sig
 
+def setLevel_(level, snd, maxLevel, channel="Both"):
+    """
+    Set the RMS level of a sound signal to a given value.
+
+    Parameters
+    ----------
+    level : float
+        The desired RMS level of the signal in dB SPL.
+    snd : array of floats
+        Signal whose level is to be set.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+    channel : string ('Right', 'Left' or 'Both')
+        Channel in which the level will be set.
+
+    Returns
+    -------
+    sig : 2-dimensional array of floats
+       
+    Examples
+    --------
+    >>> import copy
+    >>> pt = pureTone(frequency=1000, phase=0, level=60, duration=100,
+    ...     ramp=0, channel="Both", fs=48000, maxLevel=100)
+    >>> pt2 = copy.copy(pt) #this function modifies the argument so make a copy!
+    >>> pt2 = setLevel_(level=40, snd=pt2, maxLevel=100, channel="Both") #set spectrum level to 20 dB SPL
+    >>> levDiff = 20*log10(getRMS(pt)[1]/getRMS(pt2)[1])
+
+    """
+    if channel == "Both":
+        chans = [0,1]
+    if channel == "Right":
+        chans = [1]
+    elif channel == "Left":
+        chans = [0]
+
+    for ch in range(len(chans)):
+        i = chans[ch]
+        currAmplitude = sqrt(mean(snd[:,i]*snd[:,i]))*sqrt(2)
+        currLevel = 20*log10(currAmplitude)+maxLevel
+        snd[:,i] = snd[:,i] * 10**((level-currLevel)/20)
+
+    return snd
 
 def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
@@ -3771,12 +4043,7 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
     nTot = nSamples + (nRamp * 2)
 
     spacing = 1 / totDur
-    components = 1 + floor((frequency2 - frequency1) / spacing)
-    # SL = 10*log10(A^2/NHz) 
-    # SL/10 = log10(A^2/NHz)
-    # 10^(SL/10) = A^2/NHz
-    # A^2 = 10^(SL/10) * NHz
-    # RMS = 10^(SL/20) * sqrt(NHz) where NHz is the spacing between harmonics
+    components = 1 + floor((frequency2 - frequency1) / spacing) 
     amp =  10**((level - maxLevel) / 20) * sqrt((frequency2 - frequency1) / components)
     
     timeAll = arange(0, nTot) / fs
@@ -3811,8 +4078,5 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
 
  
    
-
-
-
 
 

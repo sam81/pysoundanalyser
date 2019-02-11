@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "pysoundanalyser"
-#define MyAppVersion "0.2.36"
+#define MyAppVersion "0.2.37"
 #define MyAppPublisher "Samuele Carcagno"
 #define MyAppURL "http://samcarcagno.altervista.org/pysoundanalyser/pysoundanalyser.html"
 
