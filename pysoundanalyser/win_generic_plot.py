@@ -97,7 +97,7 @@ class genericPlot(QMainWindow):
         self.mw = QWidget(self)
         self.vbl = QVBoxLayout(self.mw)
         self.fig = Figure(facecolor=self.canvasColor, dpi=self.dpi)
-        self.axes = self.fig.add_subplot(111, axisbg=self.backgroundColor)
+        self.axes = self.fig.add_subplot(111, facecolor=self.backgroundColor)
        
         self.createBaseMenus()
         self.createAdditionalMenus()
@@ -270,7 +270,7 @@ class genericPlot(QMainWindow):
       
     def setBaseFigureProperties(self):
         self.fig.set_facecolor(self.canvasColor)
-        self.axes.set_axis_bgcolor(self.backgroundColor)
+        self.axes.set_facecolor(self.backgroundColor)
         self.toggleGrid(None)
         self.axes.spines['bottom'].set_color(self.axesColor)
         self.axes.spines['left'].set_color(self.axesColor)

@@ -1,3 +1,9 @@
+pysoundanalyser (0.2.39-ppa0~bionic) bionic; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 12 Feb 2019 19:48:37 +0100
+
 pysoundanalyser (0.2.38-ppa0~bionic) bionic; urgency=low
 
   * New upstream release
