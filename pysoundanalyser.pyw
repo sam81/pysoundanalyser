@@ -1295,6 +1295,12 @@ class applicationWindow(QMainWindow):
             ramp            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Ramp (ms)"))]
             level            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Level (dB SPL)"))]            
             channel           = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Ear:"))]
+            if channel == self.tr('Right'):
+                channel = 'Right'
+            elif channel == self.tr('Left'):
+                channel = 'Left'
+            elif channel == self.tr('Both'):
+                channel = 'Both'
             
             thisSound = sndlib.AMTone(frequency=freq, AMFreq=AMFreq, AMDepth=AMDepth, phase=carrPhase, AMPhase=modPhase, level=level,
             duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
@@ -1321,6 +1327,13 @@ class applicationWindow(QMainWindow):
             ramp            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Ramp (ms)"))]
             level            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Level (dB SPL)"))]            
             channel           = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Ear:"))]
+
+            if channel == self.tr('Right'):
+                channel = 'Right'
+            elif channel == self.tr('Left'):
+                channel = 'Left'
+            elif channel == self.tr('Both'):
+                channel = 'Both'
             
             thisSound = sndlib.FMTone(fc=carrFreq, fm=modFreq, mi=modInd, phase=carrPhase, level=level, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
             #thisSound = self.stimulusCorrect
