@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-pysoundanalyser_version = "0.2.40"
-pysoundanalyser_builddate = "22-Feb-2019 23:40"
+pysoundanalyser_version = "0.2.41"
+pysoundanalyser_builddate = "28-May-2020 11:34"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2020 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -862,7 +862,9 @@ class applicationWindow(QMainWindow):
                     smoothWindow = None
                 for i in range(len(ids)):
                     selectedSound = ids[i]
-                    self.sndList[selectedSound]['wave'] = scipy.signal.resample(self.sndList[selectedSound]['wave'], round(len(self.sndList[selectedSound]['wave'])*newSampRate/self.sndList[selectedSound]['fs']), window=smoothWindow) 
+                    self.sndList[selectedSound]['wave'] = scipy.signal.resample(self.sndList[selectedSound]['wave'],
+                                                                                int(round(len(self.sndList[selectedSound]['wave'])*newSampRate/self.sndList[selectedSound]['fs'])),
+                                                                                window=smoothWindow) 
                     self.sndList[selectedSound]['fs'] = newSampRate
                     self.sndList[selectedSound]['nSamples'] = len(self.sndList[selectedSound]['wave'])
                     self.onSelectionChanged()
@@ -1336,7 +1338,6 @@ class applicationWindow(QMainWindow):
                 channel = 'Both'
             
             thisSound = sndlib.FMTone(fc=carrFreq, fm=modFreq, mi=modInd, phase=carrPhase, level=level, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
-            #thisSound = self.stimulusCorrect
             self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
 
 
@@ -1353,9 +1354,14 @@ class applicationWindow(QMainWindow):
             fs = self.currLocale.toInt(dialog.sampRateWidget.text())[0]
             duration            = dialog.sndPrm['field'][dialog.sndPrm['fieldLabel'].index(dialog.tr("Duration (ms)"))]            
             channel           = dialog.sndPrm['chooser'][dialog.sndPrm['chooserLabel'].index(dialog.tr("Ear:"))]
+            if channel == self.tr('Right'):
+                channel = 'Right'
+            elif channel == self.tr('Left'):
+                channel = 'Left'
+            elif channel == self.tr('Both'):
+                channel = 'Both'
             
             thisSound = sndlib.makeSilence(duration=duration, fs=fs)
-            #thisSound = self.stimulusCorrect
             self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
 
            
@@ -1456,7 +1462,7 @@ class applicationWindow(QMainWindow):
                                 self.tr("""<b>pysoundanalyser - Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
                                 - build date: {1} <br>
-                                <p> Copyright &copy; 2010-2017 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
+                                <p> Copyright &copy; 2010-2020 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
                                 All rights reserved. <p>
                 This program is free software: you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2020 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -77,8 +77,8 @@ def getSpectrogram(sig, sampFreq, winLength, overlap, winType, poweroftwo):
     #winLength in seconds
     #overlap in percent
     #if the signal length is not a multiple of the window length it is trucated
-    winLengthPnt = floor(winLength * sampFreq)
-    step = winLengthPnt - round(winLengthPnt * overlap / 100.)
+    winLengthPnt = floor(winLength * sampFreq).astype("int")
+    step = winLengthPnt - round(winLengthPnt * overlap / 100.).astype("int")
     ind = arange(0, len(sig) - winLengthPnt, step)
     n = len(ind)
 
@@ -122,8 +122,8 @@ def getAcf(sig, sampRate, maxLag, normalised, window):
 def getAutocorrelogram(sig, sampFreq, winLength, overlap, winType, maxLag, normalised):
     #winLength in seconds
     #overlap in percent
-    winLengthPnt = floor(winLength * sampFreq)
-    step = winLengthPnt - round(winLengthPnt * overlap / 100.)
+    winLengthPnt = floor(winLength * sampFreq).astype("int")
+    step = winLengthPnt - round(winLengthPnt * overlap / 100.).astype("int")
     ind = arange(0, len(sig) - winLengthPnt, step)
     n = len(ind)
 
