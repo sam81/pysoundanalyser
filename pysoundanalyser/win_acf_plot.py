@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -21,34 +21,7 @@ from .pyqtver import*
 import matplotlib
 matplotlib.rcParams['path.simplify'] = False
 
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale
-    try:  
-        from PyQt4.QtCore import QString  
-    except ImportError:  
-        # we are using Python3 so QString is not defined  
-        QString = str
-    from PyQt4.QtGui import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PyQt4"
-    
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale
-    try:  
-        from PySide.QtCore import QString  
-    except ImportError:  
-        # we are using Python3 so QString is not defined  
-        QString = str
-    from PySide.QtGui import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PySide"
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
     try:  
@@ -57,6 +30,19 @@ elif pyqtversion == 5:
         # we are using Python3 so QString is not defined  
         QString = str
     from PyQt5.QtWidgets import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt5Agg"
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale
+    # try:  
+    #     from PyQt6.QtCore import QString  
+    # except ImportError:  
+    #     # we are using Python3 so QString is not defined  
+    QString = str
+    from PyQt6.QtGui import QAction
+    from PyQt6.QtWidgets import QColorDialog, QComboBox, QLabel, QInputDialog
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
     matplotlib.rcParams['backend'] = "Qt5Agg"
@@ -79,7 +65,7 @@ class acfPlot(genericPlot):
         genericPlot.__init__(self, parent, prm)
         self.prm = parent.prm
         self.currLocale = self.parent().prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.sound = sound
         self.win = self.prm['pref']['smoothingWindow']
         self.lineCol = pltColorFromQColor(self.prm['pref']['lineColor1'])

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -21,24 +21,17 @@ from .pyqtver import*
 import matplotlib
 matplotlib.rcParams['path.simplify'] = False
 
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PyQt4"
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QAction, QCheckBox, QColorDialog, QComboBox, QDoubleValidator, QGridLayout, QHBoxLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PySide"
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QDoubleValidator, QIcon
     from PyQt5.QtWidgets import QAction, QCheckBox, QColorDialog, QComboBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt5Agg"
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtGui import QAction, QDoubleValidator, QIcon
+    from PyQt6.QtWidgets import QCheckBox, QColorDialog, QComboBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QVBoxLayout, QWidget
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
     matplotlib.rcParams['backend'] = "Qt5Agg"
@@ -55,10 +48,10 @@ import numpy as np
 class genericPlot(QMainWindow):
     def __init__(self, parent, prm):
         QMainWindow.__init__(self, parent)
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.prm = prm
         self.currLocale = self.parent().prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
 
         #define some parameters before axes creation
         self.canvasColor = pltColorFromQColor(self.prm['pref']['canvasColor'])

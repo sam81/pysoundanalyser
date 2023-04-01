@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -20,20 +20,14 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 
 import argparse, sys, platform, os, copy, pickle, traceback
 from pysoundanalyser.pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
-    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
-    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
-    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
-elif pyqtversion == -4:
-    import PySide
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QIcon, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QIcon
     from PyQt5.QtWidgets import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtGui import QAction, QIcon
+    from PyQt6.QtWidgets import QAbstractItemView, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 import logging, signal
 from pysoundanalyser import qrc_resources
@@ -110,7 +104,7 @@ class applicationWindow(QMainWindow):
         self.prm['version'] = __version__
         self.prm['builddate'] = pysoundanalyser_builddate
         self.currLocale = prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.setWindowTitle(self.tr("Python Sound Analyser"))
         # main widget
         self.main_widget = QWidget(self)
@@ -285,8 +279,8 @@ class applicationWindow(QMainWindow):
         self.sndTableWidget = QTableWidget()
         #self.sndTableWidget.setSortingEnabled(True)
         self.sndTableWidget.setColumnCount(3)
-        self.sndTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.sndTableWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.sndTableWidget.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.sndTableWidget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         
         self.sndTableWidget.setHorizontalHeaderLabels([self.tr('Label'), self.tr('Channel'), 'id'])
         self.sndTableWidget.hideColumn(2)
@@ -339,7 +333,7 @@ class applicationWindow(QMainWindow):
         
     def onEditPref(self):
         dialog = preferencesDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             dialog.permanentApply()
     def onSelectAll(self):
         for i in range(self.sndTableWidget.rowCount()):
@@ -434,10 +428,10 @@ class applicationWindow(QMainWindow):
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
                 newItem = QTableWidgetItem(thisSnd['label'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
                 newItem = QTableWidgetItem(thisSnd['chan'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
@@ -465,10 +459,10 @@ class applicationWindow(QMainWindow):
                         currCount = len(self.sndList)
                         self.sndTableWidget.setRowCount(currCount)
                         newItem = QTableWidgetItem(thisSnd['label'])
-                        newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                        newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                         self.sndTableWidget.setItem(currCount-1, 0, newItem)
                         newItem = QTableWidgetItem(thisSnd['chan'])
-                        newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                        newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                         self.sndTableWidget.setItem(currCount-1, 1, newItem)
                         self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                         self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
@@ -587,7 +581,7 @@ class applicationWindow(QMainWindow):
 
        
         dialog = saveSoundDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             fs = sampRate
             if dialog.channelChooser.currentText() == self.tr('Mono'):
                 wave = snd[:,0] + snd[:,1]
@@ -629,10 +623,10 @@ class applicationWindow(QMainWindow):
             currCount = len(self.sndList)
             self.sndTableWidget.setRowCount(currCount)
             newItem = QTableWidgetItem(thisSnd['label'])
-            #newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            #newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.sndTableWidget.setItem(currCount-1, 0, newItem)
             newItem = QTableWidgetItem(thisSnd['chan'])
-            #newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            #newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.sndTableWidget.setItem(currCount-1, 1, newItem)
             self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
             self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
@@ -702,7 +696,7 @@ class applicationWindow(QMainWindow):
             multipleSelection = False
             currChan = self.sndList[selectedSound]['chan']
             dialog = changeChannelDialog(self, multipleSelection, currChan)
-            if dialog.exec_():
+            if dialog.exec():
                 newChan = dialog.chooser.currentText()
                 self.sndTableWidget.item(self.sndList[selectedSound]['qid'].row(), 1).setText(newChan)
                 self.sndList[selectedSound]['chan'] = newChan
@@ -854,7 +848,7 @@ class applicationWindow(QMainWindow):
                 currSampRate = None
 
             dialog = resampleDialog(self, multipleSelection, currSampRate)
-            if dialog.exec_():
+            if dialog.exec():
                 newSampRate = dialog.newSampRate
                 resampMethod = str(dialog.convertorChooser.currentText())
                 smoothWindow = str(dialog.winChooser.currentText())
@@ -885,7 +879,7 @@ class applicationWindow(QMainWindow):
             else:
                 sampRate = snd1['fs']
                 dialog = concatenateDialog(self, snd1, snd2)
-                if dialog.exec_():
+                if dialog.exec():
                      delay = self.currLocale.toDouble(dialog.delayWidget.text())[0]
                      delayType = str(dialog.delayTypeChooser.currentText())
                      thisSnd = {}
@@ -931,7 +925,7 @@ class applicationWindow(QMainWindow):
             fs = snd["fs"]
             nSamples = snd["wave"].shape[0]
             dialog = cutDialog(self, snd)
-            if dialog.exec_():
+            if dialog.exec():
                 startCut = self.currLocale.toDouble(dialog.fromWidget.text())[0]
                 endCut = self.currLocale.toDouble(dialog.toWidget.text())[0]
                 cutUnit = str(dialog.unitChooser.currentText())
@@ -959,7 +953,7 @@ class applicationWindow(QMainWindow):
             return
         else:
             dialog = applyFIR2PresetsDialog(self)
-            if dialog.exec_():
+            if dialog.exec():
                 if dialog.currFilterType == self.tr('lowpass'):
                     cutoff = self.currLocale.toDouble(dialog.cutoffWidget.text())[0]
                     highStop = self.currLocale.toDouble(dialog.endCutoffWidget.text())[0]
@@ -995,7 +989,7 @@ class applicationWindow(QMainWindow):
 
     def onClickGenerateNoise(self):
         dialog = generateNoiseDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             label = dialog.noiseLabelWidget.text()
             duration = self.currLocale.toDouble(dialog.noiseDurationWidget.text())[0]
             ramps = self.currLocale.toDouble(dialog.noiseRampsWidget.text())[0]
@@ -1052,10 +1046,10 @@ class applicationWindow(QMainWindow):
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
                 newItem = QTableWidgetItem(thisSnd['label'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
                 newItem = QTableWidgetItem(thisSnd['chan'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
@@ -1085,17 +1079,17 @@ class applicationWindow(QMainWindow):
                     currCount = len(self.sndList)
                     self.sndTableWidget.setRowCount(currCount)
                     newItem = QTableWidgetItem(thisSnd['label'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                    newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 0, newItem)
                     newItem = QTableWidgetItem(thisSnd['chan'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                    newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 1, newItem)
                     self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                     self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
            
     def onClickGenerateSinusoid(self):
         dialog = generateSinusoidDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             label = dialog.soundLabelWidget.text()
             freq = self.currLocale.toDouble(dialog.soundFrequencyWidget.text())[0]
             phase = self.currLocale.toDouble(dialog.soundPhaseWidget.text())[0]
@@ -1148,10 +1142,10 @@ class applicationWindow(QMainWindow):
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
                 newItem = QTableWidgetItem(thisSnd['label'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
                 newItem = QTableWidgetItem(thisSnd['chan'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
@@ -1180,17 +1174,17 @@ class applicationWindow(QMainWindow):
                     currCount = len(self.sndList)
                     self.sndTableWidget.setRowCount(currCount)
                     newItem = QTableWidgetItem(thisSnd['label'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                    newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 0, newItem)
                     newItem = QTableWidgetItem(thisSnd['chan'])
-                    newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                    newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                     self.sndTableWidget.setItem(currCount-1, 1, newItem)
                     self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                     self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
 
     def onClickGenerateHarmCompl(self):
         dialog = generateSoundDialog(self, "Harmonic Complex")
-        if dialog.exec_():
+        if dialog.exec():
 
             for i in range(dialog.sndPrm['nFields']):
                 dialog.sndPrm['field'][i] = self.currLocale.toDouble(dialog.field[i].text())[0]
@@ -1279,7 +1273,7 @@ class applicationWindow(QMainWindow):
 
     def onClickGenerateAMTone(self):
         dialog = generateSoundDialog(self, "AM Tone")
-        if dialog.exec_():
+        if dialog.exec():
 
             for i in range(dialog.sndPrm['nFields']):
                 dialog.sndPrm['field'][i] = self.currLocale.toDouble(dialog.field[i].text())[0]
@@ -1312,7 +1306,7 @@ class applicationWindow(QMainWindow):
                         
     def onClickGenerateFMTone(self):
         dialog = generateSoundDialog(self, "FM Tone")
-        if dialog.exec_():
+        if dialog.exec():
 
             for i in range(dialog.sndPrm['nFields']):
                 dialog.sndPrm['field'][i] = self.currLocale.toDouble(dialog.field[i].text())[0]
@@ -1343,7 +1337,7 @@ class applicationWindow(QMainWindow):
 
     def onClickGenerateSilence(self):
         dialog = generateSoundDialog(self, "Silence")
-        if dialog.exec_():
+        if dialog.exec():
 
             for i in range(dialog.sndPrm['nFields']):
                 dialog.sndPrm['field'][i] = self.currLocale.toDouble(dialog.field[i].text())[0]
@@ -1389,10 +1383,10 @@ class applicationWindow(QMainWindow):
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
                 newItem = QTableWidgetItem(thisSnd['label'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
                 newItem = QTableWidgetItem(thisSnd['chan'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
@@ -1421,10 +1415,10 @@ class applicationWindow(QMainWindow):
                 currCount = len(self.sndList)
                 self.sndTableWidget.setRowCount(currCount)
                 newItem = QTableWidgetItem(thisSnd['label'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 0, newItem)
                 newItem = QTableWidgetItem(thisSnd['chan'])
-                newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
                 self.sndTableWidget.setItem(currCount-1, 1, newItem)
                 self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                 self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
@@ -1448,7 +1442,7 @@ class applicationWindow(QMainWindow):
 
 
     def onAbout(self):
-        if pyqtversion in [4,5]:
+        if pyqtversion in [4,5,6]:
             qt_compiled_ver = QtCore.QT_VERSION_STR
             qt_runtime_ver = QtCore.qVersion()
             qt_pybackend_ver = QtCore.PYQT_VERSION_STR
@@ -1462,7 +1456,7 @@ class applicationWindow(QMainWindow):
                                 self.tr("""<b>pysoundanalyser - Python Sound Analyser</b> <br>
                                 - version: {0}; <br>
                                 - build date: {1} <br>
-                                <p> Copyright &copy; 2010-2020 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
+                                <p> Copyright &copy; 2010-2023 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
                                 All rights reserved. <p>
                 This program is free software: you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by
@@ -1548,7 +1542,7 @@ def main(argv):
             qApp.installTranslator(appTranslator)
             prm['data']['currentLocale'] = QtCore.QLocale(locale)
             QtCore.QLocale.setDefault(prm['data']['currentLocale'])
-            prm['data']['currentLocale'].setNumberOptions(prm['data']['currentLocale'].OmitGroupSeparator | prm['data']['currentLocale'].RejectGroupSeparator)
+            prm['data']['currentLocale'].setNumberOptions(prm['data']['currentLocale'].NumberOption.OmitGroupSeparator | prm['data']['currentLocale'].NumberOption.RejectGroupSeparator)
 
     
     qApp.setWindowIcon(QIcon(":/johnny_automatic_crashing_wave.svg"))
@@ -1565,7 +1559,7 @@ def main(argv):
     aw.show()
     # start the Qt main loop execution, exiting from this script
     # with the same return code of Qt application
-    sys.exit(qApp.exec_())
+    sys.exit(qApp.exec())
 if __name__ == "__main__":
     main(sys.argv[1:])
    

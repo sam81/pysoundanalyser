@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -17,19 +17,16 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale
-    from PySide.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
     from PyQt5.QtGui import QDoubleValidator, QIntValidator
     from PyQt5.QtWidgets import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale
+    from PyQt6.QtGui import QDoubleValidator, QIntValidator
+    from PyQt6.QtWidgets import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QPushButton, QTabWidget, QVBoxLayout, QWidget
 
 import copy, pickle
 
@@ -40,7 +37,7 @@ class preferencesDialog(QDialog):
         self.tmpPref = {}
         self.tmpPref['pref'] = copy.deepcopy(self.parent().prm['pref'])
         self.currLocale = self.parent().prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         
         self.tabWidget = QTabWidget()
         self.tabWidget.currentChanged.connect(self.tabChanged)
@@ -184,10 +181,10 @@ class preferencesDialog(QDialog):
         self.tabWidget.addTab(self.signalPrefWidget, self.tr("Signa&l"))
         self.tabWidget.addTab(self.soundPrefWidget, self.tr("Soun&d"))
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply|QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
+        buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.permanentApply)
         
         layout = QVBoxLayout()
         layout.addWidget(self.tabWidget)
@@ -287,7 +284,7 @@ class preferencesDialog(QDialog):
         self.tryApply()
         if self.tmpPref['pref'] != self.parent().prm['pref']:
             conf = applyChanges(self)
-            if conf.exec_():
+            if conf.exec():
                 self.permanentApply()
             else:
                 self.tmpPref['pref'] = copy.deepcopy(self.parent().prm['pref'])
@@ -302,8 +299,8 @@ class applyChanges(QDialog):
         label = QLabel(self.tr('There are unsaved changes. Apply Changes?'))
         grid.addWidget(label, n, 1)
         n = n+1
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
-                                     QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|
+                                     QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         grid.addWidget(buttonBox, n, 1)

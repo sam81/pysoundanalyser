@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -20,25 +20,18 @@ import matplotlib
 matplotlib.rcParams['path.simplify'] = False
 
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QAction, QComboBox, QDoubleValidator, QLabel, QInputDialog
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PyQt4"
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QAction, QComboBox, QDoubleValidator, QLabel, QInputDialog
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PySide"
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QDoubleValidator
     from PyQt5.QtWidgets import QAction, QComboBox, QLabel, QInputDialog
     from PyQt5.QtWidgets import QAction, QColorDialog, QComboBox, QLabel, QInputDialog
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt5Agg"
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtGui import QAction, QDoubleValidator
+    from PyQt6.QtWidgets import QColorDialog, QComboBox, QLabel, QInputDialog
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
     matplotlib.rcParams['backend'] = "Qt5Agg"
@@ -60,7 +53,7 @@ class autocorrelogramPlot(genericPlot):
         self.prm = parent.prm
         self.sound = sound
         self.currLocale = self.parent().prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.win = self.prm['pref']['smoothingWindow']
         self.xAxisLabel = self.prm['pref']['autocorrelogram_x_axis_label']
         self.yAxisLabel = self.prm['pref']['autocorrelogram_y_axis_label']

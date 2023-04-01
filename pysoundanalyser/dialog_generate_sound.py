@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -17,19 +17,16 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import SIGNAL, Qt, QEvent, QSize
-    from PyQt4.QtGui import  QApplication, QCheckBox, QFrame, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout, QWidget, QDesktopWidget
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import SIGNAL, Qt, QEvent, QSize
-    from PySide.QtGui import  QApplication, QCheckBox, QFrame, QGridLayout, QDialog, QDialogButtonBox, QDoubleValidator, QFontMetrics, QHBoxLayout, QIntValidator, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout, QWidget, QDesktopWidget
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import pyqtSignal, Qt, QEvent, QSize
     from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFontMetrics
     from PyQt5.QtWidgets import  QApplication, QCheckBox, QFrame, QGridLayout, QDialog, QDialogButtonBox, QHBoxLayout, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout, QWidget, QDesktopWidget
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import pyqtSignal, Qt, QEvent, QSize
+    from PyQt6.QtGui import QDoubleValidator, QIntValidator, QFontMetrics
+    from PyQt6.QtWidgets import  QApplication, QCheckBox, QFrame, QGridLayout, QDialog, QDialogButtonBox, QHBoxLayout, QLabel, QLayout, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QVBoxLayout, QWidget#, QDesktopWidget
     
 class generateSoundDialog(QDialog):
     def __init__(self, parent, sndType):
@@ -37,7 +34,7 @@ class generateSoundDialog(QDialog):
 
         self.prm = parent.prm
         self.currLocale = self.parent().prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.vbl = QVBoxLayout()
         self.hbl = QHBoxLayout()
         self.grid_0 = QGridLayout()
@@ -93,7 +90,10 @@ class generateSoundDialog(QDialog):
         self.vbl.addWidget(self.scrollArea)
         self.vbl.addWidget(buttonBox)
         self.setLayout(self.vbl)
-        screen = QDesktopWidget().screenGeometry()
+        if pyqtver == 5:
+            screen = QDesktopWidget().screenGeometry()
+        elif pyqtver == 6:
+            screen = self.screen().geometry()
         self.resize(int(0.3*screen.width()), int(0.5*screen.height()))
         self.setWindowTitle(self.tr("Generate Sound"))
 

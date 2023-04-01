@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -20,22 +20,16 @@ import matplotlib
 matplotlib.rcParams['path.simplify'] = False
 
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QApplication, QColor
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PyQt4"
-    prefFileSuffix = "-pyqt4"
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QApplication, QColor
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PySide"
-    prefFileSuffix = "-pyside"
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QColor
     from PyQt5.QtWidgets import QApplication
+    matplotlib.rcParams['backend'] = "Qt5Agg"
+    prefFileSuffix = ""
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtGui import QColor
+    from PyQt6.QtWidgets import QApplication
     matplotlib.rcParams['backend'] = "Qt5Agg"
     prefFileSuffix = ""
 

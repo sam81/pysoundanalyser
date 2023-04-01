@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -18,23 +18,21 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QVBoxLayout
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIntValidator, QLabel, QLineEdit, QVBoxLayout
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QDoubleValidator, QIntValidator
     from PyQt5.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QVBoxLayout
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtGui import QDoubleValidator, QIntValidator
+    from PyQt6.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit, QVBoxLayout
 
 class applyFIR2PresetsDialog(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.prm = parent.prm
         self.currLocale = self.parent().prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         vbl = QVBoxLayout()
         self.grid = QGridLayout()
 

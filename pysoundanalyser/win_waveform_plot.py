@@ -20,23 +20,16 @@ import matplotlib
 matplotlib.rcParams['path.simplify'] = False
 
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QAction, QInputDialog
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PyQt4"
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QAction, QInputDialog
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PySide"
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QAction, QInputDialog
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "Qt5Agg"
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtGui import QAction
+    from PyQt6.QtWidgets import QInputDialog
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
     matplotlib.rcParams['backend'] = "Qt5Agg"
@@ -55,7 +48,7 @@ class waveformPlot(genericPlot):
         genericPlot.__init__(self, parent, prm)
         self.currLocale = self.parent().prm['data']['currentLocale']
         #self.currLocale = prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.sound = sound
         self.lineCol = pltColorFromQColor(self.prm['pref']['lineColor1'])
         self.lineWidth = self.prm['pref']['line_width']
