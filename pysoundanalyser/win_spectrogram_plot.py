@@ -94,9 +94,12 @@ class spectrogramPlot(genericPlot):
         self.sound['spectrogram'] = powerMatrix
     def plotData(self):
         Z = 10*log10(self.sound['spectrogram'])
-        #self.logXAxis = True
-        X,Y = meshgrid(self.sound['spectrogram_timeArr'], self.sound['spectrogram_freqArr'])
-        self.im = self.axes.pcolor(X, Y, Z, cmap=self.prm['pref']['colormap'])
+        # X,Y = meshgrid(self.sound['spectrogram_timeArr'], self.sound['spectrogram_freqArr'])
+        # self.im = self.axes.pcolormesh(X, Y, Z, cmap=self.prm['pref']['colormap'])
+        Z = flipud(Z)
+        extent = self.sound['spectrogram_timeArr'][0], self.sound['spectrogram_timeArr'][-1], 1, self.sound['spectrogram_freqArr'][-1]
+        self.im = self.axes.imshow(Z, cmap=self.prm['pref']['colormap'], extent=extent)
+        self.axes.axis('auto')
         if self.logXAxis == True:
             self.axes.set_yscale('log')
             self.axes.set_xlim(0, self.sound['duration'])
@@ -211,11 +214,15 @@ class spectrogramPlot(genericPlot):
 
         self.fig.clear()
         self.selectedColormap = self.cmapChooser.currentText()
-        self.axes = self.fig.add_subplot(111, axisbg=self.backgroundColor)
+        self.axes = self.fig.add_subplot(111, facecolor=self.backgroundColor)
         Z = 10*log10(self.sound['spectrogram'][l[0]:(l[-1]+1),lt[0]:(lt[-1]+1)])
-        X,Y = meshgrid(self.sound['spectrogram_timeArr'][lt[0]:(lt[-1]+1)], self.sound['spectrogram_freqArr'][l[0]:(l[-1]+1)])
+        #X,Y = meshgrid(self.sound['spectrogram_timeArr'][lt[0]:(lt[-1]+1)], self.sound['spectrogram_freqArr'][l[0]:(l[-1]+1)])
        
-        self.im = self.axes.pcolor(X, Y, Z, cmap=str(self.selectedColormap))
+        #self.im = self.axes.pcolor(X, Y, Z, cmap=str(self.selectedColormap))
+        Z = flipud(Z)
+        extent = self.sound['spectrogram_timeArr'][lt[0]], self.sound['spectrogram_timeArr'][lt[-1]], self.sound['spectrogram_freqArr'][l[0]], self.sound['spectrogram_freqArr'][l[-1]]
+        self.im = self.axes.imshow(Z, cmap=str(self.selectedColormap), extent=extent)
+        self.axes.axis('auto')
         if self.logXAxis == True:
             self.axes.set_yscale('log')
             if ymin <= 0:

@@ -31,11 +31,11 @@ class resampleDialog(QDialog):
         QDialog.__init__(self, parent)
 
         self.currLocale = self.parent().prm['data']['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         grid = QGridLayout()
         n = 0
         if multipleSelection == False:
-            currSampRateLabel = QLabel(self.currLocale.toString(currSampRate)) 
+            currSampRateLabel = QLabel(self.tr("Current sampling rate: ") + self.currLocale.toString(currSampRate)) 
             grid.addWidget(currSampRateLabel, n, 0)
             n = n+1
         newSampRateLabel = QLabel(self.tr('New Sampling Rate: '))
@@ -64,13 +64,14 @@ class resampleDialog(QDialog):
 
         n = n+1
         
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
-                                     QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|
+                                     QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         grid.addWidget(buttonBox, n, 1)
         self.setLayout(grid)
         self.setWindowTitle(self.tr("Resample"))
+        self.newSampRate = int(self.newSampRateWidget.text())
 
     def onSampRateChanged(self):
         newSampRate = int(self.newSampRateWidget.text())

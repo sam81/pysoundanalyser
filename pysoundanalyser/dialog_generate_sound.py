@@ -68,13 +68,13 @@ class generateSoundDialog(QDialog):
         methodToCall = getattr(self, "select_default_parameters_" + self.execString)
         self.sndPrm = methodToCall()
         self.setDefaultParameters()
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
-                                           QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|
+                                           QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 
-        self.grid_0.setAlignment(Qt.AlignTop)
-        self.grid_1.setAlignment(Qt.AlignTop)
+        self.grid_0.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.grid_1.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.hbl.addLayout(self.grid_0)
         self.hbl.addLayout(self.grid_1)
 
@@ -85,14 +85,14 @@ class generateSoundDialog(QDialog):
         self.scrollArea = QScrollArea()
         #self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.scrollAreaWidgetContents.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.scrollAreaWidgetContents.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
 
         self.vbl.addWidget(self.scrollArea)
         self.vbl.addWidget(buttonBox)
         self.setLayout(self.vbl)
-        if pyqtver == 5:
+        if pyqtversion == 5:
             screen = QDesktopWidget().screenGeometry()
-        elif pyqtver == 6:
+        elif pyqtversion == 6:
             screen = self.screen().geometry()
         self.resize(int(0.3*screen.width()), int(0.5*screen.height()))
         self.setWindowTitle(self.tr("Generate Sound"))
@@ -140,7 +140,8 @@ class generateSoundDialog(QDialog):
             self.chooser[c].setCurrentIndex(self.chooserOptions[c].index(self.sndPrm['chooser'][c]))
             self.grid_1.addWidget(self.chooser[c], c, chooserColumn)
         for c in range(len(self.chooser)):
-            self.chooser[c].activated[str].connect(self.onChooserChange)
+            #self.chooser[c].activated[str].connect(self.onChooserChange)
+            self.chooser[c].textActivated[str].connect(self.onChooserChange)
             self.onChooserChange()
         self.sndPrm['nFields'] = len(self.field)
         self.sndPrm['nChoosers'] = len(self.chooser)
@@ -164,6 +165,7 @@ class generateSoundDialog(QDialog):
         for i in range(len(self.choosersToShow)):
             self.chooser[self.choosersToShow[i]].show()
             self.chooserLabel[self.choosersToShow[i]].show()
+            
     def select_default_parameters_harm_compl(self):
    
         field = []

@@ -74,7 +74,7 @@ def getSpectrum(sig, sampFreq, window, poweroftwo):
 def getSpectrogram(sig, sampFreq, winLength, overlap, winType, poweroftwo):
     #winLength in seconds
     #overlap in percent
-    #if the signal length is not a multiple of the window length it is trucated
+    #if the signal length is not a multiple of the window length it is truncated
     winLengthPnt = floor(winLength * sampFreq).astype("int")
     step = winLengthPnt - round(winLengthPnt * overlap / 100.).astype("int")
     ind = arange(0, len(sig) - winLengthPnt, step)

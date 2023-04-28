@@ -170,7 +170,7 @@ class autocorrelogramPlot(genericPlot):
 
 
         self.fig.clear()
-        self.axes = self.fig.add_subplot(111, axisbg=self.backgroundColor)
+        self.axes = self.fig.add_subplot(111, facecolor=self.backgroundColor)
         Z = self.sound['autocorrelogram'][l[0]:(l[-1]+1),lt[0]:(lt[-1]+1)]
         Z = flipud(Z)
         self.selectedColormap = self.cmapChooser.currentText()

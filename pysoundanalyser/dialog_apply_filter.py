@@ -63,8 +63,8 @@ class applyFIR2PresetsDialog(QDialog):
         self.grid.addWidget(self.endCutoffWidget, 2, 4)
 
        
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
-                                     QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|
+                                     QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 

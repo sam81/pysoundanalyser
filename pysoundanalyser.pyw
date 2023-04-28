@@ -59,7 +59,7 @@ def excepthook(except_type, except_val, tbck):
     tb = traceback.format_exception(except_type, except_val, tbck)
     ret = QMessageBox.critical(None, "Critical Error! Something went wrong, the following info may help you troubleshooting",
                                     ''.join(tb),
-                                    QMessageBox.Ok)
+                                    QMessageBox.StandardButton.Ok)
     timeStamp = ''+ time.strftime("%d/%m/%y %H:%M:%S", time.localtime()) + ' ' + '\n'
     logMsg = timeStamp + ''.join(tb)
     logging.debug(logMsg)
@@ -856,6 +856,8 @@ class applicationWindow(QMainWindow):
                     smoothWindow = None
                 for i in range(len(ids)):
                     selectedSound = ids[i]
+                    if smoothWindow == "hanning":
+                        smoothWindow = "hann"
                     self.sndList[selectedSound]['wave'] = scipy.signal.resample(self.sndList[selectedSound]['wave'],
                                                                                 int(round(len(self.sndList[selectedSound]['wave'])*newSampRate/self.sndList[selectedSound]['fs'])),
                                                                                 window=smoothWindow) 
