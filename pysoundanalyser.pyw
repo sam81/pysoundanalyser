@@ -16,8 +16,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-
 import argparse, sys, platform, os, copy, pickle, traceback
 from pysoundanalyser.pyqtver import*
 if pyqtversion == 5:
@@ -89,11 +87,11 @@ from pysoundanalyser.dialog_generate_sinusoid import*
 tmpprm = {}; tmpprm['data'] = {}
 tmpprm = global_parameters(tmpprm)
 tmpprm = get_prefs(tmpprm)
-if tmpprm['pref']['wavmanager'] == 'scipy':
-    from pysoundanalyser.scipy_wav import scipy_wavwrite, scipy_wavread
-elif tmpprm['pref']['wavmanager'] == 'audiolab':
-    import scikits.audiolab as audiolab
-    from scikits.audiolab import Sndfile
+if tmpprm['pref']['wavmanager'] == 'soundfile':
+    from pysoundanalyser.wavpy_sndf import wavread, wavwrite
+elif tmpprm['pref']['wavmanager'] == 'scipy':
+    #from pysoundanalyser.scipy_wav import scipy_wavwrite, scipy_wavread
+    from pysoundanalyser.wavpy_scipy import wavread, wavwrite
 
 class applicationWindow(QMainWindow):
     """main window"""
@@ -495,10 +493,10 @@ class applicationWindow(QMainWindow):
 
         return fileValid
     def loadWav(self,fName):
-        if self.prm['pref']['wavmanager'] == 'scipy':
-            fs, snd, nbits = scipy_wavread(fName)
-       
+        snd, fs, nbits = wavread(fName)
+
         return snd, fs, nbits
+    
     def onSelectionChanged(self):
         ids = self.findSelectedItemIds()
         if len(ids) == 0:
@@ -591,15 +589,8 @@ class applicationWindow(QMainWindow):
                 nChannels = 2
             ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write'), self.tr('.{0}').format(dialog.suggestedExtension), self.tr('All Files (*)'))[0]
             if len(ftow) > 0:
-                if self.prm['pref']['wavmanager'] == 'scipy':
-                    scipy_wavwrite(ftow, fs, int(dialog.encodingChooser.currentText()), wave)
-                elif self.prm['pref']['wavmanager'] == 'audiolab':
-                    ftow = str(ftow)
-                    fAll = audiolab.Format("wav", pcm + str(dialog.encodingChooser.currentText()))
-                    f = Sndfile(ftow, 'w', fAll, nChannels, fs)
-                    f.write_frames(wave)
-                    f.close()
 
+                wavwrite(wave, fs, int(dialog.encodingChooser.currentText()), ftow)              
 
     
     def onClickCloneButton(self):
@@ -810,27 +801,15 @@ class applicationWindow(QMainWindow):
                 fname = 'tmp_snd.wav'
             else:
                 (hnl, fname) = mkstemp('tmp_snd.wav')
-        if playCmd == 'audiolab':
-            snd = transpose(snd)
-            audiolab.play(snd, fs)
-            if writewav == True:
-                snd = transpose(snd)
-                if self.prm["pref"]["wavmanager"] == "audiolab":
-                    audiolab.wavwrite(snd, fname, fs = fs, enc = enc)
-                elif self.prm["pref"]["wavmanager"] == "scipy":
-                    scipy_wavwrite(fname, fs, nbits, snd)
+
+        wavwrite(snd, fs, nbits, fname)
+        if playCmd == 'winsound':
+            winsound.PlaySound(fname, winsound.SND_FILENAME)
         else:
-            if self.prm["pref"]["wavmanager"] == "audiolab":
-                audiolab.wavwrite(snd, fname, fs = fs, enc = enc)
-            elif self.prm["pref"]["wavmanager"] == "scipy":
-                scipy_wavwrite(fname, fs, nbits, snd)
-            if playCmd == 'winsound':
-                winsound.PlaySound(fname, winsound.SND_FILENAME)
-            else:
-                cmd = playCmd + ' ' + fname
-                os.system(cmd)
-            if writewav == False:
-                os.remove(fname)
+            cmd = playCmd + ' ' + fname
+            os.system(cmd)
+        if writewav == False:
+            os.remove(fname)
     
         return
             

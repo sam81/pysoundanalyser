@@ -15,7 +15,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
 if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
@@ -30,6 +29,11 @@ elif pyqtversion == 6:
 
 import copy, pickle
 
+try:
+    import soundfile
+    sndf_available = True
+except:
+    sndf_available = False
 
 class preferencesDialog(QDialog):
     def __init__(self, parent):
@@ -144,7 +148,10 @@ class preferencesDialog(QDialog):
         n = 0
         self.wavmanagerLabel = QLabel(self.tr('Wav Manager (requires restart):'))
         self.wavmanagerChooser = QComboBox()
-        self.wavmanagerChooser.addItems(["scipy"])
+        if sndf_available == True:
+            self.wavmanagerChooser.addItems(["soundfile", "scipy"])
+        else:
+            self.wavmanagerChooser.addItems(["scipy"])
         self.wavmanagerChooser.setCurrentIndex(self.wavmanagerChooser.findText(self.tmpPref['pref']['wavmanager']))
         soundPrefGrid.addWidget(self.wavmanagerLabel, n, 0)
         soundPrefGrid.addWidget(self.wavmanagerChooser, n, 1)

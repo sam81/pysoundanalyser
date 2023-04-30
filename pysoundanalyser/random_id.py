@@ -15,9 +15,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-
-
 import string, random
 #generate random string of length n
 def random_id(n=3, id_type="alphanumeric"):

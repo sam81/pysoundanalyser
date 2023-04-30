@@ -15,9 +15,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import matplotlib
 matplotlib.rcParams['path.simplify'] = False
+
+try:
+    import soundfile
+    sndf_available = True
+except:
+    sndf_available = False
 
 from .pyqtver import*
 if pyqtversion == 5:
@@ -75,7 +80,10 @@ def def_prefs(prm):
     prm['pref']['smoothingWindow'] = 'hamming'
     prm['pref']['poweroftwo'] = False
     #Sound preferences
-    prm["pref"]["wavmanager"] = "scipy"
+    if sndf_available == True:
+        prm["pref"]["wavmanager"] = "soundfile"
+    else:
+        prm["pref"]["wavmanager"] = "scipy"
     if platform.system() == 'Windows':
         prm["pref"]["playCommand"] = 'winsound'
         prm["pref"]["playCommandType"] = 'winsound'

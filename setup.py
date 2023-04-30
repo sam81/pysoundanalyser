@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 from distutils.core import setup
 setup(
-    version="0.2.43",
+    version="0.2.44",
       author="Samuele Carcagno",
       author_email="sam.carcagno@google.com;",
-      description="Alpha Version of pysoundanalyser, a program for visualizing sounds ",
+      description="Alpha version of pysoundanalyser, a program for visualizing sounds ",
       long_description=\
 """
 Alpha Version of pysoundanalyser, a program for visualizing sounds
@@ -24,10 +24,10 @@ Alpha Version of pysoundanalyser, a program for visualizing sounds
         ],
     license="GPL v3",
     name="pysoundanalyser",
-    url="https://bitbucket.org/samuele_c/pysoundanalyser",
+    url="https://samcarcagno.altervista.org/pysoundanalyser/pysoundanalyser.html",
     requires=['PyQt (>=4.8.4)', 'matplotlib (>=1.0.1)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
     packages=["pysoundanalyser"],
-    py_modules = ['pysndlib'],
+    #py_modules = ['pysndlib'],
     scripts = ["pysoundanalyser.pyw"],
     package_dir={'pysoundanalyser': 'pysoundanalyser'},
     package_data={'pysoundanalyser': ["qrc_resources.py",

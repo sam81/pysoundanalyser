@@ -16,8 +16,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-
 from pysoundanalyser.pyqtver import*
 if pyqtversion == 5:
     from PyQt5.QtCore import QThread
