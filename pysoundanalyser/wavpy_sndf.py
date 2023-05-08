@@ -2,20 +2,20 @@
 # -*- coding: utf-8 -*-
 
 #   Copyright (C) 2023 Samuele Carcagno <sam.carcagno@gmail.com>
-#   This file is part of wavpy
+#   This file is part of wavpy_sndf
 
-#    wavpy is free software: you can redistribute it and/or modify
+#    wavpy_sndf is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 
-#    wavpy is distributed in the hope that it will be useful,
+#    wavpy_sndf is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 
 #    You should have received a copy of the GNU General Public License
-#    along with wavpy.  If not, see <http://www.gnu.org/licenses/>.
+#    along with wavpy_sndf.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 Module for reading and writing WAV files. It is a simple but convenient wrapper to the soundfile module.
@@ -56,13 +56,19 @@ def wavread(fName):
 
     return snd, fs, nbits
 
-def wavwrite(data, fs, nbits, fName):
+def wavwrite(data, fs, nbits, fName, wave_format="PCM"):
     if nbits == 16:
         subtype = "PCM_16"
     elif nbits == 24:
         subtype = "PCM_24"
     elif nbits == 32:
-        subtype = "PCM_32"
+        if wave_format == "PCM":
+            subtype = "PCM_32"
+        elif wave_format == "IEEE_FLOAT":
+            subtype = "FLOAT"
+    elif nbits == 64:
+        subtype = "DOUBLE"
+        
     sndf.write(fName, data, fs, subtype=subtype)
 
     return

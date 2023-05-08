@@ -91,7 +91,7 @@ if tmpprm['pref']['wavmanager'] == 'soundfile':
     from pysoundanalyser.wavpy_sndf import wavread, wavwrite
 elif tmpprm['pref']['wavmanager'] == 'scipy':
     #from pysoundanalyser.scipy_wav import scipy_wavwrite, scipy_wavread
-    from pysoundanalyser.wavpy_scipy import wavread, wavwrite
+    from pysoundanalyser.wavpy import wavread, wavwrite
 
 class applicationWindow(QMainWindow):
     """main window"""
