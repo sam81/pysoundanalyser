@@ -29,7 +29,7 @@ class resampleDialog(QDialog):
     def __init__(self, parent, multipleSelection, currSampRate):
         QDialog.__init__(self, parent)
 
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         grid = QGridLayout()
         n = 0
@@ -57,7 +57,7 @@ class resampleDialog(QDialog):
         winLabel = QLabel(self.tr('Window Type: '))
         grid.addWidget(winLabel, n, 0)
         self.winChooser = QComboBox()
-        self.winChooser.addItems(self.parent().prm['data']['available_windows'])
+        self.winChooser.addItems(self.parent().prm['appData']['available_windows'])
         self.winChooser.setCurrentIndex(self.winChooser.findText(self.parent().prm['pref']['smoothingWindow']))
         grid.addWidget(self.winChooser, n, 1)
 

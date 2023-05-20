@@ -49,7 +49,7 @@ class spectrogramPlot(genericPlot):
         genericPlot.__init__(self, parent, prm)
         self.prm = parent.prm
         self.sound = sound
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.poweroftwo = self.prm['pref']['poweroftwo']
         self.win = self.prm['pref']['smoothingWindow']
@@ -121,7 +121,7 @@ class spectrogramPlot(genericPlot):
       
     def createAdditionalControlWidgets(self):
         self.windowChooser = QComboBox()
-        self.windowChooser.addItems(self.prm['data']['available_windows'])
+        self.windowChooser.addItems(self.prm['appData']['available_windows'])
         self.windowChooser.setCurrentIndex(self.windowChooser.findText(self.prm['pref']['smoothingWindow']))
         self.windowChooserLabel = QLabel(self.tr('Window:'))
         self.gridBox.addWidget(self.windowChooserLabel, 0, 4)
@@ -148,7 +148,7 @@ class spectrogramPlot(genericPlot):
         self.cmapChooserLabel = QLabel(self.tr('Color Map:'))
         self.gridBox.addWidget(self.cmapChooserLabel, 1, 4)
         self.cmapChooser = QComboBox()
-        self.cmapChooser.addItems(self.prm['data']['available_colormaps'])
+        self.cmapChooser.addItems(self.prm['appData']['available_colormaps'])
         self.cmapChooser.setCurrentIndex(self.cmapChooser.findText(self.prm['pref']['colormap']))
         self.gridBox.addWidget(self.cmapChooser, 1, 5)
 

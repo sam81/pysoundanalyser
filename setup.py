@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 from distutils.core import setup
 setup(
-    version="0.2.45",
+    version="0.2.46",
       author="Samuele Carcagno",
       author_email="sam.carcagno@google.com;",
       description="Alpha version of pysoundanalyser, a program for visualizing sounds ",

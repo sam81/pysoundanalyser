@@ -32,7 +32,7 @@ class generateSoundDialog(QDialog):
         QDialog.__init__(self, parent)
 
         self.prm = parent.prm
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.vbl = QVBoxLayout()
         self.hbl = QHBoxLayout()

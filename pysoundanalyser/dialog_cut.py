@@ -29,7 +29,7 @@ class cutDialog(QDialog):
     def __init__(self, parent, snd):
         QDialog.__init__(self, parent)
         
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         grid = QGridLayout()
         n = 0

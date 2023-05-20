@@ -32,6 +32,10 @@ def pltColorFromQColor(qcolor):
     col = (qcolor.red()/255., qcolor.green()/255., qcolor.blue()/255.)
     return col
 
+def scaleRGBTo01(col):
+    col = tuple(el/255 for el in col)
+    return col
+
 def getSpectrum(sig, sampFreq, window, poweroftwo):
     n = len(sig)
     if poweroftwo == True:

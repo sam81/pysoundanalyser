@@ -52,11 +52,11 @@ class spectrumPlot(genericPlot):
         genericPlot.__init__(self, parent, prm)
         self.prm = parent.prm
         self.sound = sound
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.win = self.prm['pref']['smoothingWindow']
         self.logXAxis = self.prm['pref']['spectrumLogXAxis']
-        self.lineCol = pltColorFromQColor(self.prm['pref']['lineColor1'])
+        self.lineCol = scaleRGBTo01(self.prm['pref']['lineColor1'])
         self.lineWidth = self.prm['pref']['line_width']
         self.poweroftwo = self.prm['pref']['poweroftwo']
         self.xAxisLabel = self.prm['pref']['spectrum_x_axis_label']
@@ -96,7 +96,7 @@ class spectrumPlot(genericPlot):
 
     def createAdditionalControlWidgets(self):
         self.windowChooser = QComboBox()
-        self.windowChooser.addItems(self.prm['data']['available_windows'])
+        self.windowChooser.addItems(self.prm['appData']['available_windows'])
         self.windowChooser.setCurrentIndex(self.windowChooser.findText(self.prm['pref']['smoothingWindow']))
         self.windowChooserLabel = QLabel(self.tr('Window:'))
         self.gridBox.addWidget(self.windowChooserLabel, 0, 4)

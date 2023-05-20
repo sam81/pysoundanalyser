@@ -32,7 +32,7 @@ class concatenateDialog(QDialog):
         self.order = 'given'
         self.snd1 = snd1
         self.snd2 = snd2
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         grid = QGridLayout()
         n = 0

@@ -29,7 +29,7 @@ class applyFIR2PresetsDialog(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.prm = parent.prm
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         vbl = QVBoxLayout()
         self.grid = QGridLayout()

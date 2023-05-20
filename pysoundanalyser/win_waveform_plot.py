@@ -45,11 +45,10 @@ import numpy as np
 class waveformPlot(genericPlot):
     def __init__(self, parent, sound, prm):
         genericPlot.__init__(self, parent, prm)
-        self.currLocale = self.parent().prm['data']['currentLocale']
-        #self.currLocale = prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.sound = sound
-        self.lineCol = pltColorFromQColor(self.prm['pref']['lineColor1'])
+        self.lineCol = scaleRGBTo01(self.prm['pref']['lineColor1'])
         self.lineWidth = self.prm['pref']['line_width']
         self.xAxisLabel = self.prm['pref']['waveform_x_axis_label']
         self.yAxisLabel = self.prm['pref']['waveform_y_axis_label']

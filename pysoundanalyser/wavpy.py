@@ -116,7 +116,7 @@ def wavread(fName, scale=True):
     hd = read_wav_header(fName)
     nbits = hd.bitsPerSample
     
-    if hd.audioFormat not in [1, 3]: # 1=PCM, 3=IEEE_FLOAT
+    if hd.audioFormat not in [1, 3, 65534]: # 1=PCM, 3=IEEE_FLOAT, 65534=EXTENSIBLE (some FLOAT WAV types seem to be stored like this)
         raise Exception("Sorry can only read PCM or IEEE_FLOAT formats.")
 
     if hd.bitsPerSample not in [16, 24, 32, 64]:

@@ -15,8 +15,26 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-import matplotlib
+import matplotlib, platform
 matplotlib.rcParams['path.simplify'] = False
+
+if platform.system() == "Linux":
+    try:
+        import alsaaudio
+        alsaaudioAvailable = True
+    except ImportError:
+        alsaaudioAvailable = False
+        pass
+else:
+    alsaaudioAvailable = False
+    
+
+try:
+    import pyaudio
+    pyaudioAvailable = True
+except ImportError:
+    pyaudioAvailable = False
+    pass
 
 try:
     import soundfile
@@ -27,13 +45,13 @@ except:
 from .pyqtver import*
 if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
-    from PyQt5.QtGui import QColor
+    #from PyQt5.QtGui import QColor
     from PyQt5.QtWidgets import QApplication
     matplotlib.rcParams['backend'] = "Qt5Agg"
     prefFileSuffix = ""
 elif pyqtversion == 6:
     from PyQt6 import QtGui, QtCore
-    from PyQt6.QtGui import QColor
+    #from PyQt6.QtGui import QColor
     from PyQt6.QtWidgets import QApplication
     matplotlib.rcParams['backend'] = "Qt5Agg"
     prefFileSuffix = ""
@@ -42,79 +60,133 @@ import platform, os, pickle
 
 
 def global_parameters(prm):
-    prm['data']['available_colormaps'] = [m for m in matplotlib.cm.datad if not m.endswith("_r")]
-    prm['data']['available_windows'] = ['none', 'hamming', 'hanning', 'blackman', 'bartlett']
-    prm['data']['available_filters'] = ['fir2_presets']
-    prm['data']['available_languages'] = [QApplication.translate("Preferences Window","System Settings",""),
+    prm['appData']['available_colormaps'] = [m for m in matplotlib.cm.datad if not m.endswith("_r")]
+    prm['appData']['available_windows'] = ['none', 'hamming', 'hanning', 'blackman', 'bartlett']
+    prm['appData']['available_filters'] = ['fir2_presets']
+    prm['appData']['available_languages'] = [QApplication.translate("Preferences Window","System Settings",""),
                                           QApplication.translate("Preferences Window","en",""),
                                           QApplication.translate("Preferences Window","it",""),
                                           QApplication.translate("Preferences Window","fr",""),
                                           QApplication.translate("Preferences Window","es",""),
                                           QApplication.translate("Preferences Window","el","")]
-    prm['data']['available_countries'] = {}
-    prm['data']['available_countries']['System Settings'] = ["System Settings"]
-    prm['data']['available_countries']['en'] = [QApplication.translate("Preferences Window","US",""),
+    prm['appData']['available_countries'] = {}
+    prm['appData']['available_countries']['System Settings'] = ["System Settings"]
+    prm['appData']['available_countries']['en'] = [QApplication.translate("Preferences Window","US",""),
                                                          QApplication.translate("Preferences Window","GB","")]
 
-    prm['data']['available_countries']['it'] = [QApplication.translate("Preferences Window","IT",""),
+    prm['appData']['available_countries']['it'] = [QApplication.translate("Preferences Window","IT",""),
                                                          QApplication.translate("Preferences Window","CH","")]
-    prm['data']['available_countries']['fr'] = [QApplication.translate("Preferences Window","FR",""),
+    prm['appData']['available_countries']['fr'] = [QApplication.translate("Preferences Window","FR",""),
                                                          QApplication.translate("Preferences Window","CA","")]
 
-    prm['data']['available_countries']['es'] = [QApplication.translate("Preferences Window","ES",""),
+    prm['appData']['available_countries']['es'] = [QApplication.translate("Preferences Window","ES",""),
                                                          QApplication.translate("Preferences Window","BO",""),
                                                          QApplication.translate("Preferences Window","CL","")]
 
-    prm['data']['available_countries']['el'] = [QApplication.translate("Preferences Window","GR",""),
+    prm['appData']['available_countries']['el'] = [QApplication.translate("Preferences Window","GR",""),
                                                          QApplication.translate("Preferences Window","CY","")]
+
+    prm['appData']['alsaaudioAvailable'] = alsaaudioAvailable
+    prm['appData']['pyaudioAvailable'] = pyaudioAvailable
+
+    if platform.system() == 'Linux':
+        prm['appData']['available_play_commands'] = []
+        if os.system("which aplay") == 0:
+            prm['appData']['available_play_commands'].append("aplay")
+        if os.system("which play") == 0:
+            prm['appData']['available_play_commands'].append("play")
+        if os.system("which sndfile-play") == 0:
+            prm['appData']['available_play_commands'].append("sndfile-play")
+    elif platform.system() == 'Windows':
+        prm['appData']['available_play_commands'] = ["winsound"]
+        if os.system("where sndfile-play") == 0:
+            prm['appData']['available_play_commands'].append("sndfile-play")  
+    elif platform.system() == 'Darwin': #that should be the MAC
+        prm['appData']['available_play_commands'] = ["afplay"]
+    elif platform.system() == 'FreeBSD':
+        prm['appData']['available_play_commands'] = ["wavplay"]
+    else:
+        prm['appData']['available_play_commands'] = [QApplication.translate("","custom","")]
+
+    if pyaudioAvailable == True:
+        prm['appData']['available_play_commands'].append("pyaudio")
+    if alsaaudioAvailable == True:
+        prm['appData']['available_play_commands'].append("alsaaudio")
+    prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
+
+    prm['appData']['nBitsChoices'] = ["16", "24", "32"]
 
     return prm
   
 
 
 def def_prefs(prm):
-    prm["pref"] = {}
+    prm['pref'] = {}
+    prm['pref']['sound'] = {}
     prm['pref']['colormap'] = 'jet'
     prm['pref']['spectrumLogXAxis'] = False
     #FFT preferences
     prm['pref']['smoothingWindow'] = 'hamming'
     prm['pref']['poweroftwo'] = False
+
+    ########################
     #Sound preferences
     if sndf_available == True:
-        prm["pref"]["wavmanager"] = "soundfile"
+        prm["pref"]["sound"]["wavmanager"] = "soundfile"
     else:
-        prm["pref"]["wavmanager"] = "scipy"
-    if platform.system() == 'Windows':
-        prm["pref"]["playCommand"] = 'winsound'
-        prm["pref"]["playCommandType"] = 'winsound'
-    elif platform.system() == "Darwin":
-        prm["pref"]["playCommand"] = 'afplay'
-        prm["pref"]["playCommandType"] = QApplication.translate("Preferences Window","custom","")
-    elif platform.system() == 'FreeBSD':
-        prm['appData']['available_play_commands'] = ["wavplay"]
-        prm['appData']['available_play_commands'].append(QApplication.translate("Preferences Window","custom",""))
-    else:
-        prm["pref"]["playCommand"] = 'aplay'
-        prm["pref"]["playCommandType"] = 'aplay'
-    if platform.system() == 'Windows':
-        prm['data']['available_play_commands'] = ["winsound", "sndfile-play", QApplication.translate("Preferences Window","custom","")]
-    else:
-        prm['data']['available_play_commands'] = ["aplay", "sndfile-play", QApplication.translate("Preferences Window","custom","")]
+        prm["pref"]["sound"]["wavmanager"] = "scipy"
 
-    prm["pref"]["nBits"] = 16
-    prm["pref"]["maxLevel"] = 100
+    if platform.system() == 'Windows':
+        prm["pref"]["sound"]["playCommand"] = "winsound"
+        prm["pref"]["sound"]["playCommandType"] = "winsound"
+    elif platform.system() == 'Darwin':
+        prm["pref"]["sound"]["playCommand"] = "afplay"
+        prm["pref"]["sound"]["playCommandType"] = QApplication.translate("","custom","")
+    else:
+        prm["pref"]["sound"]["playCommand"] = "aplay"
+        prm["pref"]["sound"]["playCommandType"] = QApplication.translate("","custom","")
+    if alsaaudioAvailable == True:
+        prm["pref"]["sound"]["alsaaudioDevice"] = "default"
+    if pyaudioAvailable == True:
+        prm["pref"]["sound"]["pyaudioDevice"] = 0
+
+
+
+    # if platform.system() == 'Windows':
+    #     prm["pref"]["sound"]["playCommand"] = 'winsound'
+    #     prm["pref"]["sound"]["playCommandType"] = 'winsound'
+    # elif platform.system() == "Darwin":
+    #     prm["pref"]["sound"]["playCommand"] = 'afplay'
+    #     prm["pref"]["sound"]["playCommandType"] = QApplication.translate("Preferences Window","custom","")
+    # elif platform.system() == 'FreeBSD':
+    #     prm['appData']['available_play_commands'] = ["wavplay"]
+    #     prm['appData']['available_play_commands'].append(QApplication.translate("Preferences Window","custom",""))
+    # else:
+    #     prm["pref"]["sound"]["playCommand"] = 'aplay'
+    #     prm["pref"]["sound"]["playCommandType"] = 'aplay'
+    # if platform.system() == 'Windows':
+    #     prm['appData']['available_play_commands'] = ["winsound", "sndfile-play", QApplication.translate("Preferences Window","custom","")]
+    # else:
+    #     prm['appData']['available_play_commands'] = ["aplay", "sndfile-play", QApplication.translate("Preferences Window","custom","")]
+
+    prm["pref"]["sound"]["nBits"] = "32"
+    prm["pref"]["sound"]["maxLevel"] = 100
+    prm["pref"]["sound"]["appendSilence"] = 0
+    prm["pref"]["sound"]["bufferSize"] = 1024
+
+    ######################################
     #Figure preferences
     prm['pref']['grid'] = True
     prm['pref']['dpi'] = 80
     #range is 0--255
-    prm['pref']['lineColor1'] = QColor(0,0,0)
+    prm['pref']['lineColor1'] = (0,0,0)
     prm['pref']['line_width'] = 1
-    prm['pref']['backgroundColor'] = QColor(250,250,250)
-    prm['pref']['canvasColor'] = QColor(200, 200, 200)
-    prm['pref']['axes_color'] = QColor(0,0,0)
-    prm['pref']['grid_color'] = QColor(0,0,0)
-    prm['pref']['tick_label_color'] = QColor(0,0,0)
-    prm['pref']['axes_label_color'] = QColor(0,0,0)
+    prm['pref']['backgroundColor'] = (250,250,250)
+    prm['pref']['canvasColor'] = (200, 200, 200)
+    prm['pref']['axes_color'] = (0,0,0)
+    prm['pref']['grid_color'] = (0,0,0)
+    prm['pref']['tick_label_color'] = (0,0,0)
+    prm['pref']['axes_label_color'] = (0,0,0)
     prm['pref']['label_font_family'] = 'sans-serif'
     prm['pref']['label_font_weight'] = 'normal'
     prm['pref']['label_font_style'] = 'normal' #italics, oblique

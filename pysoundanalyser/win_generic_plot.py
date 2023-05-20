@@ -49,16 +49,16 @@ class genericPlot(QMainWindow):
         QMainWindow.__init__(self, parent)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.prm = prm
-        self.currLocale = self.parent().prm['data']['currentLocale']
+        self.currLocale = self.parent().prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
 
         #define some parameters before axes creation
-        self.canvasColor = pltColorFromQColor(self.prm['pref']['canvasColor'])
-        self.backgroundColor = pltColorFromQColor(self.prm['pref']['backgroundColor'])
-        self.axesColor = pltColorFromQColor(self.prm['pref']['axes_color'])
-        self.tickLabelColor = pltColorFromQColor(self.prm['pref']['tick_label_color'])
-        self.gridColor = pltColorFromQColor(self.prm['pref']['grid_color'])
-        self.axesLabelColor = pltColorFromQColor(self.prm['pref']['axes_label_color'])
+        self.canvasColor = scaleRGBTo01(self.prm['pref']['canvasColor'])
+        self.backgroundColor = scaleRGBTo01(self.prm['pref']['backgroundColor'])
+        self.axesColor = scaleRGBTo01(self.prm['pref']['axes_color'])
+        self.tickLabelColor = scaleRGBTo01(self.prm['pref']['tick_label_color'])
+        self.gridColor = scaleRGBTo01(self.prm['pref']['grid_color'])
+        self.axesLabelColor = scaleRGBTo01(self.prm['pref']['axes_label_color'])
         self.labelFontFamily = self.prm['pref']['label_font_family']
         self.labelFontWeight = self.prm['pref']['label_font_weight']
         self.labelFontStyle = self.prm['pref']['label_font_style']

@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-pyqtversion = 6
+pyqtversion = 5

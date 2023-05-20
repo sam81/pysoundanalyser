@@ -38,6 +38,7 @@ from pysoundanalyser.global_parameters import*
 from pysoundanalyser._version_info import*
 from pysoundanalyser.utilities_open_manual import*
 from pysoundanalyser.threaded_plotters import*
+from pysoundanalyser.audio_manager import*
 __version__ = pysoundanalyser_version
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
@@ -84,12 +85,12 @@ from pysoundanalyser.dialog_generate_sound import*
 from pysoundanalyser.dialog_generate_noise import*
 from pysoundanalyser.dialog_generate_sinusoid import*
 
-tmpprm = {}; tmpprm['data'] = {}
+tmpprm = {}; tmpprm['appData'] = {}
 tmpprm = global_parameters(tmpprm)
 tmpprm = get_prefs(tmpprm)
-if tmpprm['pref']['wavmanager'] == 'soundfile':
+if tmpprm['pref']['sound']['wavmanager'] == 'soundfile':
     from pysoundanalyser.wavpy_sndf import wavread, wavwrite
-elif tmpprm['pref']['wavmanager'] == 'scipy':
+elif tmpprm['pref']['sound']['wavmanager'] == 'scipy':
     #from pysoundanalyser.scipy_wav import scipy_wavwrite, scipy_wavread
     from pysoundanalyser.wavpy import wavread, wavwrite
 
@@ -101,9 +102,10 @@ class applicationWindow(QMainWindow):
         self.prm = prm
         self.prm['version'] = __version__
         self.prm['builddate'] = pysoundanalyser_builddate
-        self.currLocale = prm['data']['currentLocale']
+        self.currLocale = prm['appData']['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.setWindowTitle(self.tr("Python Sound Analyser"))
+        self.audioManager = audioManager(self)
         # main widget
         self.main_widget = QWidget(self)
         #MENU-----------------------------------
@@ -333,6 +335,7 @@ class applicationWindow(QMainWindow):
         dialog = preferencesDialog(self)
         if dialog.exec():
             dialog.permanentApply()
+            self.audioManager.initializeAudio()
     def onSelectAll(self):
         for i in range(self.sndTableWidget.rowCount()):
             for j in range(self.sndTableWidget.columnCount()):
@@ -786,32 +789,33 @@ class applicationWindow(QMainWindow):
 
         
         wave = snd
-        fs = sampRate
-        nbits = self.prm['pref']['nBits']
-        playCmd = str(self.prm['pref']['playCommand'])
-        self.playSound(wave, fs, nbits, playCmd, False, 'temp')
+        #fs = sampRate
+        #playCmd = str(self.prm['pref']['sound']['playCommand'])
+        #self.playSound(wave, fs, nbits, playCmd, False, 'temp')
+        nbits = int(self.prm['pref']['sound']['nBits'])
+        self.audioManager.playSound(wave, sampRate, nbits, False, 'temp.wav')
 
-    def playSound(self, snd, fs, nbits, playCmd, writewav, fname):
-        playCmd = str(playCmd)
-        enc = 'pcm'+ str(nbits)
-        if writewav == True:
-            fname = fname
-        else:
-            if platform.system() == 'Windows':
-                fname = 'tmp_snd.wav'
-            else:
-                (hnl, fname) = mkstemp('tmp_snd.wav')
+    # def playSound(self, snd, fs, nbits, playCmd, writewav, fname):
+    #     playCmd = str(playCmd)
+    #     enc = 'pcm'+ str(nbits)
+    #     if writewav == True:
+    #         fname = fname
+    #     else:
+    #         if platform.system() == 'Windows':
+    #             fname = 'tmp_snd.wav'
+    #         else:
+    #             (hnl, fname) = mkstemp('tmp_snd.wav')
 
-        wavwrite(snd, fs, nbits, fname)
-        if playCmd == 'winsound':
-            winsound.PlaySound(fname, winsound.SND_FILENAME)
-        else:
-            cmd = playCmd + ' ' + fname
-            os.system(cmd)
-        if writewav == False:
-            os.remove(fname)
+    #     wavwrite(snd, fs, nbits, fname)
+    #     if playCmd == 'winsound':
+    #         winsound.PlaySound(fname, winsound.SND_FILENAME)
+    #     else:
+    #         cmd = playCmd + ' ' + fname
+    #         os.system(cmd)
+    #     if writewav == False:
+    #         os.remove(fname)
     
-        return
+    #     return
             
     def onClickResampleButton(self):
         ids = self.findSelectedItemIds()
@@ -984,22 +988,22 @@ class applicationWindow(QMainWindow):
             elif ear == self.tr('Both'):
                 ear = 'Both'
             if dialog.currNoiseType == self.tr('White'):
-                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['sound']['maxLevel'])
             elif dialog.currNoiseType == self.tr('Pink'):
                 refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
-                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['sound']['maxLevel'])
                 thisNoise = sndlib.makePinkRef(thisNoise, fs, refHz)
             elif dialog.currNoiseType == self.tr('Red'):
                 refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
-                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['sound']['maxLevel'])
                 thisNoise = sndlib.makeRedRef(thisNoise, fs, refHz)
             elif dialog.currNoiseType == self.tr('Blue'):
                 refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
-                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['sound']['maxLevel'])
                 thisNoise = sndlib.makeBlueRef(thisNoise, fs, refHz)
             elif dialog.currNoiseType == self.tr('Violet'):
                 refHz = self.currLocale.toDouble(dialog.reWidget.text())[0]
-                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['maxLevel'])
+                thisNoise = sndlib.broadbandNoise(spectrumLevel, duration, ramps, ear, fs, self.prm['pref']['sound']['maxLevel'])
                 thisNoise = sndlib.makeVioletRef(thisNoise, fs, refHz)
 
 
@@ -1097,7 +1101,7 @@ class applicationWindow(QMainWindow):
                 ild = 0
                 ildRef = None
           
-            thisSound = sndlib.binauralPureTone(freq, phase, level, duration, ramps, ear, itd, itdRef, ild, ildRef, fs, self.prm['pref']['maxLevel'])
+            thisSound = sndlib.binauralPureTone(freq, phase, level, duration, ramps, ear, itd, itdRef, ild, ildRef, fs, self.prm['pref']['sound']['maxLevel'])
           
 
             if ear == 'Right' or ear == 'Left':
@@ -1218,27 +1222,27 @@ class applicationWindow(QMainWindow):
             highStop = 1.2
 
             if harmType == self.tr("Sinusoid"):
-                self.stimulusCorrect = sndlib.complexTone(F0=F0, harmPhase=harmPhase, lowHarm=lowHarm, highHarm=highHarm, stretch=stretch, level=harmonicLevel, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+                self.stimulusCorrect = sndlib.complexTone(F0=F0, harmPhase=harmPhase, lowHarm=lowHarm, highHarm=highHarm, stretch=stretch, level=harmonicLevel, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['sound']['maxLevel'])
             elif harmType == self.tr("Narrowband Noise"):
-                self.stimulusCorrect = sndlib.harmComplFromNarrowbandNoise(F0=F0, lowHarm=lowHarm, highHarm=highHarm, level=spectrumLevel, bandwidth=bandwidth, bandwidthUnit=bandwidthUnit, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+                self.stimulusCorrect = sndlib.harmComplFromNarrowbandNoise(F0=F0, lowHarm=lowHarm, highHarm=highHarm, level=spectrumLevel, bandwidth=bandwidth, bandwidthUnit=bandwidthUnit, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['sound']['maxLevel'])
             elif harmType == self.tr("IRN"):
                 delay = 1/float(F0)
-                self.stimulusCorrect = sndlib.makeIRN(delay=delay, gain=gain, iterations=iterations, configuration=irnConfiguration, spectrumLevel=spectrumLevel, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+                self.stimulusCorrect = sndlib.makeIRN(delay=delay, gain=gain, iterations=iterations, configuration=irnConfiguration, spectrumLevel=spectrumLevel, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['sound']['maxLevel'])
             elif harmType == self.tr("Huggins Pitch"):
                 if dichoticDifference in [self.tr("IPD Linear"), self.tr("IPD Stepped")]:
                     dichoticDifferenceValue = ipd
                 elif dichoticDifference == self.tr("ITD"):
                     dichoticDifferenceValue = itd
-                self.stimulusCorrect = sndlib.makeHugginsPitch(F0=F0, lowHarm=lowHarm, highHarm=highHarm, spectrumLevel=spectrumLevel, bandwidth=bandwidth, bandwidthUnit=bandwidthUnit, dichoticDifference=dichoticDifference, dichoticDifferenceValue=dichoticDifferenceValue, phaseRelationship=hugginsPhaseRel, noiseType=dichoticNoiseType, duration=duration, ramp=ramp, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+                self.stimulusCorrect = sndlib.makeHugginsPitch(F0=F0, lowHarm=lowHarm, highHarm=highHarm, spectrumLevel=spectrumLevel, bandwidth=bandwidth, bandwidthUnit=bandwidthUnit, dichoticDifference=dichoticDifference, dichoticDifferenceValue=dichoticDifferenceValue, phaseRelationship=hugginsPhaseRel, noiseType=dichoticNoiseType, duration=duration, ramp=ramp, fs=fs, maxLevel=self.prm['pref']['sound']['maxLevel'])
                 channel = self.tr("Both")
         
             if noiseType != self.tr("None"):
                 if channel == self.tr("Odd Left") or channel == self.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-                    noiseR = sndlib.broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, self.tr("Right"), fs, self.prm['pref']['maxLevel'])
-                    noiseL = sndlib.broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, self.tr("Left"), fs, self.prm['pref']['maxLevel'])
+                    noiseR = sndlib.broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, self.tr("Right"), fs, self.prm['pref']['sound']['maxLevel'])
+                    noiseL = sndlib.broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, self.tr("Left"), fs, self.prm['pref']['sound']['maxLevel'])
                     noise = noiseR + noiseL
                 else:
-                    noise = sndlib.broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, channel, fs, self.prm['pref']['maxLevel'])
+                    noise = sndlib.broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, channel, fs, self.prm['pref']['sound']['maxLevel'])
                 if noiseType == self.tr("Pink"):
                     noise = sndlib.makePink(noise, fs)
                 noise1 = sndlib.fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, fs)
@@ -1280,7 +1284,7 @@ class applicationWindow(QMainWindow):
                 channel = 'Both'
             
             thisSound = sndlib.AMTone(frequency=freq, AMFreq=AMFreq, AMDepth=AMDepth, phase=carrPhase, AMPhase=modPhase, level=level,
-            duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+            duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['sound']['maxLevel'])
             #thisSound = self.stimulusCorrect
             self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
 
@@ -1312,7 +1316,7 @@ class applicationWindow(QMainWindow):
             elif channel == self.tr('Both'):
                 channel = 'Both'
             
-            thisSound = sndlib.FMTone(fc=carrFreq, fm=modFreq, mi=modInd, phase=carrPhase, level=level, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['maxLevel'])
+            thisSound = sndlib.FMTone(fc=carrFreq, fm=modFreq, mi=modInd, phase=carrPhase, level=level, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['sound']['maxLevel'])
             self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
 
 
@@ -1480,8 +1484,8 @@ class DropMainWindow(QMainWindow):
 def main(argv):
     
     prm = {}
-    prm['data'] = {}
-    #prm['data'] = {}; prm['prefs'] = {}
+    prm['appData'] = {}
+    #prm['appData'] = {}; prm['prefs'] = {}
     # create the GUI application
     qApp = QApplication(sys.argv)
     sys.excepthook = excepthook
@@ -1503,8 +1507,8 @@ def main(argv):
     appTranslator = QtCore.QTranslator()
     if appTranslator.load("pysoundanalyser_" + locale, ":/translations/"):
         qApp.installTranslator(appTranslator)
-    prm['data']['currentLocale'] = QtCore.QLocale(locale)
-    QtCore.QLocale.setDefault(prm['data']['currentLocale'])
+    prm['appData']['currentLocale'] = QtCore.QLocale(locale)
+    QtCore.QLocale.setDefault(prm['appData']['currentLocale'])
     
     rootDirectory = os.path.abspath(os.path.dirname(sys.argv[0]))
     prm['rootDirectory'] = rootDirectory
@@ -1521,9 +1525,9 @@ def main(argv):
         appTranslator = QtCore.QTranslator()
         if appTranslator.load("pysoundanalyser_" + locale, ":/translations/") or locale == "en_US":
             qApp.installTranslator(appTranslator)
-            prm['data']['currentLocale'] = QtCore.QLocale(locale)
-            QtCore.QLocale.setDefault(prm['data']['currentLocale'])
-            prm['data']['currentLocale'].setNumberOptions(prm['data']['currentLocale'].NumberOption.OmitGroupSeparator | prm['data']['currentLocale'].NumberOption.RejectGroupSeparator)
+            prm['appData']['currentLocale'] = QtCore.QLocale(locale)
+            QtCore.QLocale.setDefault(prm['appData']['currentLocale'])
+            prm['appData']['currentLocale'].setNumberOptions(prm['appData']['currentLocale'].NumberOption.OmitGroupSeparator | prm['appData']['currentLocale'].NumberOption.RejectGroupSeparator)
 
     
     qApp.setWindowIcon(QIcon(":/johnny_automatic_crashing_wave.svg"))
