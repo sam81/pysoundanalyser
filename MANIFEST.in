@@ -7,3 +7,10 @@ include INSTALL.txt
 include COPYING.txt
 include README.md
 include scripts/*
+exclude windows_installer/*
+exclude mac_installer/*
+include pysoundanalyser/doc/_build/html/*
+include pysoundanalyser/doc/_build/html/_sources/*
+include pysoundanalyser/doc/_build/html/_static/*
+include pysoundanalyser/doc/_build/html/_themes/*
+include pysoundanalyser/doc/_build/latex/*.pdf

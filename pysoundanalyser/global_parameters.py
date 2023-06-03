@@ -59,7 +59,7 @@ elif pyqtversion == 6:
 import platform, os, pickle
 
 
-def global_parameters(prm):
+def set_global_parameters(prm):
     prm['appData']['available_colormaps'] = [m for m in matplotlib.cm.datad if not m.endswith("_r")]
     prm['appData']['available_windows'] = ['none', 'hamming', 'hanning', 'blackman', 'bartlett']
     prm['appData']['available_filters'] = ['fir2_presets']

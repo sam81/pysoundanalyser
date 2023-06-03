@@ -1,4 +1,4 @@
-SOURCES	     += ../pysoundanalyser.pyw
+SOURCES	     += ../pysoundanalyser/__main__.py
 SOURCES	     += ../pysoundanalyser/dialog_apply_filter.py
 SOURCES	     += ../pysoundanalyser/dialog_change_channel.py
 SOURCES	     += ../pysoundanalyser/dialog_concatenate.py
