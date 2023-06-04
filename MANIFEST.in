@@ -11,6 +11,10 @@ exclude windows_installer/*
 exclude mac_installer/*
 include pysoundanalyser/doc/_build/html/*
 include pysoundanalyser/doc/_build/html/_sources/*
+include pysoundanalyser/doc/_build/html/_sources/_themes/*
 include pysoundanalyser/doc/_build/html/_static/*
+include pysoundanalyser/doc/_build/html/_static/css/*
+include pysoundanalyser/doc/_build/html/_static/font/*
+include pysoundanalyser/doc/_build/html/_static/js/*
 include pysoundanalyser/doc/_build/html/_themes/*
 include pysoundanalyser/doc/_build/latex/*.pdf
