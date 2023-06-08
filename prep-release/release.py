@@ -60,9 +60,9 @@ def main(argv):
     f.close()
     for i in range(len(ln)):
         if ln[i].strip().split('=')[0].strip() == "version":
-            ln[i] = 'version = "' + gittag +'",\n'
+            ln[i] = 'version = "' + gittag +'"\n'
         if ln[i].strip().split('=')[0].strip() == "release":
-            ln[i] = 'release = "' + gittag + '",\n'
+            ln[i] = 'release = "' + gittag + '"\n'
 
     f = open('pysoundanalyser/doc/conf.py', 'w')
     f.writelines(ln)
@@ -76,6 +76,29 @@ def main(argv):
             ln[i] = 'Version = ' + gittag +',\n'
 
     f = open('pysoundanalyser.desktop', 'w')
+    f.writelines(ln)
+    f.close()
+
+    f = open('setup_cx.py', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if ln[i].strip().split('=')[0].strip() == "version":
+            ln[i] = '    version="' + gittag +'",\n'
+
+    f = open('setup_cx.py', 'w')
+    f.writelines(ln)
+    f.close()
+
+    f = open('prep-release/win_pysoundanalyser.iss', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if len(ln[i].strip().split(" "))>1:
+            if ln[i].strip().split(" ")[1] == "MyAppVersion":
+                ln[i] = "#define MyAppVersion " + '"' + gittag + '"\n'#'    version="' + gittag +'"\n'
+
+    f = open('prep-release/win_pysoundanalyser.iss', 'w')
     f.writelines(ln)
     f.close()
 
