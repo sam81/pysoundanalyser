@@ -16,33 +16,31 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse, sys, platform, os, copy, pickle, traceback
+import argparse, sys, platform, os, copy, logging, pickle, signal, scipy, time, traceback
 from pysoundanalyser.pyqtver import*
 if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtGui import QIcon
-    from PyQt5.QtWidgets import QAbstractItemView, QAction, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+    from PyQt5.QtWidgets import QAbstractItemView, QAction, QApplication, QDialog, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QScrollArea, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 elif pyqtversion == 6:
     from PyQt6 import QtGui, QtCore
     from PyQt6.QtGui import QAction, QIcon
-    from PyQt6.QtWidgets import QAbstractItemView, QApplication, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+    from PyQt6.QtWidgets import QAbstractItemView, QApplication, QDialog, QDialogButtonBox, QGridLayout, QFileDialog, QInputDialog, QLabel, QMainWindow, QMessageBox, QPushButton, QScrollArea, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
-import logging, signal
-from pysoundanalyser import qrc_resources
 
 from numpy import sin, cos, pi, sqrt, abs, arange, zeros, mean, concatenate, convolve, angle, real, log2, log10, int_, linspace, repeat, ceil, unique, hamming, hanning, blackman, bartlett, round, transpose
 from numpy.fft import rfft, irfft, fft, ifft
-import scipy, time
 from tempfile import mkstemp
+
+from pysoundanalyser import qrc_resources
 from pysoundanalyser.global_parameters import*
 from pysoundanalyser._version_info import*
 from pysoundanalyser.utilities_open_manual import*
 from pysoundanalyser.threaded_plotters import*
 from pysoundanalyser.audio_manager import*
+
 __version__ = pysoundanalyser_version
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-
 
 local_dir = os.path.expanduser("~") +'/.local/share/data/pysoundanalyser/'
 if os.path.exists(local_dir) == False:
@@ -52,13 +50,56 @@ stderrFile = os.path.expanduser("~") +'/.local/share/data/pysoundanalyser/pysoun
 logging.basicConfig(filename=stderrFile,level=logging.DEBUG,)
 
 
+# def excepthook(except_type, except_val, tbck):
+#     """ Show errors in message box"""
+#     # recover traceback
+#     tb = traceback.format_exception(except_type, except_val, tbck)
+#     ret = QMessageBox.critical(None, "Critical Error! Something went wrong, the following info may help you troubleshooting",
+#                                     ''.join(tb),
+#                                     QMessageBox.StandardButton.Ok)
+#     timeStamp = ''+ time.strftime("%d/%m/%y %H:%M:%S", time.localtime()) + ' ' + '\n'
+#     logMsg = timeStamp + ''.join(tb)
+#     logging.debug(logMsg)
+
 def excepthook(except_type, except_val, tbck):
     """ Show errors in message box"""
     # recover traceback
     tb = traceback.format_exception(except_type, except_val, tbck)
-    ret = QMessageBox.critical(None, "Critical Error! Something went wrong, the following info may help you troubleshooting",
-                                    ''.join(tb),
-                                    QMessageBox.StandardButton.Ok)
+    def onClickSaveTbButton():
+        ftow = QFileDialog.getSaveFileName(None, 'Choose where to save the traceback', "traceback.txt", 'All Files (*)')[0]
+        if len(ftow) > 0:
+            if fnmatch.fnmatch(ftow, '*.txt') == False:
+                ftow = ftow + '.txt'
+            fName = open(ftow, 'w')
+            fName.write("".join(tb))
+            fName.close()
+    
+    diag = QDialog(None, Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowCloseButtonHint)
+    diag.window().setWindowTitle("Critical Error!")
+    siz = QVBoxLayout()
+    lay = QVBoxLayout()
+    saveTbButton = QPushButton("Save Traceback", diag)
+    saveTbButton.clicked.connect(onClickSaveTbButton)
+    lab = QLabel("Sorry, something went wrong. The attached traceback can help you troubleshoot the problem: \n\n" + "".join(tb))
+    lab.setMargin(10)
+    lab.setWordWrap(True)
+    lab.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+    lab.setStyleSheet("QLabel { background-color: white }");
+    lay.addWidget(lab)
+
+    sc = QScrollArea()
+    sc.setWidget(lab)
+    siz.addWidget(sc) #SCROLLAREA IS A WIDGET SO IT NEEDS TO BE ADDED TO A LAYOUT
+
+    buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
+
+    buttonBox.accepted.connect(diag.accept)
+    buttonBox.rejected.connect(diag.reject)
+    siz.addWidget(saveTbButton)
+    siz.addWidget(buttonBox)
+    diag.setLayout(siz)
+    diag.exec()
+
     timeStamp = ''+ time.strftime("%d/%m/%y %H:%M:%S", time.localtime()) + ' ' + '\n'
     logMsg = timeStamp + ''.join(tb)
     logging.debug(logMsg)
