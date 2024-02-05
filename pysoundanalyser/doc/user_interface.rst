@@ -4,9 +4,9 @@
 User Interface
 ****************
 
-- **Load Sound** The ``Load Sound`` button allows you to load a wav file into the program. Currently only 16 and 32 bit wav files with one or two channels are supported. Note that the entire wav file is loaded in memory, this is fine and fast for wav files of short durations (tens of seconds), but longer sound files are going to consume huge amounts of RAM and may even halt your computer. If you need to work on long sound files, please use other software, like audacity.  
+- **Load Sound** The ``Load Sound`` button allows you to load a wav file into the program. Currently only 16, 24, and 32 bit wav files with one or two channels are supported. Note that the entire wav file is loaded in memory, this is fine and fast for wav files of short duration (tens of seconds), but longer sound files are going to consume huge amounts of RAM and may even halt your computer. If you need to work on long sound files, please use other software, like audacity.  
 
-  - **Save As** The ``Save As`` button allows you to save PSA sound objects as wav files. Currently it is only possible to save sounds as 16 or 32 bit wav files with one or two channels. If you choose a mono (1-channel) format, and multiple PSA sound objects have been selected for saving, they will be summed together before saving. If you choose a stereo (2-channels) format, "right" and "left" PSA sound objects will be saved to their respective channels in the wav file; if multiple "right" or "left" PSA sound objects have been selected, they will be summed before saving.
+  - **Save As** The ``Save As`` button allows you to save PSA sound objects as wav files. Currently it is only possible to save sounds as 16, 24, or 32 bit wav files with one or two channels. If you choose a mono (1-channel) format, and multiple PSA sound objects have been selected for saving, they will be summed together before saving. If you choose a stereo (2-channels) format, "right" and "left" PSA sound objects will be saved to their respective channels in the wav file; if multiple "right" or "left" PSA sound objects have been selected, they will be summed before saving.
 
 - **Clone Sound**
       

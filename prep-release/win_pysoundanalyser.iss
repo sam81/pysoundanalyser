@@ -30,6 +30,7 @@ OutputBaseFilename=pysoundanalyser-{#MyAppVersion}_setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=Z:\media\ntfsShared\lin_home\auditory\code\pysoundanalyser\icons\johnny_automatic_crashing_wave.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -67,9 +68,9 @@ Source: "Z:\media\ntfsShared\lin_home\auditory\code\pysoundanalyser\windows_inst
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{autodocs}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{autodocs}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{userdocs}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{autodocs}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
