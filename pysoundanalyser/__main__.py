@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2010-2023 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2010-2024 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysoundanalyser
 
 #    pysoundanalyser is free software: you can redistribute it and/or modify
@@ -315,8 +315,6 @@ class applicationWindow(QMainWindow):
         moveUpButton = QPushButton(self.tr("Move Up"), self)
         moveUpButton.clicked.connect(self.onClickMoveUpButton)
 
-
-
         self.sndTableWidget = QTableWidget()
         #self.sndTableWidget.setSortingEnabled(True)
         self.sndTableWidget.setColumnCount(3)
@@ -346,7 +344,6 @@ class applicationWindow(QMainWindow):
         vbl.addWidget(renameButton)
         vbl.addWidget(removeButton)
         vbl.addWidget(removeAllButton)
-        
         
         vbl.addStretch(1)
 
@@ -414,6 +411,7 @@ class applicationWindow(QMainWindow):
                 pass
             else:
                 self.swapRow(row, row+1)
+                
     def onClickMoveUpButton(self):
         rows = self.findSelectedItemRows()
         if len(rows) > 1:
@@ -425,8 +423,7 @@ class applicationWindow(QMainWindow):
             if row == 0:
                 pass
             else:
-                self.swapRow(row, row-1)
-        
+                self.swapRow(row, row-1)        
         
     def onClickLoadButton(self):
         #self.sndTableWidget.setSortingEnabled(False)
@@ -515,6 +512,7 @@ class applicationWindow(QMainWindow):
                 pass
         selItems = self.sndTableWidget.selectedItems()
         #self.sndTableWidget.setSortingEnabled(True)
+        
     def loadFileValid(self, sndFile):
         #xxxxxxxxxxxxxxx
         # need to update this function
@@ -536,6 +534,7 @@ class applicationWindow(QMainWindow):
             QMessageBox.warning(self, self.tr('Warning'), msg)
 
         return fileValid
+    
     def loadWav(self,fName):
         snd, fs, nbits = wavread(fName)
 
@@ -582,6 +581,7 @@ class applicationWindow(QMainWindow):
         for i in range(len(selItemsRows)):
             selItemsIds.append(str(self.sndTableWidget.item(selItemsRows[i], 2).text()))
         return selItemsIds
+    
     def findSelectedItemRows(self):
         selItems = self.sndTableWidget.selectedItems()
         selItemsRows = []
@@ -589,6 +589,7 @@ class applicationWindow(QMainWindow):
             selItemsRows.append(selItems[i].row())
         selItemsRows = unique(selItemsRows)
         return selItemsRows
+    
     def onCellDoubleClicked(self, row, col):
         if col == 0:
             self.onClickRenameButton()
@@ -620,7 +621,6 @@ class applicationWindow(QMainWindow):
                     snd[:,1] =  snd[:,1] + concatenate((self.sndList[selectedSound]['wave'], zeros(nSampDiff)), axis=0)
                 elif self.sndList[selectedSound]['chan'] == self.tr('Left'):
                     snd[:,0] =  snd[:,0] + concatenate((self.sndList[selectedSound]['wave'], zeros(nSampDiff)), axis=0)
-
        
         dialog = saveSoundDialog(self)
         if dialog.exec():
@@ -635,7 +635,6 @@ class applicationWindow(QMainWindow):
             if len(ftow) > 0:
 
                 wavwrite(wave, fs, int(dialog.encodingChooser.currentText()), ftow)              
-
     
     def onClickCloneButton(self):
         #self.sndTableWidget.setSortingEnabled(False)
@@ -666,6 +665,7 @@ class applicationWindow(QMainWindow):
             self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
             self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
             #self.sndTableWidget.setSortingEnabled(True)
+            
     def onClickPlotButton(self):
         ids = self.findSelectedItemIds()
         if len(ids)<1:
@@ -675,6 +675,7 @@ class applicationWindow(QMainWindow):
            selectedSound = ids[i]
            waveformPlot(self, self.sndList[selectedSound], self.prm)
            #self.waveformPlotter.plotWaveformThreaded(self.sndList[selectedSound], self.prm)
+           
     def onClickSpectrumButton(self):
        ids = self.findSelectedItemIds()
        if len(ids)<1:
@@ -683,6 +684,7 @@ class applicationWindow(QMainWindow):
        for i in range(len(ids)):
            selectedSound = ids[i]
            spectrumPlot(self, self.sndList[selectedSound], self.prm)
+           
     def onClickAutocorrelationButton(self):
        ids = self.findSelectedItemIds()
        if len(ids)<1:
@@ -691,6 +693,7 @@ class applicationWindow(QMainWindow):
        for i in range(len(ids)):
            selectedSound = ids[i]
            acfPlot(self, self.sndList[selectedSound], self.prm)
+           
     def onClickAutocorrelogramButton(self):
        ids = self.findSelectedItemIds()
        if len(ids)<1:
@@ -699,6 +702,7 @@ class applicationWindow(QMainWindow):
        for i in range(len(ids)):
            selectedSound = ids[i]
            autocorrelogramPlot(self, self.sndList[selectedSound], self.prm)
+           
     def onClickSpectrogramButton(self):
        ids = self.findSelectedItemIds()
        if len(ids)<1:
@@ -707,6 +711,7 @@ class applicationWindow(QMainWindow):
        for i in range(len(ids)):
            selectedSound = ids[i]
            spectrogramPlot(self, self.sndList[selectedSound], self.prm)
+           
     def onClickRenameButton(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
@@ -735,7 +740,6 @@ class applicationWindow(QMainWindow):
                 newChan = dialog.chooser.currentText()
                 self.sndTableWidget.item(self.sndList[selectedSound]['qid'].row(), 1).setText(newChan)
                 self.sndList[selectedSound]['chan'] = newChan
-
           
     def onClickLevelDiffButton(self):
         ids = self.findSelectedItemIds()
@@ -757,7 +761,6 @@ class applicationWindow(QMainWindow):
 
             QMessageBox.information(self, self.tr('Level Difference'), self.tr('{0} is {1} {2} dB than {3}').format(snd1['label'], w, self.currLocale.toString(dbDiff), snd2['label']))
 
-
     def onClickScaleButton(self):
         ids = self.findSelectedItemIds()
         if len(ids)<1:
@@ -769,8 +772,6 @@ class applicationWindow(QMainWindow):
                 selectedSound = ids[i]
                 self.sndList[selectedSound]['wave'] = sndlib.scale(val, self.sndList[selectedSound]['wave'])
        
-
-
     def onClickRemoveButton(self):
         ids = self.findSelectedItemIds()
         if len(ids)<1:
@@ -800,9 +801,7 @@ class applicationWindow(QMainWindow):
             rmsVals.append(sndlib.getRMS(self.sndList[selectedSound]['wave'], channel=0))
             msg = self.tr('{0} {1} : {2} \n').format(msg, self.sndList[selectedSound]['label'], self.currLocale.toString(rmsVals[i])) 
         QMessageBox.information(self, self.tr('Root Mean Square'), msg)
-      
-        
-       
+                     
     def onClickPlayButton(self):
         ids = self.findSelectedItemIds()
         if len(ids)<1:
@@ -940,7 +939,6 @@ class applicationWindow(QMainWindow):
                      self.sndList[tmp_id]['qid'] = QTableWidgetItem(tmp_id)
                      self.sndTableWidget.setItem(currCount-1, 2, self.sndList[tmp_id]['qid'])
                      
-
     def onClickCutButton(self):
         ids = self.findSelectedItemIds()
         if len(ids)<1:
@@ -1360,7 +1358,6 @@ class applicationWindow(QMainWindow):
             thisSound = sndlib.FMTone(fc=carrFreq, fm=modFreq, mi=modInd, phase=carrPhase, level=level, duration=duration, ramp=ramp, channel=channel, fs=fs, maxLevel=self.prm['pref']['sound']['maxLevel'])
             self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
 
-
     def onClickGenerateSilence(self):
         dialog = generateSoundDialog(self, "Silence")
         if dialog.exec():
@@ -1383,7 +1380,6 @@ class applicationWindow(QMainWindow):
             
             thisSound = sndlib.makeSilence(duration=duration, fs=fs)
             self.setupNewSound(sndData=thisSound, label=label, channel=channel, fs=fs)
-
            
     def setupNewSound(self, sndData, label, channel, fs):
         if channel in ['Right', 'Left']:
@@ -1466,7 +1462,6 @@ class applicationWindow(QMainWindow):
         else:
             event.ignore()
 
-
     def onAbout(self):
         if pyqtversion in [4,5,6]:
             qt_compiled_ver = QtCore.QT_VERSION_STR
@@ -1520,7 +1515,6 @@ class DropMainWindow(QMainWindow):
                 self.drpd.emit(l[len(l)-1])
         else:
             event.ignore()
-
 
 def main():
     
