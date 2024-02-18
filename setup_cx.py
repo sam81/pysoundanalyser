@@ -24,7 +24,7 @@ executables = [
 ]
 
 setup(name='pysoundanalyser',
-    version="0.3.4",
+    version="0.3.5",
       description = '',
       options = {'build_exe': build_options},
       executables = executables)
