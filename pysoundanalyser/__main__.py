@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pysoundanalyser.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse, sys, platform, os, copy, logging, pickle, signal, scipy, time, traceback
+import argparse, sys, platform, os, copy, logging, pickle, platform, signal, scipy, time, traceback
 from pysoundanalyser.pyqtver import*
 if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
@@ -1572,6 +1572,8 @@ def main():
     #qApp.currentLocale = locale
     # instantiate the ApplicationWindow widget
     qApp.setApplicationName('pysoundanalyser')
+    if platform.system() == "Windows":
+        qApp.setStyle('Fusion')
     aw = applicationWindow(prm)
 
 
