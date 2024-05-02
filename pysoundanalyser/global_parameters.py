@@ -63,28 +63,28 @@ def set_global_parameters(prm):
     prm['appData']['available_colormaps'] = [m for m in matplotlib.cm.datad if not m.endswith("_r")]
     prm['appData']['available_windows'] = ['none', 'hamming', 'hanning', 'blackman', 'bartlett']
     prm['appData']['available_filters'] = ['fir2_presets']
-    prm['appData']['available_languages'] = [QApplication.translate("Preferences Window","System Settings",""),
-                                          QApplication.translate("Preferences Window","en",""),
-                                          QApplication.translate("Preferences Window","it",""),
-                                          QApplication.translate("Preferences Window","fr",""),
-                                          QApplication.translate("Preferences Window","es",""),
-                                          QApplication.translate("Preferences Window","el","")]
+    prm['appData']['available_languages'] = ["System Settings",
+                                             "en",
+                                             "it",
+                                             "fr",
+                                             "es",
+                                             "el"]
     prm['appData']['available_countries'] = {}
     prm['appData']['available_countries']['System Settings'] = ["System Settings"]
-    prm['appData']['available_countries']['en'] = [QApplication.translate("Preferences Window","US",""),
-                                                         QApplication.translate("Preferences Window","GB","")]
+    prm['appData']['available_countries']['en'] = ["US",
+                                                   "GB"]
 
-    prm['appData']['available_countries']['it'] = [QApplication.translate("Preferences Window","IT",""),
-                                                         QApplication.translate("Preferences Window","CH","")]
-    prm['appData']['available_countries']['fr'] = [QApplication.translate("Preferences Window","FR",""),
-                                                         QApplication.translate("Preferences Window","CA","")]
+    prm['appData']['available_countries']['it'] = ["IT",
+                                                   "CH"]
+    prm['appData']['available_countries']['fr'] = ["FR",
+                                                   "CA"]
 
-    prm['appData']['available_countries']['es'] = [QApplication.translate("Preferences Window","ES",""),
-                                                         QApplication.translate("Preferences Window","BO",""),
-                                                         QApplication.translate("Preferences Window","CL","")]
+    prm['appData']['available_countries']['es'] = ["ES",
+                                                   "BO",
+                                                   "CL"]
 
-    prm['appData']['available_countries']['el'] = [QApplication.translate("Preferences Window","GR",""),
-                                                         QApplication.translate("Preferences Window","CY","")]
+    prm['appData']['available_countries']['el'] = ["GR",
+                                                   "CY"]
 
     prm['appData']['alsaaudioAvailable'] = alsaaudioAvailable
     prm['appData']['pyaudioAvailable'] = pyaudioAvailable

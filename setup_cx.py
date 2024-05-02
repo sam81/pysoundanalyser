@@ -4,12 +4,31 @@ from cx_Freeze import setup, Executable
 # fine tuning.
 build_options = {'packages': ['pysoundanalyser'],
                  'excludes': ['tkinter',
+                              'PyQt5',
+                              'PyQt5.QtCore',
+                              'PyQt5.QtGui',
+                              'PyQt5.QtWidgets',
                               'PyQt5.QtQml',
                               'PyQt5.QtBluetooth',
                               'PyQt5.QtQuickWidgets',
                               'PyQt5.QtSensors',
                               'PyQt5.QtSerialPort',
-                              'PyQt5.QtSql'
+                              'PyQt6.QtSql',
+                              'PyQt6.QtQml',
+                              'PyQt6.QtBluetooth',
+                              'PyQt6.QtQuickWidgets',
+                              'PyQt6.QtSensors',
+                              'PyQt6.QtSerialPort',
+                              'PyQt6.QtSql',
+                              'PyQt6.QtQuick',
+                              'PyQt6.QtQuick3D',
+                              'PyQt6.QtQuickWidgets',
+                              'PyQt6.QtDesigner',
+                              'PyQt6.QtPdf',
+                              'PyQt6.QtPdfWidgets',
+                              'PyQt6.QtSensors',
+                              'PyQt6.QtTest',
+                              'PyQt6.QtTextToSpeech',
                               ]}
 
 
@@ -24,7 +43,7 @@ executables = [
 ]
 
 setup(name='pysoundanalyser',
-    version="0.3.5",
+    version="0.3.6",
       description = '',
       options = {'build_exe': build_options},
       executables = executables)

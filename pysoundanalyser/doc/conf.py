@@ -9,7 +9,7 @@
 project = 'pysoundanalyser'
 copyright = '2010-2023, Samuele Carcagno'
 author = 'Samuele Carcagno'
-release = "0.3.5"
+release = "0.3.6"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
