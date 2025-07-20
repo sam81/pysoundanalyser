@@ -382,7 +382,7 @@ class genericPlot(QMainWindow):
 
     def onChangeLabelFont(self):
         dialog = getFontDialog(self, self.labelFont)
-        if dialog.exec_():
+        if dialog.exec():
             idx = dialog.fontStylesWidget.currentRow()
             family = str(dialog.fontListWidget.currentItem().text())
             fontFileName = dialog.fontsDic[family]['style'][idx].split(':')[2]
@@ -393,7 +393,7 @@ class genericPlot(QMainWindow):
             self.setBaseFigureProperties()
     def onChangeTickLabelFont(self):
         dialog = getFontDialog(self, self.tickLabelFont)
-        if dialog.exec_():
+        if dialog.exec():
             idx = dialog.fontStylesWidget.currentRow()
             family = str(dialog.fontListWidget.currentItem().text())
             fontFileName = dialog.fontsDic[family]['style'][idx].split(':')[2]
